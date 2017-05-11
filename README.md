@@ -34,6 +34,10 @@ WPF+MVVM实现的自动更新程序
 如有什么疑问，加QQ群130108655
 
 ### Special thanks:
+@[
+zhuzhen723723](https://github.com/zhuzhen723723)
+
+### Acknowledgements
 
 - MahApps.Metro: [https://github.com/MahApps/MahApps.Metro](https://github.com/MahApps/MahApps.Metro "https://github.com/MahApps/MahApps.Metro")
 - Source of software icon: [https://www.iconfinder.com/icons/314711/cloud_download_icon#size=128](https://www.iconfinder.com/icons/314711/cloud_download_icon#size=128 "https://www.iconfinder.com/icons/314711/cloud_download_icon#size=128")
