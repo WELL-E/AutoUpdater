@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdater", "AutoUpdater\AutoUpdater.csproj", "{83A300EA-9B99-4B4C-8511-1DC2FD893D3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdaterEx", "UpdaterEx\UpdaterEx.csproj", "{B9506A51-E976-4BB0-B511-A1D56FE82ECE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83A300EA-9B99-4B4C-8511-1DC2FD893D3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83A300EA-9B99-4B4C-8511-1DC2FD893D3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83A300EA-9B99-4B4C-8511-1DC2FD893D3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83A300EA-9B99-4B4C-8511-1DC2FD893D3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9506A51-E976-4BB0-B511-A1D56FE82ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9506A51-E976-4BB0-B511-A1D56FE82ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9506A51-E976-4BB0-B511-A1D56FE82ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9506A51-E976-4BB0-B511-A1D56FE82ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
