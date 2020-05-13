@@ -1,0 +1,89 @@
+﻿using GeneralUpdate.Core;
+using GeneralUpdate.Core.Strategys;
+using GeneralUpdate.Core.Update;
+using System;
+
+namespace AutoApdate.ConsoleApp
+{
+    class Program
+    {
+        /// <summary>
+        /// quick start
+        /// 本程序中引用的第三方组件均来自nuget包并遵循MIT开源协议 https://spdx.org/licenses/MIT.html
+        /// </summary>
+        /// <param name="args"></param>
+        static void Main(string[] args)
+        {
+            #region Launch1
+
+            args = new string[6] {
+                "0.0.0.0",
+                "1.1.1.1",
+                "https://github.com/WELL-E",
+                 "http://192.168.50.225:7000/update.zip",
+                 @"E:\PlatformPath",
+                "509f0ede227de4a662763a4abe3d8470",
+                 };
+
+            GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
+            bootstrap.DownloadStatistics += OnDownloadStatistics;
+            bootstrap.ProgressChanged += OnProgressChanged;
+            bootstrap.Strategy<DefultStrategy>().
+                Option(UpdateOption.Format, "zip").//指定更新包的格式，目前只支持zip
+                Option(UpdateOption.MainApp, "your application name").//指定更新完成后需要启动的主程序名称不需要加.exe直接写名称即可
+                RemoteAddress(args).//这里的参数保留了之前的参数数组集合
+                Launch();
+
+            #endregion
+
+            #region Launch2
+
+            /*
+             * Launch2
+             * 新增了第二种启动方式
+             * 流程：
+             * 1.指定更新地址，https://api.com/GeneralUpdate?version=1.0.0.1 在webapi中传入客户端当前版本号
+             * 2.如果需要更新api回返回给你所有的更新信息（详情内容参考 /Models/UpdateInfo.cs）
+             * 3.拿到更新信息之后则开始http请求更新包
+             * 4.下载
+             * 5.解压
+             * 6.更新本地文件
+             * 7.关闭更新程序
+             * 8.启动配置好主程序
+             * 更新程序必须跟主程序放在同级目录下
+             */
+
+            //GeneralUpdateBootstrap bootstrap2 = new GeneralUpdateBootstrap();
+            //bootstrap2.DownloadStatistics += OnDownloadStatistics;
+            //bootstrap2.ProgressChanged += OnProgressChanged;
+            //bootstrap2.Strategy<DefultStrategy>().
+            //    Option(UpdateOption.Format, "zip").
+            //    Option(UpdateOption.MainApp, "KGS.CPP").
+            //    RemoteAddress(@"https://api.com/GeneralUpdate?version=1.0.0.1").//指定更新地址
+            //    Launch();
+
+            #endregion
+
+            Console.Read();
+        }
+
+        private static void OnProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.Type == ProgressType.Updatefile)
+            {
+                var str = $"当前更新第：{e.ProgressValue}个,更新文件总数：{e.TotalSize}";
+                Console.WriteLine(str);
+            }
+
+            if (e.Type == ProgressType.Done)
+            {
+                Console.WriteLine("更新完成");
+            }
+        }
+
+        private static void OnDownloadStatistics(object sender, DownloadStatisticsEventArgs e)
+        {
+            Console.WriteLine($"下载速度：{e.Speed}，剩余时间：{e.Remaining.Minute}:{e.Remaining.Second}");
+        }
+    }
+}
