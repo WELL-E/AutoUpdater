@@ -19,11 +19,9 @@ issues：https://github.com/WELL-E/AutoUpdater/issues
 运行截图：
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200503171309275-1921529733.png)
 
-
 快速启动：
 
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517182549723-1185859724.png)
-
 
     #region Launch1
 
@@ -95,13 +93,11 @@ issues：https://github.com/WELL-E/AutoUpdater/issues
         }
 
 关于调试：
-
 调试本程序如果没有服务端支持可用hfs这款软件，作为临时服务器进行调试使用方式非常简单下载好了之后界面如下
-
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517175400462-1015101986.png)
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517175525111-190800663.png)
 
- 开发作者： JusterZhu & WELL-E
+开发作者： JusterZhu & WELL-E
 
 联系我们：
 QQ群：
@@ -115,7 +111,7 @@ WELL-E
 juster.chu
 
 - E-Mail：zhuzhen723723@outlook.com
-- QQ: 580749909(个人群)
+- QQ: 580749909(群)
 - Blog： https://www.cnblogs.com/justzhuzhu/
 - Git: https://github.com/JusterZhu
 - 微信公众号
