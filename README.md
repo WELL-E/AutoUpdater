@@ -1,11 +1,7 @@
 # GeneralUpdate #
 
 GeneralUpdate是基于.net framwork4.5.2开发的一款（c/s应用）自动升级程序。
-
-第一个版本叫Autoupdate（原博客： [WPF自动更新程序](https://www.cnblogs.com/igotogo/p/6899921.html)）有人会奇怪为什么会改名称，稍微解释一下是因为在nuget上有重名的项目再者就是新版本更新功能不仅限于wpf程序的更新。
-
 将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。相比以前更方便的是不需要在过分关注源码可直接通过nuget直接使用。
-
 如果有任何使用问题可以在Github的issues上进行提问我会每周统一找时间解决并解答bug或者问题。或者联系文章末尾的联系方式会有人解答。
 
 
