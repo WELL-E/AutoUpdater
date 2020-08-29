@@ -8,11 +8,11 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("GeneralUpdate.Single")]
-[assembly: AssemblyDescription("Make your program a singleton")]
+[assembly: AssemblyDescription("Make your program a singleton.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("WELL-E")]
+[assembly: AssemblyCompany("juster.zhu WELL-E")]
 [assembly: AssemblyProduct("GeneralUpdate.Single")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

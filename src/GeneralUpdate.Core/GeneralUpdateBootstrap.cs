@@ -4,6 +4,7 @@ using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace GeneralUpdate.Core
@@ -18,7 +19,7 @@ namespace GeneralUpdate.Core
         /// <summary>
         /// 更新包下载路径
         /// </summary>
-        public string DownloadPath { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// 安装目录（更新包解压路径）
@@ -57,24 +58,45 @@ namespace GeneralUpdate.Core
         }
 
         /// <summary>
-        /// 初始化更新信息
+        /// 配置远程地址
         /// </summary>
+        /// <param name="args">
+        /// 1.当前版本号（0.9.0.0）
+        /// 2.升级版本号（1.0.0.0）
+        /// 3.更新描述URL（https://github.com/WELL-E）
+        /// 4.更新包文件的URL（http://localhost：9090/UpdateFile.zip）
+        /// 5.更新了文件发布路径（E:\PlatformPath）
+        /// 6.更新程序包文件MD5代码（2b406701f8ad92922feb537fc789561a）
+        /// </param>
+        public GeneralUpdateBootstrap RemoteAddress(string[] args)
+        {
+            CurrentVersion = args[0];
+            NewVersion = args[1];
+            UpdateLogUrl = args[2];
+            Url = args[3];
+            InstallPath = args[4].Replace("|", " ");
+            MD5 = args[5];
+            PacketName = Url.GetName(StringOption.Url);
+            ValidateRemoteAddress(args);
+            Init();
+            return this;
+        }
+
         private void Init() {
+            var tempPath = FileUtil.GetTempDirectory(NewVersion);
+            //var config = FileUtil.ReadConfig<UpdateConfig>(tempPath);
             Packet = new UpdatePacket();
-            Packet.Url = DownloadPath;
-            Packet.TempPath = $"{FileUtil.GetTempDirectory()}\\{PacketName}";
+            Packet.Url = Url;
             Packet.InstallPath = InstallPath;
             Packet.Name = PacketName;
             Packet.MD5 = MD5;
             Packet.CurrentVersion = CurrentVersion;
             Packet.NewVersion = NewVersion;
+            Packet.TempPath = $"{ tempPath }\\{PacketName}";
             base.Packet = this.Packet;
             base.UpdateCheckUrl = this.UpdateCheckUrl;
         }
 
-        /// <summary>
-        /// 验证地址
-        /// </summary>
         private void ValidateRemoteAddress(string[] args = null, int elementNum = 6) {
 
             if (args != null)
@@ -86,55 +108,29 @@ namespace GeneralUpdate.Core
 
                 if (args.Length > elementNum)
                 {
-                    throw new Exception($"The number of args cannot be greater than { elementNum }");
+                    throw new Exception($"The number of args cannot be greater than { elementNum }.");
                 }
             }
 
             if (string.IsNullOrWhiteSpace(PacketName))
             {
-                throw new NullReferenceException("packet name not set");
+                throw new NullReferenceException("packet name not set.");
             }
 
-            if (string.IsNullOrWhiteSpace(DownloadPath))
+            if (string.IsNullOrWhiteSpace(Url))
             {
-                throw new NullReferenceException("download path not set");
+                throw new NullReferenceException("download path not set.");
             }
 
             if (string.IsNullOrWhiteSpace(InstallPath))
             {
-                throw new NullReferenceException("install path not set");
+                throw new NullReferenceException("install path not set.");
             }
 
             if (string.IsNullOrWhiteSpace(MD5))
             {
-                throw new NullReferenceException("install path not set");
+                throw new NullReferenceException("install path not set.");
             }
-        }
-
-        /// <summary>
-        /// 配置远程地址
-        /// </summary>
-        /// <param name="args">
-        /// 1.当前版本号（0.9.0.0）
-        /// 2.升级版本号（1.0.0.0）
-        /// 3.更新描述URL（https://github.com/WELL-E）
-        /// 4.更新包文件的URL（http://localhost：9090/UpdateFile.zip）
-        /// 5.更新了文件发布路径（E:\PlatformPath）
-        /// 6.更新程序包文件MD5代码（2b406701f8ad92922feb537fc789561a）
-        /// </param>
-        public GeneralUpdateBootstrap RemoteAddress(string[] args) {
-            CurrentVersion = args[0];
-            NewVersion = args[1];
-            UpdateLogUrl = args[2];
-            DownloadPath = args[3];
-            InstallPath = args[4].Replace("|", " ");
-            MD5 = args[5];
-
-            var pos = DownloadPath.LastIndexOf('/');
-            PacketName = DownloadPath.Substring(pos + 1);
-            ValidateRemoteAddress(args);
-            Init();
-            return this;
         }
 
         /// <summary>
@@ -160,11 +156,6 @@ namespace GeneralUpdate.Core
             return this;
         }
 
-        /// <summary>
-        /// 正则表达式判断该地址是否合法
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         private static bool IsURL(string url)
         {
             string check = @"((http|ftp|https)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?";
@@ -172,9 +163,6 @@ namespace GeneralUpdate.Core
             return regex.IsMatch(url);
         }
 
-        /// <summary>
-        /// 启动主程序
-        /// </summary>
         public bool StartMain(string appName) {
             try
             {

@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core;
+﻿using AutoUpdate.WpfApp.Common;
+using GeneralUpdate.Core;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using System;
@@ -6,35 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AutoUpdate.WpfApp.ViewModels
 {
     public class MainViewModel
     {
-        public MainViewModel() {
-            Start();
-        }
+        public ICommand CloseWindowCmd { get; set; }
 
-        public void Start() {
+        public MainViewModel(string[] args, Action closeInvoke)
+        {
+            if (args.Length != 6) return;
 
-           var args = new string[6] {
-                "0.0.0.0",
-                "1.1.1.1",
-                "https://github.com/WELL-E",
-                 "http://192.168.50.225:7000/update.zip",
-                 @"E:\PlatformPath",
-                "509f0ede227de4a662763a4abe3d8470",
-                 };
-
+            CloseWindowCmd = new RelayCommand(closeInvoke);
             GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
-            bootstrap.DownloadStatistics += Bootstrap_DownloadStatistics; ;
-            bootstrap.ProgressChanged += Bootstrap_ProgressChanged; ;
+            bootstrap.DownloadStatistics += Bootstrap_DownloadStatistics;
+            bootstrap.ProgressChanged += Bootstrap_ProgressChanged;
             bootstrap.Strategy<DefultStrategy>().
+                //指定更新包的格式，目前只支持zip。不指定则默认为zip。
                 Option(UpdateOption.Format, "zip").
+                //指定更新完成后需要启动的主程序名称不需要加.exe直接写名称即可
                 Option(UpdateOption.MainApp, "your application name").
+                //下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+                Option(UpdateOption.DownloadTimeOut, 60).
+                //这里的参数保留了之前的参数数组集合
                 RemoteAddress(args).
                 Launch();
-
         }
 
         private void Bootstrap_ProgressChanged(object sender, ProgressChangedEventArgs e)

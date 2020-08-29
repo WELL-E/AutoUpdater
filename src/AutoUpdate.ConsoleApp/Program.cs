@@ -1,6 +1,7 @@
 ﻿using GeneralUpdate.Core;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
 
 namespace AutoApdate.ConsoleApp
@@ -8,7 +9,7 @@ namespace AutoApdate.ConsoleApp
     class Program
     {
         /// <summary>
-        /// quick start
+        /// Quick start
         /// 本程序中引用的第三方组件均来自nuget包并遵循MIT开源协议 https://spdx.org/licenses/MIT.html
         /// </summary>
         /// <param name="args"></param>
@@ -22,16 +23,21 @@ namespace AutoApdate.ConsoleApp
                 "https://github.com/WELL-E",
                  "http://192.168.50.225:7000/update.zip",
                  @"E:\PlatformPath",
-                "509f0ede227de4a662763a4abe3d8470",
+                "5086d584dd81360a15d84d863adadfb3",
                  };
 
             GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
             bootstrap.DownloadStatistics += OnDownloadStatistics;
             bootstrap.ProgressChanged += OnProgressChanged;
             bootstrap.Strategy<DefultStrategy>().
-                Option(UpdateOption.Format, "zip").//指定更新包的格式，目前只支持zip
-                Option(UpdateOption.MainApp, "your application name").//指定更新完成后需要启动的主程序名称不需要加.exe直接写名称即可
-                RemoteAddress(args).//这里的参数保留了之前的参数数组集合
+                //指定更新包的格式，目前只支持zip。不指定则默认为zip。
+                Option(UpdateOption.Format, "zip").
+                //指定更新完成后需要启动的主程序名称不需要加.exe直接写名称即可
+                Option(UpdateOption.MainApp, "your application name").
+                //下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+                Option(UpdateOption.DownloadTimeOut,60).
+                //这里的参数保留了之前的参数数组集合
+                RemoteAddress(args).
                 Launch();
 
             #endregion
@@ -58,8 +64,9 @@ namespace AutoApdate.ConsoleApp
             //bootstrap2.ProgressChanged += OnProgressChanged;
             //bootstrap2.Strategy<DefultStrategy>().
             //    Option(UpdateOption.Format, "zip").
-            //    Option(UpdateOption.MainApp, "KGS.CPP").
+            //    Option(UpdateOption.MainApp, "your application name").
             //    RemoteAddress(@"https://api.com/GeneralUpdate?version=1.0.0.1").//指定更新地址
+            //    Option(UpdateOption.DownloadTimeOut, 60).
             //    Launch();
 
             #endregion

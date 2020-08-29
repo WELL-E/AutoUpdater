@@ -15,7 +15,9 @@ namespace GeneralUpdate.Core.Utils
     {
         internal const string SubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{655A2DE6-C9A3-432E-951B-D773791C2653}_is1";
 
-        //https://www.7-zip.org/download.html
+        /// <summary>
+        /// 压缩包操作组件来源： https://www.7-zip.org/download.html
+        /// </summary>
         private static string dll7z = $"{AppDomain.CurrentDomain.BaseDirectory}x86\\7z.dll";
 
         private static long UnzipPosition { get; set; }
@@ -200,6 +202,58 @@ namespace GeneralUpdate.Core.Utils
             return tempDir;
         }
 
+        internal static string GetTempDirectory(string version)
+        {
+            var path2 = $"generalupdate_{ DateTime.Now.ToString("yyyy-MM-dd") }_{version}";
+            var tempDir = Path.Combine(Path.GetTempPath(), path2);
+            if (!Directory.Exists(tempDir))
+            {
+                Directory.CreateDirectory(tempDir);
+            }
+            return tempDir;
+        }
+
+        internal static bool InitConfig(string path, dynamic obj)
+        {
+            try
+            {
+                if (File.Exists(path)) File.Delete(path);
+
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    using (var streamWriter = new StreamWriter(fileStream))
+                    {
+                        string json = JsonConvert.SerializeObject(obj);
+                        streamWriter.Write(json);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        internal static T ReadConfig<T>(string path) 
+        {
+            try
+            {
+                if (File.Exists(path)) 
+                {
+                    using (StreamReader streamReader = File.OpenText(path))
+                    {
+                        string json = streamReader.ReadToEnd();
+                        return JsonConvert.DeserializeObject<T>(json);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return default;
+        }
+
         internal static void UpdateReg(RegistryKey baseKey, string subKey, string keyName, string keyValue)
         {
             using (var registry = new RegistryUtil(baseKey, subKey))
@@ -241,7 +295,6 @@ namespace GeneralUpdate.Core.Utils
                 return sk == null ? null : sk.GetValue(keyName.ToUpper()).ToString();
             }
         }
-
 
         public void Write(string keyName, object value)
         {

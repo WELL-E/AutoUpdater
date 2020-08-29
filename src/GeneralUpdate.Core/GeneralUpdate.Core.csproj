@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <PackageId>F35F100D-B8E9-4F20-8572-7AB549913D69</PackageId>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Authors>juster.chu</Authors>
     <Company>none</Company>
     <NuGetPackageImportStamp>
@@ -64,6 +64,7 @@
     <Compile Include="GeneralUpdateBootstrap.cs" />
     <Compile Include="Bootstrap\AbstractBootstrap.cs" />
     <Compile Include="Models\FileBase.cs" />
+    <Compile Include="Models\UpdateConfig.cs" />
     <Compile Include="Models\UpdateInfo.cs" />
     <Compile Include="Models\UpdatePacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Utils\FileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\StatisticsUtil.cs" />
+    <Compile Include="Utils\StringEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

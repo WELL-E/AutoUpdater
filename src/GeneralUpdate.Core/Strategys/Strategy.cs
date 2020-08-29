@@ -38,6 +38,7 @@ namespace GeneralUpdate.Core.Strategys
 
                 if (isDone && !string.IsNullOrEmpty(_updatePacket.MainApp))
                 {
+                    //FileUtil.InitConfig("",new UpdateConfig());
                     StartMain();
                 }
             }
@@ -84,7 +85,17 @@ namespace GeneralUpdate.Core.Strategys
                     "DisplayVersion",
                     _updatePacket.NewVersion);
 
-                File.Delete(_updatePacket.TempPath);
+                if (File.Exists(_updatePacket.TempPath))
+                {
+                    File.Delete(_updatePacket.TempPath);
+                }
+
+                var dir = _updatePacket.TempPath.ExcludeName(StringOption.File);
+                if (Directory.Exists(dir))
+                {
+                    Directory.Delete(dir);
+                }
+                
                 FileUtil.Update32Or64Libs(_updatePacket.InstallPath);
 
                 return true;
@@ -94,12 +105,5 @@ namespace GeneralUpdate.Core.Strategys
                 return false;
             }
         }
-    }
-
-    /// <summary>
-    /// 在线更新策略实现
-    /// </summary>
-    public class OnlineStrategy {
-
     }
 }

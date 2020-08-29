@@ -20,7 +20,7 @@ namespace GeneralUpdate.Core.Bootstrap
         private Timer _speedTimer;
         private readonly ConcurrentDictionary<UpdateOption, UpdateOptionValue> options;
         private volatile Func<TStrategy> strategyFactory;
-        private readonly WebClient webClient;
+        private readonly GeneralWebClient webClient;
         private DateTime _startTime;
         private UpdatePacket _packet;
         private IStrategy strategy;
@@ -46,9 +46,39 @@ namespace GeneralUpdate.Core.Bootstrap
         {
             _startTime = DateTime.Now;
             this.options = new ConcurrentDictionary<UpdateOption, UpdateOptionValue>();
-            this.webClient = new WebClient();
-            webClient.DownloadProgressChanged += OnDownloadProgressChanged;
-            webClient.DownloadFileCompleted += OnDownloadFileCompleted;
+            this.webClient = new GeneralWebClient();
+            webClient.DownloadProgressChangedEx += OnDownloadProgressChangedEx; ;
+            webClient.DownloadFileCompletedEx += OnDownloadFileCompletedEx;
+        }
+
+        private void OnDownloadFileCompletedEx(object sender, AsyncCompletedEventArgs e)
+        {
+            try
+            {
+                if (!e.Cancelled)
+                {
+                    throw new Exception("Download file fail!");
+                }
+
+                if (_speedTimer != null)
+                {
+                    _speedTimer.Dispose();
+                    _speedTimer = null;
+                }
+
+                if (webClient != null)
+                {
+                    webClient.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Dispose error:{ ex.Message }." });
+            }
+            finally
+            {
+                ExcuteStrategy();
+            }
         }
 
         #endregion
@@ -85,19 +115,19 @@ namespace GeneralUpdate.Core.Bootstrap
                     Packet.NewVersion = result.Version;
                     Packet.MD5 = result.HashCode;
                     Packet.Url = result.Url;
-                    var pos = Packet.Url.LastIndexOf('/');
-                    Packet.Name = Packet.Url.Substring(pos + 1);
+                    Packet.Name =  Packet.Url.GetName(StringOption.Url);
                 }
                 else
                 {
-                    ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"check update fail:{ info.Message }" });
+                    ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Check update fail:{ info.Message }" });
                 }
             }
             var pacektFormat = GetOption(UpdateOption.Format) ?? DefultFormat;
             Packet.Format = $".{pacektFormat}";
             Packet.MainApp = GetOption(UpdateOption.MainApp);
             _speedTimer = new Timer(SpeedTimerOnTick, null, 0, 1000);
-            webClient.DownloadFileAsync(new Uri(Packet.Url), $"{Packet.TempPath}");
+            webClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
+            webClient.DownloadFileRangeAsync(Packet.Url, Packet.TempPath, null);
             return (TBootstrap)this;
         }
 
@@ -176,10 +206,6 @@ namespace GeneralUpdate.Core.Bootstrap
             ProgressChanged(sender, eventArgs);
         }
 
-        /// <summary>
-        /// 下载速度
-        /// </summary>
-        /// <param name="sender"></param>
         private void SpeedTimerOnTick(object sender)
         {
             var interval = DateTime.Now - _startTime;
@@ -200,12 +226,7 @@ namespace GeneralUpdate.Core.Bootstrap
             BeforBytes = Packet.ReceivedBytes;
         }
 
-        /// <summary>
-        /// 下载进度
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void OnDownloadProgressChangedEx(object sender, DownloadProgressChangedEventArgsEx e)
         {
             Packet.ReceivedBytes = e.BytesReceived;
             Packet.TotalBytes = e.TotalBytesToReceive;
@@ -216,31 +237,6 @@ namespace GeneralUpdate.Core.Bootstrap
             args.TotalSize = e.TotalBytesToReceive / (1024 * 1024);
             args.Type = ProgressType.Donwload;
             ProgressChanged(this, args);
-        }
-
-        /// <summary>
-        /// 下载完成
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                if (_speedTimer != null)
-                {
-                    _speedTimer.Dispose();
-                    _speedTimer = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Dispose timer error:{ ex.Message }." });
-            }
-            finally 
-            {
-                ExcuteStrategy();
-            }
         }
 
         #endregion

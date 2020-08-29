@@ -26,6 +26,11 @@ namespace GeneralUpdate.Core.Update
         /// </summary>
         public static readonly UpdateOption<string> MainApp = ValueOf<string>("MAINAPP");
 
+        /// <summary>
+        /// 下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+        /// </summary>
+        public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
+
         internal UpdateOption(int id, string name)
           : base(id, name)
         {

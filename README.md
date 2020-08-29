@@ -1,33 +1,38 @@
 # GeneralUpdate #
+![](https://img.shields.io/badge/GeneralUpdate.Core-2.1.0-green)
+![](https://img.shields.io/badge/GeneralUpdate.Single-1.0.0-green)
+![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
+![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
-GeneralUpdate是基于.net framwork4.5.2开发的一款（c/s应用）自动升级程序。
-
-第一个版本叫Autoupdate（原博客： [WPF自动更新程序](https://www.cnblogs.com/igotogo/p/6899921.html)）有人会奇怪为什么会改名称，稍微解释一下是因为在nuget上有重名的项目再者就是新版本更新功能不仅限于wpf程序的更新。
-
-将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。相比以前更方便的是不需要在过分关注源码可直接通过nuget直接使用。
-
-如果有任何使用问题可以在Github的issues上进行提问我会每周统一找时间解决并解答bug或者问题。或者联系文章末尾的联系方式会有人解答。
+- GeneralUpdate是基于.net framwork开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。相比以前更方便的是不需要在过分关注源码可直接通过nuget直接使用。
+- 如果有任何使用问题可以在Github的issues上进行提问我会每周统一找时间解决并解答bug或者问题。或者联系文章末尾的联系方式会有人解答。
+- 每次迭代新版本**doc文件夹中的帮助文档也会随之更新**，各位开发者请多关注。
+- 如果该组件能够帮助到您，希望可以点个**Strat**和关注一下文档末尾的联系方式。您的支持是对开源作者最大的支持与帮助。
 
 
-## 如何使用： ##
-Gitee（码云）地址：https://gitee.com/Juster-zhu/GeneralUpdate
+## How to use it： ##
+Gitee（码云）地址：
 
-Nuget地址：https://www.nuget.org/packages/GeneralUpdate.Core/
+- https://gitee.com/Juster-zhu/GeneralUpdate
 
-GitHub地址： https://github.com/WELL-E/AutoUpdater GeneralUpdate版本在 Branch：Autoupdate2。
+Nuget地址：
 
-issues：https://github.com/WELL-E/AutoUpdater/issues
+- https://www.nuget.org/packages/GeneralUpdate.Core/
+- https://www.nuget.org/packages/GeneralUpdate.Single/
 
-![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200503171621516-1381696009.png)
+![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/nuget.jpg)
 
-运行截图：
+GitHub地址：
+ 
+- Address:https://github.com/WELL-E/AutoUpdater/tree/autoupdate2
+- Issues：https://github.com/WELL-E/AutoUpdater/issues
+
+
+## Run： ##
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200503171309275-1921529733.png)
 
 
-快速启动：
-
-![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517182549723-1185859724.png)
-
+## Quick start: ##
 
     #region Launch1
 
@@ -46,6 +51,7 @@ issues：https://github.com/WELL-E/AutoUpdater/issues
             bootstrap.Strategy<DefultStrategy>().//注册策略，可自定义更新流程
                 Option(UpdateOption.Format, "zip").//指定更新包的格式，目前只支持zip
                 Option(UpdateOption.MainApp, "your application name").//指定更新完成后需要启动的主程序名称不需要加.exe直接写名称即可
+                Option(UpdateOption.DownloadTimeOut,60).//下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
                 RemoteAddress(args).//这里的参数保留了之前的参数数组集合
                 Launch();//启动更新
 
@@ -74,6 +80,7 @@ issues：https://github.com/WELL-E/AutoUpdater/issues
             //bootstrap2.Strategy<DefultStrategy>().
             //    Option(UpdateOption.Format, "zip").
             //    Option(UpdateOption.MainApp, "").
+			//	  Option(UpdateOption.DownloadTimeOut,60).//下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
             //    RemoteAddress(@"https://api.com/GeneralUpdate?version=1.0.0.1").//指定更新地址
             //    Launch();
 
@@ -98,22 +105,25 @@ issues：https://github.com/WELL-E/AutoUpdater/issues
             Console.WriteLine($"下载速度：{e.Speed}，剩余时间：{e.Remaining.Minute}:{e.Remaining.Second}");
         }
 
-关于调试：
+## About debug： ##
 
 调试本程序如果没有服务端支持可用hfs这款软件，作为临时服务器进行调试使用方式非常简单下载好了之后界面如下
 
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517175400462-1015101986.png)
-![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517175525111-190800663.png)
+![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/hfs.jpg)
 
- 开发作者： JusterZhu & WELL-E
+## Author ##
+JusterZhu & WELL-E
 
-联系我们：
-QQ群：
+## Reward ##
+![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/alipay2.jpg)
+![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/vx2.jpg)
+
+## Contact us ##
 
 WELL-E
 
-- 1群 130108655
-- 2群 960655709
+- 1群 130108655 2群 960655709
 - Git: https://github.com/WELL-E
 
 juster.chu

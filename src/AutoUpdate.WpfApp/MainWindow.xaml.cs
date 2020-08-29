@@ -24,7 +24,6 @@ namespace GeneralUpdate.WpfApp
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }

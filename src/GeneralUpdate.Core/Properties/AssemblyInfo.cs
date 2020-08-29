@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("GeneralUpdate.Core")]
-[assembly: AssemblyDescription("update your application")]
+[assembly: AssemblyDescription("Based on. Net framework, an automatic upgrade program for c/s application is developed.The core part of the update can be easily used in many projects.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("juster.zhu WELL-E")]
 [assembly: AssemblyProduct("GeneralUpdate.Core")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]
