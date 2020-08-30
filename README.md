@@ -20,7 +20,7 @@ Nuget地址：
 - https://www.nuget.org/packages/GeneralUpdate.Core/
 - https://www.nuget.org/packages/GeneralUpdate.Single/
 
-![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/nuget.jpg)
+![](https://images.cnblogs.com/cnblogs_com/justzhuzhu/1837809/o_200830033114nuget.jpg)
 
 GitHub地址：
  
@@ -110,14 +110,14 @@ GitHub地址：
 调试本程序如果没有服务端支持可用hfs这款软件，作为临时服务器进行调试使用方式非常简单下载好了之后界面如下
 
 ![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200517175400462-1015101986.png)
-![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/hfs.jpg)
+![](https://images.cnblogs.com/cnblogs_com/justzhuzhu/1837809/o_200830033109hfs.jpg)
 
 ## Author ##
 JusterZhu & WELL-E
 
 ## Reward ##
-![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/alipay2.jpg)
-![](https://github.com/WELL-E/AutoUpdater/blob/autoupdate2/imgs/vx2.jpg)
+![](https://images.cnblogs.com/cnblogs_com/justzhuzhu/1837809/o_200830033105alipay2.jpg)
+![](https://images.cnblogs.com/cnblogs_com/justzhuzhu/1837809/o_200830033059vx2.jpg)
 
 ## Contact us ##
 
