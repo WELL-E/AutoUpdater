@@ -17,15 +17,32 @@ namespace AutoUpdate.WpfApp
         [STAThread]
         static void Main(string[] args)
         {
-            //if (args.Length != 6) return; 
+            string[] resultArgs = null;
+
+            if (args == null || args.Length == 0)
+            {
+                resultArgs = new string[6] {
+                "0.0.0.0",
+                "1.1.1.1",
+                "https://github.com/WELL-E",
+                 "http://192.168.50.225:7000/update.zip",
+                 @"E:\PlatformPath",
+                "509f0ede227de4a662763a4abe3d8470",
+                 };
+            }
+            else
+            {
+                resultArgs = args;
+            }
+
+            if (resultArgs.Length != 6) return;
             if (SingleInstance<Program>.InitializeAsFirstInstance(AppId))
             {
                 var win = new MainWindow();
-                var vm = new MainViewModel(args, win.Close);
+                var vm = new MainViewModel(resultArgs, win.Close);
                 win.DataContext = vm;
 
                 var application = new Program();
-                //application.InitializeComponent();
                 application.Run(win);
                 SingleInstance<Program>.Cleanup();
             }
