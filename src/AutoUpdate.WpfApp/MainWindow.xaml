@@ -9,5 +9,7 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <Grid />
+    <Grid >
+        <Button Command="{Binding CloseWindowCmd}" Width="100" Height="30" Content="close"></Button>
+    </Grid>
 </Window>
