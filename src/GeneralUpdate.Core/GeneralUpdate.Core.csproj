@@ -77,6 +77,7 @@
     <Compile Include="Utils\FileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\StatisticsUtil.cs" />
+    <Compile Include="Utils\StringEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
