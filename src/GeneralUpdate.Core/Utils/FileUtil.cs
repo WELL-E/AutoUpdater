@@ -251,7 +251,7 @@ namespace GeneralUpdate.Core.Utils
             catch (Exception)
             {
             }
-            return default;
+            return default(T);
         }
 
         internal static void UpdateReg(RegistryKey baseKey, string subKey, string keyName, string keyValue)

@@ -194,7 +194,7 @@ namespace GeneralUpdate.Core.Bootstrap
             {
                 return (T)val.GetValue();
             }
-            return default;
+            return default(T);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace GeneralUpdate.Core.Strategys
     {
         public virtual T GetOption<T>(UpdateOption<T> option)
         {
-            return default;
+            return default(T);
         }
 
         public bool VerifyFileMd5(string fileName, string md5)
