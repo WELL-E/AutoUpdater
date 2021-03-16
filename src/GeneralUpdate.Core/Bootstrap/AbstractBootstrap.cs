@@ -73,7 +73,9 @@ namespace GeneralUpdate.Core.Bootstrap
             }
             catch (Exception ex)
             {
-                ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Dispose error:{ ex.Message }." });
+                ProgressChanged.BeginInvoke(this,
+                    new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Dispose error:{ ex.Message }." },
+                    null,null);
             }
             finally
             {
@@ -107,7 +109,9 @@ namespace GeneralUpdate.Core.Bootstrap
         {
             if (!string.IsNullOrWhiteSpace(UpdateCheckUrl))
             {
-                ProgressChanged(this,new Update.ProgressChangedEventArgs { Type = ProgressType.Check , Message = "更新检查！" });
+                ProgressChanged.BeginInvoke(this,
+                    new Update.ProgressChangedEventArgs { Type = ProgressType.Check , Message = "Update checking..." },
+                    null,null);
                 var info = HttpUtil.GetAsync<UpdateInfoHttpResp>(UpdateCheckUrl).Result;
                 if (info.Code == 200)
                 {
@@ -119,7 +123,9 @@ namespace GeneralUpdate.Core.Bootstrap
                 }
                 else
                 {
-                    ProgressChanged(this, new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Check update fail:{ info.Message }" });
+                    ProgressChanged.BeginInvoke(this, 
+                        new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Check update fail:{ info.Message }" },
+                        null, null);
                 }
             }
             var pacektFormat = GetOption(UpdateOption.Format) ?? DefultFormat;
@@ -203,7 +209,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         protected void DoProgressChanged(object sender, Update.ProgressChangedEventArgs eventArgs)
         {
-            ProgressChanged(sender, eventArgs);
+            ProgressChanged.BeginInvoke(sender, eventArgs, null, null);
         }
 
         private void SpeedTimerOnTick(object sender)
@@ -220,7 +226,7 @@ namespace GeneralUpdate.Core.Bootstrap
             var args = new DownloadStatisticsEventArgs();
             args.Remaining = remainingTime;
             args.Speed = downLoadSpeed;
-            DownloadStatistics(this, args);
+            DownloadStatistics.BeginInvoke(this, args, null, null);
 
             _startTime = DateTime.Now;
             BeforBytes = Packet.ReceivedBytes;
@@ -236,7 +242,7 @@ namespace GeneralUpdate.Core.Bootstrap
             args.ReceivedSize = e.BytesReceived / (1024 * 1024);
             args.TotalSize = e.TotalBytesToReceive / (1024 * 1024);
             args.Type = ProgressType.Donwload;
-            ProgressChanged(this, args);
+            ProgressChanged.BeginInvoke(this, args, null,null);
         }
 
         #endregion

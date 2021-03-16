@@ -24,27 +24,52 @@ namespace GeneralUpdate.Core.Strategys
 
         public void Excute()
         {
-            var isVerify = VerifyFileMd5($"{_updatePacket.TempPath}", _updatePacket.MD5);
-            if (!isVerify)
+            string tempPath = FileUtil.GetTempDirectory(_updatePacket.NewVersion);
+            try
             {
-                _eventAction(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "Verify MD5 Error!" });
-                return;
-            }
-
-            if (FileUtil.UnZip($"{ _updatePacket.TempPath }", _updatePacket.InstallPath, _eventAction))
-            {
-                var isDone = UpdateFiles();
-                _eventAction(this, new Update.ProgressChangedEventArgs() { Type = isDone ? ProgressType.Done : ProgressType.Fail });
-
-                if (isDone && !string.IsNullOrEmpty(_updatePacket.MainApp))
+                var isVerify = VerifyFileMd5($"{_updatePacket.TempPath}", _updatePacket.MD5);
+                if (!isVerify)
                 {
-                    //FileUtil.InitConfig("",new UpdateConfig());
-                    StartMain();
+                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "Verify MD5 Error!" }, null, null);
+                    return;
+                }
+
+                string tempBackups_new = $"{tempPath}\\backups_new";
+                string tempBackups = $"{tempPath}\\backups";
+                IncrementalFileUtil.Instance.GetOldFileinfo(_updatePacket.InstallPath);
+
+                bool isCreate = FileUtil.CreateFloder(tempBackups_new);
+                if (isCreate)
+                {
+                    bool isUnZip = FileUtil.UnZip($"{ _updatePacket.TempPath }", tempBackups_new, null);
+                    bool isCreate_bkps = FileUtil.CreateFloder(tempBackups);
+                    if (isUnZip && isCreate_bkps)
+                    {
+                        IncrementalFileUtil.Instance.GetNewFileinfo(tempBackups_new);
+                        IncrementalFileUtil.Instance.GetIncrementalFiles();
+                        IncrementalFileUtil.Instance.Backups(tempBackups);
+                    }
+                }
+                
+                if (FileUtil.UnZip($"{ _updatePacket.TempPath }", _updatePacket.InstallPath, _eventAction))
+                {
+                    var isDone = UpdateFiles();
+                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = isDone ? ProgressType.Done : ProgressType.Fail }, null, null);
+
+                    if (isDone && !string.IsNullOrEmpty(_updatePacket.MainApp))
+                    {
+                        StartMain();
+                    }
+                }
+                else
+                {
+                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "UnPacket Error!" }, null, null);
                 }
             }
-            else
+            catch (Exception)
             {
-                _eventAction(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail , Message = "UnPacket Error!" });
+                IncrementalFileUtil.Instance.RollBack(_updatePacket.InstallPath, tempPath);
+                _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "Update fail ,Rollback operation performed." }, null, null);
             }
         }
 
@@ -58,7 +83,7 @@ namespace GeneralUpdate.Core.Strategys
                 Process.Start($"{_updatePacket.InstallPath}\\{_updatePacket.MainApp}.exe");
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -93,14 +118,14 @@ namespace GeneralUpdate.Core.Strategys
                 var dir = _updatePacket.TempPath.ExcludeName(StringOption.File);
                 if (Directory.Exists(dir))
                 {
-                    Directory.Delete(dir);
+                    Directory.Delete(dir,true);
                 }
                 
                 FileUtil.Update32Or64Libs(_updatePacket.InstallPath);
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

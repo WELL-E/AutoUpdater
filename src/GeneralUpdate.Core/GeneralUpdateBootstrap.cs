@@ -84,7 +84,6 @@ namespace GeneralUpdate.Core
 
         private void Init() {
             var tempPath = FileUtil.GetTempDirectory(NewVersion);
-            //var config = FileUtil.ReadConfig<UpdateConfig>(tempPath);
             Packet = new UpdatePacket();
             Packet.Url = Url;
             Packet.InstallPath = InstallPath;

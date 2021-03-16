@@ -23,7 +23,7 @@ namespace AutoApdate.ConsoleApp
                 "https://github.com/WELL-E",
                  "http://192.168.50.225:7000/update.zip",
                  @"E:\PlatformPath",
-                "5086d584dd81360a15d84d863adadfb3",
+                "5b249a44e317104029bb851789342ad5",
                  };
 
             GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
@@ -85,6 +85,11 @@ namespace AutoApdate.ConsoleApp
             if (e.Type == ProgressType.Done)
             {
                 Console.WriteLine("更新完成");
+            }
+
+            if (e.Type == ProgressType.Fail)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 

@@ -76,6 +76,7 @@
     <Compile Include="Update\UpdateOptionValue.cs" />
     <Compile Include="Utils\FileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
+    <Compile Include="Utils\IncrementalFileUtil.cs" />
     <Compile Include="Utils\StatisticsUtil.cs" />
     <Compile Include="Utils\StringEx.cs" />
   </ItemGroup>

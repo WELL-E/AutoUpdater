@@ -46,11 +46,19 @@ namespace GeneralUpdate.Core.Utils
             }
             catch (Exception ex)
             {
-                ProgressChangedAction(null, new Update.ProgressChangedEventArgs
+                if (ProgressChangedAction != null)
                 {
-                    Message = ex.Message
-                });
+                    ProgressChangedAction.BeginInvoke(null, new Update.ProgressChangedEventArgs
+                    {
+                        Message = ex.Message
+                    }, null, null);
+                }
                 return false;
+            }
+            finally 
+            {
+                UnzipPosition = 0;
+                TotalCount = 0;
             }
 
             return true;
@@ -60,13 +68,104 @@ namespace GeneralUpdate.Core.Utils
         {
             var fileName = e.FileInfo.FileName;
             UnzipPosition++;
-            ProgressChangedAction(null, new Update.ProgressChangedEventArgs
+
+            if (ProgressChangedAction != null)
             {
-                TotalSize = TotalCount,
-                ProgressValue = UnzipPosition,
-                Type = Update.ProgressType.Updatefile,
-                Message = e.FileInfo.FileName
-            });
+                ProgressChangedAction.BeginInvoke(null, new Update.ProgressChangedEventArgs
+                {
+                    TotalSize = TotalCount,
+                    ProgressValue = UnzipPosition,
+                    Type = Update.ProgressType.Updatefile,
+                    Message = e.FileInfo.FileName
+                }, null, null);
+            }
+        }
+
+        public static bool CreateFloder(string path) 
+        {
+            try
+            {
+                if (System.IO.Directory.Exists(path))
+                {
+                    DelectDir(path);
+                }
+                else
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CopyFiles(List<string> pathList,string targetPath) 
+        {
+            foreach (var path in pathList)
+            {
+                bool isDone = CopyFile(path, targetPath);
+                if (!isDone)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool CopyFile(string filePath, string targetPath) 
+        {
+            try
+            {
+                File.Copy(filePath, targetPath, true);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool DeleteFile(string path) 
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static void DelectDir(string srcPath)
+        {
+            try
+            {
+                DirectoryInfo dir = new DirectoryInfo(srcPath);
+                FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();
+                foreach (FileSystemInfo i in fileinfo)
+                {
+                    if (i is DirectoryInfo)
+                    {
+                        DirectoryInfo subdir = new DirectoryInfo(i.FullName);
+                        subdir.Delete(true);
+                    }
+                    else
+                    {
+                        File.Delete(i.FullName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public static List<FileBase> GetFiles(string packetPath)
@@ -79,8 +178,8 @@ namespace GeneralUpdate.Core.Utils
             {
                 var fileBase = new FileBase();
                 fileBase.MD5 = GetFileMD5(file);
-                fileBase.Name = file;
-                fileBase.CurrentVersion = "";
+                fileBase.Name = Path.GetFileName(file);
+                fileBase.Path = file;
                 lstFile.Add(fileBase);
             }
             return lstFile;

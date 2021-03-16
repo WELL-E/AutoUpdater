@@ -9,10 +9,11 @@ namespace GeneralUpdate.Core.Models
 {
     public enum FileStatus
     {
-        Remove = 0,
-        New = 1,
-        Update = 2,
-        None = -1
+        None = -1,
+        //本地已有文件
+        Old = 0,
+        //新增文件
+        New = 1
     }
 
     public class FileBase : IFile
@@ -60,13 +61,18 @@ namespace GeneralUpdate.Core.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// 安装路径
+        /// 安装路径（用于更新文件逻辑）
         /// </summary>
         public string InstallPath { get; set; }
 
         /// <summary>
-        /// 下载文件临时存储路径
+        /// 下载文件临时存储路径（用于更新文件逻辑）
         /// </summary>
         public string TempPath { get; set; }
+
+        /// <summary>
+        /// 文件当前路径（用于增量文件逻辑）
+        /// </summary>
+        public string Path { get; set; }
     }
 }
