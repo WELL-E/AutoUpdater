@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>GeneralUpdate.Zip</RootNamespace>
+    <Authors>juster.chu</Authors>
+    <Description>Decompress the compressed file with progress notification.</Description>
+    <Copyright>Copyright ©  2021</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="GeneralUpdate.Zip.1.0.0.nupkg" />
+    <None Remove="GeneralUpdate.Zip.nuspec" />
+    <None Remove="nuget.exe" />
+  </ItemGroup>
 
 </Project>

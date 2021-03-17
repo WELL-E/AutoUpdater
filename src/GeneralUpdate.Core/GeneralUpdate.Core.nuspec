@@ -11,8 +11,8 @@
     <iconUrl>https://raw.githubusercontent.com/NuGet/Samples/master/PackageIconNuspecExample/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>新增启动方式，增强便捷性易用性。</releaseNotes>
-    <copyright>Copyright 2020</copyright>
+    <releaseNotes>Based on . Net framework , an automatic upgrade program for c / s application is developed . Thecore part of the update can be easily used in many projects . </releaseNotes>
+    <copyright>Copyright 2021</copyright>
     <tags>update auto .net</tags>
   </metadata>
 </package >
