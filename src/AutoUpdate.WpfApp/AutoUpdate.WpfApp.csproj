@@ -110,10 +110,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeneralUpdate.7Zip\GeneralUpdate.Zip.csproj">
-      <Project>{72dcb371-f57a-4da2-b3c8-3628a4f08e30}</Project>
-      <Name>GeneralUpdate.Zip</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeneralUpdate.Core\GeneralUpdate.Core.csproj">
       <Project>{35bff228-5ee4-49a6-b721-fb0122e967a0}</Project>
       <Name>GeneralUpdate.Core</Name>

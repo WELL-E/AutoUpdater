@@ -1,5 +1,6 @@
 ﻿using GeneralUpdate.Core.Models;
 using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -45,7 +46,7 @@ namespace GeneralUpdate.Core.Utils
             }
         }
 
-        private static void OnUnZipProgress(object sender, Zip.Events.UnZipProgressEventArgs e)
+        private static void OnUnZipProgress(object sender, UnZipProgressEventArgs e)
         {
             if (ProgressChangedAction != null)
             {

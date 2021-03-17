@@ -27,7 +27,7 @@
     <None Remove="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeneralUpdate.7Zip\GeneralUpdate.Zip.csproj" />
+    <ProjectReference Include="..\GeneralUpdate.Zip\GeneralUpdate.Zip.csproj" />
   </ItemGroup>
   <Import Project="..\packages\7z.Libs.19.00.1\build\net\7z.Libs.targets" Condition="Exists('..\packages\7z.Libs.19.00.1\build\net\7z.Libs.targets')" />
 </Project>
