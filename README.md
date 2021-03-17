@@ -5,7 +5,7 @@
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
-### GeneralUpdate是基于.net framwork开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。 ###
+### GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。 ###
 
 - 本组件（除Single组件仅支持Framework以外）均支持框架版本 **.NET Framework 4.6.1** | **.NET Core 2.0** | **.NET 5**
 - 如果有任何使用问题可以在Github的issues上进行提问，每周会解决并解答bug或者问题。
