@@ -104,11 +104,11 @@ namespace GeneralUpdate.Core.Strategys
                     true, 
                     o => _updatePacket.Name = o);
 
-                FileUtil.UpdateReg(
-                    Registry.LocalMachine, 
-                    FileUtil.SubKey, 
-                    "DisplayVersion",
-                    _updatePacket.NewVersion);
+                //FileUtil.UpdateReg(
+                //    Registry.LocalMachine, 
+                //    FileUtil.SubKey, 
+                //    "DisplayVersion",
+                //    _updatePacket.NewVersion);
 
                 if (File.Exists(_updatePacket.TempPath))
                 {
