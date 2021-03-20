@@ -15,6 +15,12 @@
 
 
 ## How to use it： ##
+
+B站使用教程视频地址：
+
+- https://www.bilibili.com/video/BV1aX4y137dd
+
+
 Gitee（码云）地址：
 
 - https://gitee.com/Juster-zhu/GeneralUpdate
