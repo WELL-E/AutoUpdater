@@ -1,6 +1,4 @@
 ﻿using GeneralUpdate.Core.Models;
-using GeneralUpdate.Zip;
-using GeneralUpdate.Zip.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,53 +11,6 @@ namespace GeneralUpdate.Core.Utils
 {
     internal static class FileUtil
     {
-        //internal const string SubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{655A2DE6-C9A3-432E-951B-D773791C2653}_is1";
-
-        private static Action<object, Update.ProgressChangedEventArgs> ProgressChangedAction;
-
-        /// <summary>
-        /// 解压zip文件
-        /// </summary>
-        /// <param name="zipfilepath"></param>
-        /// <param name="unzippath"></param>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public static bool UnZip(string zipfilepath, string unzippath, Action<object, Update.ProgressChangedEventArgs> action) {
-            try
-            {
-                ProgressChangedAction = action;
-                GeneralZip gZip = new GeneralZip();
-                gZip.UnZipProgress += OnUnZipProgress;
-                bool isUnZip = gZip.UnZip(zipfilepath, unzippath);
-                return isUnZip;
-            }
-            catch (Exception ex)
-            {
-                if (ProgressChangedAction != null)
-                {
-                    ProgressChangedAction.BeginInvoke(null, new Update.ProgressChangedEventArgs
-                    {
-                        Message = ex.Message
-                    }, null, null);
-                }
-                return false;
-            }
-        }
-
-        private static void OnUnZipProgress(object sender, UnZipProgressEventArgs e)
-        {
-            if (ProgressChangedAction != null)
-            {
-                ProgressChangedAction.BeginInvoke(null, new Update.ProgressChangedEventArgs
-                {
-                    TotalSize = e.Count,
-                    ProgressValue = e.Index,
-                    Type = Update.ProgressType.Updatefile,
-                    Message = e.Path
-                }, null, null);
-            }
-        }
-
         public static bool CreateFloder(string path) 
         {
             try
@@ -331,114 +282,5 @@ namespace GeneralUpdate.Core.Utils
             }
             return default(T);
         }
-
-        //internal static void UpdateReg(RegistryKey baseKey, string subKey, string keyName, string keyValue)
-        //{
-        //    using (var registry = new RegistryUtil(baseKey, subKey))
-        //    {
-        //        if (!String.IsNullOrEmpty(registry.Read(keyName)))
-        //        {
-        //            registry.Write(keyName, keyValue);
-        //        }
-        //    }
-        //}
     }
-
-    //public class RegistryUtil : IDisposable
-    //{
-    //    #region Private Members
-    //    private readonly RegistryKey _baseRegistryKey;
-    //    private readonly string _subKey; //SOFTWARE\...
-    //    #endregion
-
-    //    #region Constructors
-    //    #endregion
-
-    //    #region Public Properties
-
-    //    public RegistryUtil(RegistryKey baseKey, string subKey)
-    //    {
-    //        _baseRegistryKey = baseKey;
-    //        _subKey = subKey;
-    //    }
-    //    #endregion
-
-    //    #region Public Methods
-
-    //    public string Read(string keyName)
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.OpenSubKey(_subKey))
-    //        {
-    //            return sk == null ? null : sk.GetValue(keyName.ToUpper()).ToString();
-    //        }
-    //    }
-
-    //    public void Write(string keyName, object value)
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.CreateSubKey(_subKey))
-    //        {
-    //            if (sk != null)
-    //            {
-    //                sk.SetValue(keyName.ToUpper(), value);
-    //            }
-    //        }
-    //    }
-
-
-    //    public void DeleteKey(string keyName)
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.CreateSubKey(_subKey))
-    //        {
-    //            if (sk != null)
-    //            {
-    //                sk.DeleteValue(keyName);
-    //            }
-    //        }
-    //    }
-
-    //    public void DeleteSubKeyTree()
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.OpenSubKey(_subKey))
-    //        {
-    //            if (sk != null)
-    //            {
-    //                sk.DeleteSubKeyTree(_subKey);
-    //            }
-    //        }
-    //    }
-
-
-    //    public int SubKeyCount()
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.OpenSubKey(_subKey))
-    //        {
-    //            return sk != null ? sk.SubKeyCount : 0;
-    //        }
-    //    }
-
-    //    public int ValueCount()
-    //    {
-    //        var rk = _baseRegistryKey;
-    //        using (var sk = rk.OpenSubKey(_subKey))
-    //        {
-    //            return sk != null ? sk.ValueCount : 0;
-    //        }
-    //    }
-
-    //    public void Dispose()
-    //    {
-    //        if (_baseRegistryKey != null)
-    //        {
-    //            _baseRegistryKey.Close();
-    //            //_baseRegistryKey.Dispose();
-    //        }
-    //    }
-    //    #endregion
-
-    //}
 }

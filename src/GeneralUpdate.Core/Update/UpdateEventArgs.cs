@@ -1,18 +1,17 @@
-﻿using System;
+﻿using GeneralUpdate.Common.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace GeneralUpdate.Core.Update
 {
     public enum ProgressType {
         /// <summary>
-        /// 检查更新
+        /// Check for updates
         /// </summary>
         Check,
         /// <summary>
-        /// 下载更新包
+        /// Download the update package
         /// </summary>
         Donwload,
         /// <summary>
@@ -20,49 +19,110 @@ namespace GeneralUpdate.Core.Update
         /// </summary>
         Updatefile,
         /// <summary>
-        /// 更新完成
+        /// update completed
         /// </summary>
         Done,
         /// <summary>
-        /// 更新失败
+        /// Update failed
         /// </summary>
         Fail
     }
 
-    public class ProgressChangedEventArgs : EventArgs
+    public class DownloadProgressChangedEventArgsEx
     {
-        /// <summary>
-        /// 进度状态
-        /// </summary>
-        public ProgressType Type { get; set; }
+        public long BytesReceived { get; private set; }
 
-        /// <summary>
-        /// 进度
-        /// </summary>
-        public double ProgressValue { get; set; }
+        public long TotalBytesToReceive { get; private set; }
 
-        /// <summary>
-        /// 已下载文件大小
-        /// </summary>
-        public double ReceivedSize { get; set; }
+        public float ProgressPercentage { get; private set; }
 
-        /// <summary>
-        /// 文件大小
-        /// </summary>
-        public double? TotalSize { get; set; }
+        public object UserState { get; set; }
 
-        public string Message { get; set; }
+        public DownloadProgressChangedEventArgsEx(long received, long toReceive, float progressPercentage, object userState)
+        {
+            BytesReceived = received;
+            TotalBytesToReceive = toReceive;
+            ProgressPercentage = progressPercentage;
+            UserState = userState;
+        }
     }
 
-
-    /// <summary>
-    /// 下载信息统计
-    /// </summary>
-    public class DownloadStatisticsEventArgs : EventArgs
+    public class ExceptionEventArgs : EventArgs 
     {
+        public Exception Exception { get; set; }
+
+        public ExceptionEventArgs(Exception exception)
+        {
+            Exception = exception;
+        }
+    }
+
+    #region Muti
+
+    public class MutiDownloadStatisticsEventArgs : EventArgs
+    {
+        public UpdateVersion Version { get; set; }
 
         public DateTime Remaining { get; set; }
 
         public string Speed { get; set; }
     }
+
+    public class MutiDownloadProgressChangedEventArgs : DownloadProgressChangedEventArgsEx
+    {
+        public ProgressType Type { get; set; }
+
+        public UpdateVersion Version { get; set; }
+
+        public string Message { get; set; }
+
+        public double ProgressValue { get; set; }
+
+        public MutiDownloadProgressChangedEventArgs(UpdateVersion version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
+            : base(received, toReceive, progressPercentage, userState)
+        {
+            ProgressValue = progressPercentage;
+            Version = version;
+            Message = message;
+            Type = type;
+        }
+    }
+
+    public class MutiDownloadCompletedEventArgs : AsyncCompletedEventArgs
+    {
+        public UpdateVersion Version { get; set; }
+
+        public MutiDownloadCompletedEventArgs(UpdateVersion version, Exception error, bool cancelled, object userState) : base(error, cancelled, userState)
+        {
+            Version = version;
+        }
+    }
+
+    public class MutiAllDownloadCompletedEventArgs : EventArgs
+    {
+        public bool IsAllDownloadCompleted { get; set; }
+
+        public IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
+
+        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<UpdateVersion, string>> failedVersions)
+        {
+            IsAllDownloadCompleted = isAllDownloadCompleted;
+            FailedVersions = failedVersions;
+        }
+    }
+
+    public class MutiDownloadErrorEventArgs : EventArgs
+    {
+        public Exception Exception { get; set; }
+
+        public UpdateVersion Version { get; set; }
+
+        public MutiDownloadErrorEventArgs(Exception exception, UpdateVersion updateVersion)
+        {
+            Exception = exception;
+            Version = updateVersion;
+        }
+    }
+
+    #endregion
 }

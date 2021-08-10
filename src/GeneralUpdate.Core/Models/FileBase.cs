@@ -33,12 +33,12 @@ namespace GeneralUpdate.Core.Models
         /// <summary>
         /// 当前版本
         /// </summary>
-        public string CurrentVersion { get; set; }
+        public string ClientVersion { get; set; }
 
         /// <summary>
         /// 最新版本
         /// </summary>
-        public string NewVersion { get; set; }
+        public string LastVersion { get; set; }
 
         /// <summary>
         /// 文件唯一id

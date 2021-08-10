@@ -1,13 +1,15 @@
-﻿using GeneralUpdate.Core.Models;
+﻿using GeneralUpdate.Common.DTOs;
+using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Concurrent;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Net;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Bootstrap
 {
@@ -17,75 +19,32 @@ namespace GeneralUpdate.Core.Bootstrap
     {
         #region Private Members
 
-        private Timer _speedTimer;
         private readonly ConcurrentDictionary<UpdateOption, UpdateOptionValue> options;
         private volatile Func<TStrategy> strategyFactory;
-        private readonly GeneralWebClient webClient;
-        private DateTime _startTime;
+        private GeneralMutiWebClient mutiWebClient;
         private UpdatePacket _packet;
         private IStrategy strategy;
-        private const string DefultFormat = "zip";
+        private const string DefaultFormat = "zip";
 
-        public delegate void DownloadStatisticsEventHandler(object sender, DownloadStatisticsEventArgs e);
-        /// <summary>
-        /// 下载统计
-        /// </summary>
-        public event DownloadStatisticsEventHandler DownloadStatistics;
-
-        public delegate void ProgressChangedEventHandler(object sender, Update.ProgressChangedEventArgs e);
-        /// <summary>
-        /// 进度更新
-        /// </summary>
-        public event ProgressChangedEventHandler ProgressChanged;
+        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+        public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
+        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MutiDownloadProgressChangedEventArgs e);
+        public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
+        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+        public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
+        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+        public event MutiDownloadErrorEventHandler MutiDownloadError;
+        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+        public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
+        public delegate void ExceptionEventHandler(object sender, ExceptionEventArgs e);
+        public event ExceptionEventHandler Exception;
 
         #endregion
-
-        #region Constructors
 
         protected internal AbstractBootstrap()
         {
-            _startTime = DateTime.Now;
             this.options = new ConcurrentDictionary<UpdateOption, UpdateOptionValue>();
-            this.webClient = new GeneralWebClient();
-            webClient.DownloadProgressChangedEx += OnDownloadProgressChangedEx; ;
-            webClient.DownloadFileCompletedEx += OnDownloadFileCompletedEx;
         }
-
-        private void OnDownloadFileCompletedEx(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                if (!e.Cancelled)
-                {
-                    throw new Exception("Download file fail!");
-                }
-
-                if (_speedTimer != null)
-                {
-                    _speedTimer.Dispose();
-                    _speedTimer = null;
-                }
-
-                if (webClient != null)
-                {
-                    webClient.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                ProgressChanged.BeginInvoke(this,
-                    new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Dispose error:{ ex.Message }." },
-                    null,null);
-            }
-            finally
-            {
-                ExcuteStrategy();
-            }
-        }
-
-        #endregion
-
-        #region Public Properties
 
         public UpdatePacket Packet
         {
@@ -93,51 +52,69 @@ namespace GeneralUpdate.Core.Bootstrap
             set { _packet = value; }
         }
 
-        public string UpdateCheckUrl { get; set; }
-
-        public long BeforBytes { get; set; }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// 启动更新
+        /// Launch udpate.
         /// </summary>
         /// <returns></returns>
-        public virtual TBootstrap Launch()
+        public virtual TBootstrap LaunchAsync()
         {
-            if (!string.IsNullOrWhiteSpace(UpdateCheckUrl))
+            Task.Run(async()=> 
             {
-                ProgressChanged.BeginInvoke(this,
-                    new Update.ProgressChangedEventArgs { Type = ProgressType.Check , Message = "Update checking..." },
-                    null,null);
-                var info = HttpUtil.GetAsync<UpdateInfoHttpResp>(UpdateCheckUrl).Result;
-                if (info.Code == 200)
-                {
-                    var result = info.Result;
-                    Packet.NewVersion = result.Version;
-                    Packet.MD5 = result.HashCode;
-                    Packet.Url = result.Url;
-                    Packet.Name =  Packet.Url.GetName(StringOption.Url);
-                }
-                else
-                {
-                    ProgressChanged.BeginInvoke(this, 
-                        new Update.ProgressChangedEventArgs { Type = ProgressType.Check, Message = $"Check update fail:{ info.Message }" },
-                        null, null);
-                }
-            }
-            var pacektFormat = GetOption(UpdateOption.Format) ?? DefultFormat;
-            Packet.Format = $".{pacektFormat}";
-            Packet.MainApp = GetOption(UpdateOption.MainApp);
-            _speedTimer = new Timer(SpeedTimerOnTick, null, 0, 1000);
-            webClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
-            webClient.DownloadFileRangeAsync(Packet.Url, Packet.TempPath, null);
+                await LaunchTaskAsync();
+            });
             return (TBootstrap)this;
         }
 
-        #region 策略
+        /// <summary>
+        /// Launch udpate.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<TBootstrap> LaunchTaskAsync()
+        {
+            try
+            {
+                MutiDownloadProgressChanged.Invoke(this,
+                    new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
+
+                var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(Packet.UpdateUrl);
+                if (updateResp.Code == 200)
+                {
+                    var body = updateResp.Body;
+                    Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
+                    Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
+                }
+                else
+                {
+                    MutiDownloadProgressChanged.Invoke(this,
+                        new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
+                }
+
+                if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
+
+                var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
+                Packet.Format = $".{pacektFormat}";
+                Packet.AppName = GetOption(UpdateOption.MainApp) ?? Packet.AppName;
+                Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
+                mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
+                mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
+                mutiWebClient.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                mutiWebClient.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                mutiWebClient.MutiDownloadError += OnMutiDownloadError;
+                mutiWebClient.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                mutiWebClient.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                mutiWebClient.MutiDownloadAsync();
+            }
+            catch (Exception ex)
+            {
+                this.Exception(this, new ExceptionEventArgs(ex));
+                throw new Exception($"Launch error : { ex.Message }.");
+            }
+            return (TBootstrap)this;
+        }
+
+        #region Strategy
 
         protected IStrategy InitStrategy()
         {
@@ -145,12 +122,12 @@ namespace GeneralUpdate.Core.Bootstrap
             {
                 Validate();
                 strategy = this.strategyFactory();
-                strategy.Create(Packet, DoProgressChanged);
+                strategy.Create(Packet, MutiDownloadProgressAction, ExceptionAction);
             }
             return strategy;
         }
 
-        IStrategy ExcuteStrategy()
+        protected IStrategy ExcuteStrategy()
         {
             var strategy = InitStrategy();
             strategy.Excute();
@@ -161,7 +138,7 @@ namespace GeneralUpdate.Core.Bootstrap
         {
             if (this.strategyFactory == null)
             {
-                throw new InvalidOperationException("strategy or strategyFactory not set");
+                throw new InvalidOperationException("Strategy or strategy factory not set.");
             }
             return (TBootstrap)this;
         }
@@ -177,7 +154,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         #endregion
 
-        #region 配置操作
+        #region Config option.
 
         public virtual TBootstrap Option<T>(UpdateOption<T> option, T value)
         {
@@ -195,6 +172,8 @@ namespace GeneralUpdate.Core.Bootstrap
 
         public virtual T GetOption<T>(UpdateOption<T> option)
         {
+            if (options == null || options.Count == 0) return default(T);
+
             var val = options[option];
             if (val != null)
             {
@@ -205,46 +184,56 @@ namespace GeneralUpdate.Core.Bootstrap
 
         #endregion
 
-        #region 事件回调函数
+        #region Callback event.
 
-        protected void DoProgressChanged(object sender, Update.ProgressChangedEventArgs eventArgs)
+        private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
-            ProgressChanged.BeginInvoke(sender, eventArgs, null, null);
+            if (MutiDownloadStatistics != null)
+                MutiDownloadStatistics.Invoke(this,e);
         }
 
-        private void SpeedTimerOnTick(object sender)
+        protected void MutiDownloadProgressAction(object sender, MutiDownloadProgressChangedEventArgs e)
         {
-            var interval = DateTime.Now - _startTime;
-
-            var downLoadSpeed = interval.Seconds < 1
-                ? StatisticsUtil.ToUnit(Packet.ReceivedBytes - BeforBytes)
-                : StatisticsUtil.ToUnit(Packet.ReceivedBytes - BeforBytes / interval.Seconds);
-
-            var size = (Packet.TotalBytes - Packet.ReceivedBytes) / (1024 * 1024);
-            var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
-
-            var args = new DownloadStatisticsEventArgs();
-            args.Remaining = remainingTime;
-            args.Speed = downLoadSpeed;
-            DownloadStatistics.BeginInvoke(this, args, null, null);
-
-            _startTime = DateTime.Now;
-            BeforBytes = Packet.ReceivedBytes;
+            if (MutiDownloadProgressChanged != null)
+                MutiDownloadProgressChanged.Invoke(sender, e);
         }
 
-        private void OnDownloadProgressChangedEx(object sender, DownloadProgressChangedEventArgsEx e)
+        protected void ExceptionAction(object sender, ExceptionEventArgs e)
         {
-            Packet.ReceivedBytes = e.BytesReceived;
-            Packet.TotalBytes = e.TotalBytesToReceive;
-
-            var args = new Update.ProgressChangedEventArgs();
-            args.ProgressValue = e.ProgressPercentage;
-            args.ReceivedSize = e.BytesReceived / (1024 * 1024);
-            args.TotalSize = e.TotalBytesToReceive / (1024 * 1024);
-            args.Type = ProgressType.Donwload;
-            ProgressChanged.BeginInvoke(this, args, null,null);
+            if (Exception != null)
+                Exception.Invoke(this, e);
         }
 
+        private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
+        {
+            if (MutiDownloadProgressChanged != null)
+                MutiDownloadProgressChanged.Invoke(this, e);
+        }
+
+        private void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
+        {
+            if (MutiDownloadCompleted != null)
+                MutiDownloadCompleted.Invoke(sender, e);
+        }
+
+        private void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
+        {
+            if (MutiDownloadError != null)
+                MutiDownloadError.Invoke(this, e);
+        }
+
+        private void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
+        {
+            try
+            {
+                ExcuteStrategy();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to execute strategy!", ex);
+            }
+        }
+        
         #endregion
 
         #endregion

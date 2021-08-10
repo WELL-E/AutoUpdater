@@ -1,132 +1,183 @@
-﻿using GeneralUpdate.Core.Models;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
-using Microsoft.Win32;
+using GeneralUpdate.Zip;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace GeneralUpdate.Core.Strategys
 {
-    /// <summary>
-    /// 默认策略实现
-    /// </summary>
-    public class DefultStrategy : AbstractStrategy, IStrategy
+    public class DefaultStrategy : AbstractStrategy
     {
-        private UpdatePacket _updatePacket;
-        private Action<object, Update.ProgressChangedEventArgs> _eventAction;
+        protected UpdatePacket Packet { get; set; }
+        protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
+        protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
 
-        public void Create(IFile file, Action<object, Update.ProgressChangedEventArgs> eventAction)
+        public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction, 
+            Action<object, ExceptionEventArgs> exceptionEventAction)
         {
-            _updatePacket = (UpdatePacket)file;
-            _eventAction = eventAction;
+            Packet = (UpdatePacket)file;
+            ProgressEventAction = progressEventAction;
+            ExceptionEventAction = exceptionEventAction;
         }
 
-        public void Excute()
+        public override void Excute()
         {
-            string tempPath = FileUtil.GetTempDirectory(_updatePacket.NewVersion);
             try
             {
-                var isVerify = VerifyFileMd5($"{_updatePacket.TempPath}", _updatePacket.MD5);
-                if (!isVerify)
+                var updateVersions = Packet.UpdateVersions;
+                updateVersions = updateVersions.OrderBy(x => x.PubTime).ToList();
+                foreach (var version in updateVersions)
                 {
-                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "Verify MD5 Error!" }, null, null);
-                    return;
-                }
-
-                string tempBackups_new = $"{tempPath}\\backups_new";
-                string tempBackups = $"{tempPath}\\backups";
-                IncrementalFileUtil.Instance.GetOldFileinfo(_updatePacket.InstallPath);
-
-                bool isCreate = FileUtil.CreateFloder(tempBackups_new);
-                if (isCreate)
-                {
-                    bool isUnZip = FileUtil.UnZip($"{ _updatePacket.TempPath }", tempBackups_new, null);
-                    bool isCreate_bkps = FileUtil.CreateFloder(tempBackups);
-                    if (isUnZip && isCreate_bkps)
+                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
+                    var isVerify = VerifyFileMd5(zipFilePath, version.MD5);
+                    if (!isVerify)
                     {
-                        IncrementalFileUtil.Instance.GetNewFileinfo(tempBackups_new);
-                        IncrementalFileUtil.Instance.GetIncrementalFiles();
-                        IncrementalFileUtil.Instance.Backups(tempBackups);
+                        var eventArgs = new MutiDownloadProgressChangedEventArgs(null, ProgressType.Fail, "Verify MD5 error!");
+                        ProgressEventAction(this, eventArgs);
+                        continue;
+                    }
+
+                    if (UnZip(version, zipFilePath, Packet.InstallPath))
+                    {
+                        version.IsUnZip = true;
+                        var versionArgs = new UpdateVersion(version.MD5,
+                            version.PubTime,
+                            version.Version,
+                            null,
+                            version.Name);
+
+                        var message = version.IsUnZip ? "update completed." : "Update failed!";
+                        var type = version.IsUnZip ? ProgressType.Done : ProgressType.Fail;
+                        var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
+                        ProgressEventAction(this, eventArgs);
                     }
                 }
-                
-                if (FileUtil.UnZip($"{ _updatePacket.TempPath }", _updatePacket.InstallPath, _eventAction))
+                var isDone = CheckAllIsUnZip(updateVersions);
+                if (isDone) 
                 {
-                    var isDone = UpdateFiles();
-                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = isDone ? ProgressType.Done : ProgressType.Fail }, null, null);
-
-                    if (isDone && !string.IsNullOrEmpty(_updatePacket.MainApp))
-                    {
-                        StartMain();
-                    }
+                    UpdateFiles();
+                    StartApp(Packet.AppName);
                 }
                 else
                 {
-                    _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "UnPacket Error!" }, null, null);
-                }
+                    Error(new Exception($"Failed to decompress the compressed package!"));
+                } 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                IncrementalFileUtil.Instance.RollBack(_updatePacket.InstallPath, tempPath);
-                _eventAction.BeginInvoke(this, new Update.ProgressChangedEventArgs() { Type = ProgressType.Fail, Message = "Update fail ,Rollback operation performed." }, null, null);
+                Error(ex);
             }
         }
 
-        /// <summary>
-        /// 启动主程序
-        /// </summary>
-        protected bool StartMain()
+        private void Error(Exception ex) 
+        {
+            if (ExceptionEventAction != null)
+                ExceptionEventAction(this, new ExceptionEventArgs(ex));
+        }
+
+        protected bool CheckAllIsUnZip(List<Common.Models.UpdateVersion> versions) 
+        {
+            foreach (var version in versions)
+            {
+                if (!version.IsUnZip)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        protected override bool StartApp(string appName)
         {
             try
             {
-                Process.Start($"{_updatePacket.InstallPath}\\{_updatePacket.MainApp}.exe");
+                if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))
+                {
+                    Process.Start("explorer.exe", Packet.UpdateLogUrl);
+                }
+                Process.Start($"{Packet.InstallPath}\\{appName}.exe");
                 return true;
             }
             catch
             {
                 return false;
             }
-            finally 
+            finally
             {
                 Process.GetCurrentProcess().Kill();
             }
         }
 
-        public bool UpdateFiles()
+        /// <summary>
+        /// UnZip
+        /// </summary>
+        /// <param name="zipfilepath"></param>
+        /// <param name="unzippath"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        protected bool UnZip(Common.Models.UpdateVersion versionInfo, string zipfilepath, string unzippath)
         {
             try
             {
-                FileUtil.DirectoryCopy(
-                    _updatePacket.TempPath,
-                    _updatePacket.InstallPath,
-                    true, 
-                    true, 
-                    o => _updatePacket.Name = o);
-
-                //FileUtil.UpdateReg(
-                //    Registry.LocalMachine, 
-                //    FileUtil.SubKey, 
-                //    "DisplayVersion",
-                //    _updatePacket.NewVersion);
-
-                if (File.Exists(_updatePacket.TempPath))
+                GeneralZip gZip = new GeneralZip();
+                gZip.UnZipProgress += (sender,e) => 
                 {
-                    File.Delete(_updatePacket.TempPath);
+                    if (ProgressEventAction == null) return;
+
+                    var version = new UpdateVersion(versionInfo.MD5, 
+                        versionInfo.PubTime, 
+                        versionInfo.Version, 
+                        null,
+                        versionInfo.Name);
+                    var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
+                    ProgressEventAction(this, eventArgs);
+                };
+                bool isUnZip = gZip.UnZip(zipfilepath, unzippath);
+                return isUnZip;
+            }
+            catch (Exception ex)
+            {
+                if (ExceptionEventAction != null)
+                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
+                return false;
+            }
+        }
+
+        protected bool UpdateFiles()
+        {
+            try
+            {
+                //FileUtil.DirectoryCopy(
+                //    UpdatePacket.TempPath,
+                //    UpdatePacket.InstallPath,
+                //    true, 
+                //    true, 
+                //    o => UpdatePacket.Name = o);
+
+                if (File.Exists(Packet.TempPath))
+                {
+                    File.Delete(Packet.TempPath);
                 }
 
-                var dir = _updatePacket.TempPath.ExcludeName(StringOption.File);
+                var dir = Packet.TempPath.ExcludeName(StringOption.File);
                 if (Directory.Exists(dir))
                 {
                     Directory.Delete(dir,true);
                 }
                 
-                FileUtil.Update32Or64Libs(_updatePacket.InstallPath);
+                FileUtil.Update32Or64Libs(Packet.InstallPath);
 
                 return true;
             }
             catch (Exception ex)
             {
+                if (ExceptionEventAction != null)
+                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
                 return false;
             }
         }

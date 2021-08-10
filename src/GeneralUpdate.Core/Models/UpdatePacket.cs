@@ -1,43 +1,58 @@
-﻿using System;
+﻿using GeneralUpdate.Common.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Models
 {
     public sealed class UpdatePacket : FileBase
     {
-        public string MainApp { get; set; }
-
         /// <summary>
-        /// 下载接收的大小
+        /// Update check api address.
         /// </summary>
-        public long ReceivedBytes { get; set; }
+        public string MainUpdateUrl { get; set; }
 
         /// <summary>
-        /// 下载的文件大小
+        /// Validate update url.
         /// </summary>
-        public long? TotalBytes { get; set; }
+        public string MainValidateUrl { get; set; }
 
         /// <summary>
-        /// 进度值
+        /// 1:ClientApp 2:UpdateApp
         /// </summary>
-        public int ProgressValue { get; set; }
+        public int ClientType { get; set; }
 
         /// <summary>
-        /// 更新包请求地址
+        /// Update check api address.
         /// </summary>
-        public string Url { get; set; }
+        public string UpdateUrl { get; set; }
 
         /// <summary>
-        /// 更新包文件格式
+        /// Validate update url.
+        /// </summary>
+        public string ValidateUrl { get; set; }
+
+        /// <summary>
+        /// Need to start the name of the app.
+        /// </summary>
+        public string AppName { get; set; }
+
+        public string MainAppName { get; set; }
+
+        /// <summary>
+        /// Update package file format(Defult format is Zip).
         /// </summary>
         public string Format { get; set; }
 
         /// <summary>
-        /// 是否强制更新
+        /// Whether to force update.
         /// </summary>
-        public bool IsForcibly { get; set; }
+        public bool IsUpdate { get; set; }
+
+        /// <summary>
+        /// Update log web address.
+        /// </summary>
+        public string UpdateLogUrl { get; set; }
+
+        public List<UpdateVersion> UpdateVersions { get; set; }
+
     }
 }

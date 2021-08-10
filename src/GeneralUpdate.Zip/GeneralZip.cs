@@ -146,7 +146,7 @@ namespace GeneralUpdate.Zip
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -172,7 +172,7 @@ namespace GeneralUpdate.Zip
                     Directory.Delete(baseDirectory); //删除已空文件夹     
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 successed = false;
             }
@@ -231,7 +231,7 @@ namespace GeneralUpdate.Zip
                             if (!entries.FullName.EndsWith("/"))
                             {
                                 var entryFilePath = Regex.Replace(entries.FullName.Replace("/", @"\"), @"^\\*", "");
-                                var filePath = directoryInfo + entryFilePath; //设置解压路径
+                                var filePath = directoryInfo + entryFilePath;
                                 UnZipProgress(this, new UnZipProgressEventArgs { Size = entries.Length, Count = count, Index = i + 1 , Path = entries.FullName, Name = entries.Name }); 
                                  var content = new byte[entries.Length];
                                 entries.Open().Read(content, 0, content.Length);
@@ -245,7 +245,7 @@ namespace GeneralUpdate.Zip
                 }
                 resualt = true;
             }
-            catch (Exception ex)
+            catch
             {
                 resualt = false;
             }
@@ -274,9 +274,9 @@ namespace GeneralUpdate.Zip
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-
+                return null;
             }
             return fList;
         }
