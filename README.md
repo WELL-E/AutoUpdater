@@ -23,7 +23,7 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - （官方网站正在开发中）
 
 ### 开源地址 ###
-- https://github.com/WELL-E/AutoUpdater/tree/autoupdate2
+- https://github.com/WELL-E/AutoUpdater
 - https://gitee.com/Juster-zhu/GeneralUpdate
 
 ### Nuget地址 ###
@@ -34,6 +34,12 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - https://www.nuget.org/packages/GeneralUpdate.Zip/
 - https://www.nuget.org/packages/GeneralUpdate.Single/
 - https://www.nuget.org/packages/GeneralUpdate.Core/
+
+### 更新流程图 ###
+![](imgs/update_flow.jpg)
+
+### 支持关系图 ###
+![](imgs/support.jpg)
 
 ### 运行效果及更新流程展示 ###
 ![](imgs/run.jpg)
