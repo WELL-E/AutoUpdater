@@ -9,7 +9,7 @@
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
-![](imgs/GeneralUpdate.png)
+![](imgs/GeneralUpdate_h.png)
 
 ### 组件介绍 ###
 GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。
