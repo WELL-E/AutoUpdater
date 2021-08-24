@@ -1,5 +1,9 @@
 # GeneralUpdate #
-![](https://img.shields.io/badge/GeneralUpdate.Core-3.2.1-green)
+![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.8-green)
+![](https://img.shields.io/badge/GeneralUpdate.Common-1.0.0-green)
+![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.0.0-green)
+![](https://img.shields.io/badge/GeneralUpdate.AspNetCore-1.0.0-green)
+![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Single-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
