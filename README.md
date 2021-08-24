@@ -5,6 +5,8 @@
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
+![](imgs/GeneralUpdate.png)
+
 ### 组件介绍 ###
 GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。
 
@@ -34,7 +36,7 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - https://www.nuget.org/packages/GeneralUpdate.Core/
 
 ### 运行效果及更新流程展示 ###
-![](https://img2020.cnblogs.com/blog/1214710/202005/1214710-20200503171309275-1921529733.png)
+![](imgs/run.jpg)
 
 ### 快速启动 ###
 
@@ -134,3 +136,7 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
         var resultJson = await _updateService.UpdateValidateTaskAsync(clientType, clientVersion, lastVersion, true, GetValidateInfos);
         return Ok(resultJson);
     }
+
+## 支持作者 ###
+![](imgs/vx2.jpg)
+![](imgs/alipay2.jpg)
