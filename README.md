@@ -26,6 +26,9 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - https://www.bilibili.com/video/BV1aX4y137dd
 - （官方网站正在开发中）
 
+### 讨论组 ###
+QQ群：580749909
+
 ### 开源地址 ###
 - https://github.com/WELL-E/AutoUpdater
 - https://gitee.com/Juster-zhu/GeneralUpdate
@@ -148,5 +151,8 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
     }
 
 ## 支持作者 ###
+
+作者：Juster.zhu & Charles.Yu
+
 ![](imgs/vx2.jpg)
 ![](imgs/alipay2.jpg)
