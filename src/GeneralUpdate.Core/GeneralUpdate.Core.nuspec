@@ -11,7 +11,7 @@
     <iconUrl>https://raw.githubusercontent.com/NuGet/Samples/master/PackageIconNuspecExample/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Based on . Net framework , an automatic upgrade program for c / s application is developed . Thecore part of the update can be easily used in many projects . </releaseNotes>
+    <releaseNotes>Based on dotnet standard, an automatic upgrade program for c/s application is developed.The core part of the update can be easily used in many projects. </releaseNotes>
     <copyright>Copyright 2021</copyright>
     <tags>update auto .net</tags>
   </metadata>

@@ -20,6 +20,7 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - GeneralUpdate.Zip：解压更新包、解压进度通知。
 - GeneralUpdate.Single：应用程序单例运行。
 - GeneralUpdate.Common：组件公共类、方法。
+- 源码"sql"目录下包含mysql数据库表内容的生成脚本。
 
 ### 帮助文档 ###
 - https://www.bilibili.com/video/BV1aX4y137dd
