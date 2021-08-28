@@ -1,11 +1,10 @@
 # GeneralUpdate #
-![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.8-green)
+![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.9-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Common-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.0.0-green)
+![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.1.1-green)
 ![](https://img.shields.io/badge/GeneralUpdate.AspNetCore-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Single-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
@@ -44,9 +43,6 @@ QQ群：580749909
 
 ### 更新流程图 ###
 ![](imgs/update_flow.jpg)
-
-### 支持关系图 ###
-![](imgs/support.jpg)
 
 ### 运行效果及更新流程展示 ###
 ![](imgs/run.jpg)
