@@ -1,10 +1,9 @@
-﻿using GeneralUpdate.Common.DTOs;
-using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
-using GeneralUpdate.Core.Bootstrap;
-using GeneralUpdate.Core.Strategys;
+﻿using GeneralUpdate.ClientCore.Bootstrap;
+using GeneralUpdate.ClientCore.DTOs;
+using GeneralUpdate.ClientCore.Models;
+using GeneralUpdate.ClientCore.Strategys;
+using GeneralUpdate.ClientCore.Utils;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore

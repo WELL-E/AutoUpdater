@@ -1,6 +1,7 @@
 ﻿using GeneralUpdate.ClientCore;
+using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Strategys;
-using GeneralUpdate.Common.Models;
+using GeneralUpdate.ClientCore.Update;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -59,32 +60,32 @@ namespace AutoUpdate.Test
             });
         }
 
-        private void OnMutiDownloadStatistics(object sender, GeneralUpdate.Core.Update.MutiDownloadStatisticsEventArgs e)
+        private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
             //Debug.WriteLine($"{ e.Version.Name } ,{ e.Remaining },{ e.Speed }");
         }
 
-        private void OnException(object sender, GeneralUpdate.Core.Update.ExceptionEventArgs e)
+        private void OnException(object sender, ExceptionEventArgs e)
         {
             Debug.WriteLine(e.Exception.Message);
         }
 
-        private void OnMutiAllDownloadCompleted(object sender, GeneralUpdate.Core.Update.MutiAllDownloadCompletedEventArgs e)
+        private void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
         {
             Debug.WriteLine($"Is all download completed { e.IsAllDownloadCompleted }.");
         }
 
-        private void OnMutiDownloadCompleted(object sender, GeneralUpdate.Core.Update.MutiDownloadCompletedEventArgs e)
+        private void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
         {
             Debug.WriteLine($"{ e.Version.Name } download completed.");
         }
 
-        private void OnMutiDownloadError(object sender, GeneralUpdate.Core.Update.MutiDownloadErrorEventArgs e)
+        private void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
         {
             Debug.WriteLine($"{ e.Version.Name } error!");
         }
 
-        private void OnMutiDownloadProgressChanged(object sender, GeneralUpdate.Core.Update.MutiDownloadProgressChangedEventArgs e)
+        private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
         {
             //var name = e.Version == null ? "" : e.Version.Name;
             //Debug.WriteLine($"{ name }, ProgressValue - { e.ProgressValue }, ProgressPercentage - { e.ProgressPercentage }.");

@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.ClientCore.Utils
 {
     public class SerializeUtil
     {
-        public static string Serialize(object obj)
+        public static string Serialize(object obj) 
         {
             if (obj == null)
                 return string.Empty;
@@ -20,7 +17,7 @@ namespace GeneralUpdate.Common.Utils
             return base64str;
         }
 
-        public static T Deserialize<T>(string str)
+        public static T Deserialize<T>(string str) 
         {
             var obj = default(T);
             if (string.IsNullOrEmpty(str))

@@ -1,6 +1,7 @@
-﻿using GeneralUpdate.Common.DTOs;
-using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.ClientCore.DTOs;
+using GeneralUpdate.ClientCore.Models;
+using GeneralUpdate.ClientCore.Update;
+using GeneralUpdate.ClientCore.Utils;
 using GeneralUpdate.Core.Strategys;
 using System;
 using System.Diagnostics;
@@ -56,7 +57,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                             catch (Exception ex)
                             {
                                 if (ExceptionEventAction != null)
-                                    ExceptionEventAction(this, new Core.Update.ExceptionEventArgs(ex));
+                                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
                             }
                         }
                     }
@@ -64,7 +65,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                     {
                         if(ExceptionEventAction != null)
                            ExceptionEventAction(this,
-                            new Core.Update.ExceptionEventArgs(new System.Exception($"{ respDTO.Code }{ respDTO.Message }")));
+                            new ExceptionEventArgs(new System.Exception($"{ respDTO.Code }{ respDTO.Message }")));
                     }
                 });
                 return true;
@@ -72,7 +73,7 @@ namespace GeneralUpdate.ClientCore.Strategys
             catch (Exception ex)
             {
                 if (ExceptionEventAction != null)
-                    ExceptionEventAction(this, new Core.Update.ExceptionEventArgs(ex));
+                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
                 return false;
             }
         }
