@@ -50,7 +50,81 @@ QQ群：580749909
 
 ### 快速启动 ###
 
-（1） Example GeneralUpdate.Core
+（1） Example GeneralUpdate.ClientCore
+
+        private ClientParameter clientParameter;
+        private GeneralClientBootstrap generalClientBootstrap;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(async()=> 
+            {
+                //主程序信息
+                var mainVersion = "1.1.1";
+                var mianType = 1;
+
+                //该对象用于主程序客户端与更新组件进程之间交互用的对象
+                clientParameter = new ClientParameter();
+                //更新组件的版本号
+                clientParameter.ClientVersion = "1.1.1";
+                //客户端类型：1.主程序客户端 2.更新组件
+                clientParameter.ClientType = 2;
+                //更新程序exe名称
+                clientParameter.AppName = "AutoUpdate.ConsoleApp";
+                //主程序客户端exe名称
+                clientParameter.MainAppName = "AutoUpdate.Test";
+                //本机的客户端程序应用地址
+                clientParameter.InstallPath = @"D:\update_test";
+                //更新公告网页
+                clientParameter.UpdateLogUrl = "https://www.baidu.com/";
+                //更新组件请求验证更新的服务端地址
+                clientParameter.ValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                //更新组件更新包下载地址
+                clientParameter.UpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                //主程序客户端请求验证更新的服务端地址
+                clientParameter.MainValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ mianType }/{ mainVersion }";
+                //主程序客户端更新包下载地址
+                clientParameter.MainUpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ mianType }/{ mainVersion }";
+
+                generalClientBootstrap = new GeneralClientBootstrap();
+                //单个或多个更新包下载通知事件
+                generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                //单个或多个更新包下载速度、剩余下载事件、当前下载版本信息通知事件
+                generalClientBootstrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                //单个或多个更新包下载完成
+                generalClientBootstrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                //完成所有的下载任务通知
+                generalClientBootstrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                //下载过程出现的异常通知
+                generalClientBootstrap.MutiDownloadError += OnMutiDownloadError;
+                //整个更新过程出现的任何问题都会通过这个事件通知
+                generalClientBootstrap.Exception += OnException;
+                //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
+                generalClientBootstrap.Config(clientParameter).
+                    Strategy<ClientStrategy>();
+                await generalClientBootstrap.LaunchTaskAsync();
+            });
+        }
+
+        private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
+        {
+             //e.Remaining 剩余下载时间
+             //e.Speed 下载速度
+             //e.Version 当前下载的版本信息
+        }
+
+        private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
+        {
+            //e.TotalBytesToReceive 当前更新包需要下载的总大小
+            //e.ProgressValue 当前进度值
+            //e.ProgressPercentage 当前进度的百分比
+            //e.Version 当前下载的版本信息
+            //e.Type 当前正在执行的操作  1.ProgressType.Check 检查版本信息中 2.ProgressType.Donwload 正在下载当前版本 3. ProgressType.Updatefile 更新当前版本 4. ProgressType.Done更新完成 5.ProgressType.Fail 更新失败
+            //e.BytesReceived 已下载大小
+        }
+
+
+（2） Example GeneralUpdate.Core
 
     static void Main(string[] args)
     {
@@ -68,35 +142,6 @@ QQ群：580749909
             LaunchAsync();
     }
 
-（2） Example GeneralUpdate.ClientCore
-
-            //Clinet version.
-            var mainVersion = "1.1.1";
-            var mianType = 1;
-
-            //Updater version
-            clientParameter = new ClientParameter();
-            clientParameter.ClientVersion = "1.1.1";
-            clientParameter.ClientType = 2;
-            clientParameter.AppName = "AutoUpdate.ConsoleApp";
-            clientParameter.MainAppName = "AutoUpdate.Test";
-            clientParameter.InstallPath = @"D:\update_test";
-            clientParameter.UpdateLogUrl = "https://www.baidu.com/";
-            clientParameter.ValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
-            clientParameter.UpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
-            clientParameter.MainValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ mianType }/{ mainVersion }";
-            clientParameter.MainUpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ mianType }/{ mainVersion }";
-
-            generalClientBootstrap = new GeneralClientBootstrap();
-            generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-            generalClientBootstrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
-            generalClientBootstrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
-            generalClientBootstrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-            generalClientBootstrap.MutiDownloadError += OnMutiDownloadError;
-            generalClientBootstrap.Exception += OnException;
-            generalClientBootstrap.Config(clientParameter).
-                Strategy<ClientStrategy>();
-            await generalClientBootstrap.LaunchTaskAsync();
 
 （3） Example GeneralUpdate.AspNetCore
 
