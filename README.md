@@ -1,7 +1,7 @@
 # GeneralUpdate #
-![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.9-green)
+![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.10-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Common-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.1.1-green)
+![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.1.2-green)
 ![](https://img.shields.io/badge/GeneralUpdate.AspNetCore-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
 ![](https://img.shields.io/badge/GeneralUpdate.Single-1.0.0-green)
