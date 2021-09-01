@@ -77,6 +77,9 @@ namespace AutoApdate.ConsoleApp
 
         private static void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
         {
+            //e.FailedVersions; 如果出现下载失败则会把下载错误的版本、错误原因统计到该集合当中。
+
+            //是否下载成功
             if (e.IsAllDownloadCompleted)
             {
                 Console.WriteLine("All download completed.");

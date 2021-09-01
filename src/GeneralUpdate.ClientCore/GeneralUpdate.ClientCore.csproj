@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GeneralUpdate.ClientCore.1.1.1.nupkg" />
+    <None Remove="GeneralUpdate.ClientCore.nuspec" />
+    <None Remove="nuget.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
   </ItemGroup>

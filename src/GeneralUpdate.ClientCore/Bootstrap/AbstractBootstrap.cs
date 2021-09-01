@@ -223,6 +223,9 @@ namespace GeneralUpdate.ClientCore.Bootstrap
         {
             try
             {
+                if (MutiAllDownloadCompleted != null)
+                    MutiAllDownloadCompleted.Invoke(this, e);
+
                 ExcuteStrategy();
             }
             catch (Exception ex)

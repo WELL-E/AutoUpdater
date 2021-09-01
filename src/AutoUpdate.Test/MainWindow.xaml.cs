@@ -70,8 +70,9 @@ namespace AutoUpdate.Test
                 generalClientBootstrap.MutiDownloadError += OnMutiDownloadError;
                 //整个更新过程出现的任何问题都会通过这个事件通知
                 generalClientBootstrap.Exception += OnException;
-                //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
+                //ClientParameter
                 generalClientBootstrap.Config(clientParameter).
+                //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
                     Strategy<ClientStrategy>();
                 await generalClientBootstrap.LaunchTaskAsync();
             });
@@ -101,11 +102,13 @@ namespace AutoUpdate.Test
 
         private void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
         {
+            //e.FailedVersions; 如果出现下载失败则会把下载错误的版本、错误原因统计到该集合当中。
             Debug.WriteLine($"Is all download completed { e.IsAllDownloadCompleted }.");
         }
 
         private void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
         {
+
             Debug.WriteLine($"{ e.Version.Name } download completed.");
         }
 

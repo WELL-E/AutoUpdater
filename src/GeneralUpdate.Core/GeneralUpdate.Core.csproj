@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="GeneralUpdate.Core.2.0.0.nupkg" />
     <None Remove="GeneralUpdate.Core.3.2.1.nupkg" />
+    <None Remove="GeneralUpdate.Core.3.6.9.nupkg" />
     <None Remove="GeneralUpdate.Core.csproj.old" />
     <None Remove="GeneralUpdate.Core.nuspec" />
     <None Remove="nuget.exe" />
