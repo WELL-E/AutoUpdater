@@ -70,10 +70,10 @@ namespace GeneralUpdate.Core
                 throw new NullReferenceException("Install path not set.");
             }
 
-            if (string.IsNullOrEmpty(clientParameter.UpdateLogUrl))
-            {
-                throw new NullReferenceException("Update log url not set.");
-            }
+            //if (string.IsNullOrEmpty(clientParameter.UpdateLogUrl))
+            //{
+            //    throw new NullReferenceException("Update log url not set.");
+            //}
       
             if (string.IsNullOrEmpty(clientParameter.AppName))
             {
