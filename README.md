@@ -27,7 +27,9 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - （官方网站正在开发中）
 
 ### 讨论组 ###
-QQ群：580749909
+GeneralUpdate开源项目讨论QQ群：748744489
+
+.Net技术讨论QQ群：580749909
 
 ### 开源地址 ###
 - https://github.com/WELL-E/AutoUpdater
@@ -54,7 +56,7 @@ QQ群：580749909
 
         private ClientParameter clientParameter;
         private GeneralClientBootstrap generalClientBootstrap;
-
+    
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Task.Run(async()=> 
@@ -62,7 +64,7 @@ QQ群：580749909
                 //主程序信息
                 var mainVersion = "1.1.1";
                 var mianType = 1;
-
+    
                 //该对象用于主程序客户端与更新组件进程之间交互用的对象
                 clientParameter = new ClientParameter();
                 //更新组件的版本号
@@ -85,7 +87,7 @@ QQ群：580749909
                 clientParameter.MainValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ mianType }/{ mainVersion }";
                 //主程序客户端更新包下载地址
                 clientParameter.MainUpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ mianType }/{ mainVersion }";
-
+    
                 generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
                 generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
@@ -105,14 +107,14 @@ QQ群：580749909
                 await generalClientBootstrap.LaunchTaskAsync();
             });
         }
-
+    
         private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
              //e.Remaining 剩余下载时间
              //e.Speed 下载速度
              //e.Version 当前下载的版本信息
         }
-
+    
         private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
         {
             //e.TotalBytesToReceive 当前更新包需要下载的总大小
@@ -151,18 +153,18 @@ QQ群：580749909
         services.AddControllers();
         services.AddSingleton<IUpdateService, GeneralUpdateService>();
     }
-
+    
     UpdateController.cs
-
+    
     private readonly ILogger<UpdateController> _logger;
     private readonly IUpdateService _updateService;
-
+    
     public UpdateController(ILogger<UpdateController> logger, IUpdateService updateService)
     {
         _logger = logger;
         _updateService = updateService;
     }
-
+    
     /// <summary>
     /// https://localhost:5001/api/update/getUpdateVersions/1/1.1.1
     /// </summary>
@@ -176,7 +178,7 @@ QQ群：580749909
         var resultJson = await _updateService.UpdateVersionsTaskAsync(clientType, clientVersion, UpdateVersions);
         return Ok(resultJson);
     }
-
+    
     /// <summary>
     /// https://localhost:5001/api/update/getUpdateValidate/1/1.1.1
     /// </summary>
