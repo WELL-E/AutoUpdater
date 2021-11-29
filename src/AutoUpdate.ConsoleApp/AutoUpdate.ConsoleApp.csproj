@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>AutoUpdate.ConsoleApp</RootNamespace>
     <AssemblyName>AutoUpdate.ConsoleApp</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -35,6 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeneralUpdate.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeneralUpdate.Common.1.0.0\lib\netstandard2.0\GeneralUpdate.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralUpdate.Core, Version=3.6.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeneralUpdate.Core.3.6.10\lib\netstandard2.0\GeneralUpdate.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralUpdate.Zip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeneralUpdate.Zip.1.0.0\lib\netstandard2.0\GeneralUpdate.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -54,16 +63,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GeneralUpdate.Common\GeneralUpdate.Common.csproj">
-      <Project>{7abb2ddf-7033-4584-8180-25f5340e26c0}</Project>
-      <Name>GeneralUpdate.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GeneralUpdate.Core\GeneralUpdate.Core.csproj">
-      <Project>{35bff228-5ee4-49a6-b721-fb0122e967a0}</Project>
-      <Name>GeneralUpdate.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\7z.Libs.19.0.2\build\net\7z.Libs.targets" Condition="Exists('..\packages\7z.Libs.19.0.2\build\net\7z.Libs.targets')" />
