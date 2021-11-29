@@ -68,7 +68,7 @@ namespace GeneralUpdate.Core.Utils
 
         public void InitTimeOut(int timeout)
         {
-            if (timeout == 0) timeout = 30;
+            if (timeout <= 0) timeout = 30;
             _timeOut = 1000 * timeout;
         }
 
