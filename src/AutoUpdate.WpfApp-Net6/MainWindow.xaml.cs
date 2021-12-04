@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoUpdate.WpfApp_Net6.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace AutoUpdate.WpfApp_Net6
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string prameter)
         {
             InitializeComponent();
+            DataContext = new MainViewModel(prameter);
         }
     }
 }
