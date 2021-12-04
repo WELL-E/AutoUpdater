@@ -10,6 +10,6 @@
     Height="450"
     mc:Ignorable="d">
     <Grid >
-        <Button Command="{Binding CloseWindowCmd}" Width="100" Height="30" Content="close"></Button>
+        <TextBlock FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="To demonstrate the singleton startup program, please check the Program.cs file"/>
     </Grid>
 </Window>

@@ -1,5 +1,4 @@
-﻿using AutoUpdate.WpfApp.ViewModels;
-using GeneralUpdate.Core.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using GeneralUpdate.WpfApp;
 using System;
 using System.Collections.Generic;
@@ -39,8 +38,8 @@ namespace AutoUpdate.WpfApp
             if (SingleInstance<Program>.InitializeAsFirstInstance(AppId))
             {
                 var win = new MainWindow();
-                var vm = new MainViewModel(resultArgs, win.Close);
-                win.DataContext = vm;
+                //var vm = new MainViewModel(resultArgs, win.Close);
+                //win.DataContext = vm;
 
                 var application = new Program();
                 application.Run(win);
