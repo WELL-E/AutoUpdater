@@ -10,8 +10,15 @@ namespace AutoUpdate.MauiApp_Sample
         public App()
         {
             InitializeComponent();
+        }
 
-            MainPage = new MainPage();
+        protected override Window CreateWindow(IActivationState activationState)
+        {
+#if WINDOWS
+            var args = activationState.LaunchActivatedEventArgs.Arguments;
+            MainPage = new MainPage(args);
+#endif
+            return base.CreateWindow(activationState);
         }
     }
 }

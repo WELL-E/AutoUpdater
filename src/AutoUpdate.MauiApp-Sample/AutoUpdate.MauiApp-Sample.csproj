@@ -52,6 +52,7 @@
 	  <PackageReference Include="GeneralUpdate.Common" Version="1.0.0" />
 	  <PackageReference Include="GeneralUpdate.Core" Version="3.6.10" />
 	  <PackageReference Include="GeneralUpdate.Zip" Version="1.0.0" />
+	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
