@@ -1,5 +1,4 @@
-﻿using AutoUpdate.WpfApp.ViewModels;
-using GeneralUpdate.Core.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
