@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.ClientCore.Bootstrap;
+using GeneralUpdate.ClientCore.Bootstrap;
 using GeneralUpdate.ClientCore.DTOs;
 using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Strategys;
