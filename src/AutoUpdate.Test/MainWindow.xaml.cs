@@ -41,21 +41,21 @@ namespace AutoUpdate.Test
                 //客户端类型：1.主程序客户端 2.更新组件
                 clientParameter.ClientType = 2;
                 //更新程序exe名称
-                clientParameter.AppName = "AutoUpdate.ConsoleApp";
+                clientParameter.AppName = "AutoUpdate.Test";
                 //主程序客户端exe名称
-                clientParameter.MainAppName = "AutoUpdate.Test";
+                clientParameter.MainAppName = "AutoUpdate.MauiApp-Sample";
                 //本机的客户端程序应用地址
                 clientParameter.InstallPath = @"D:\update_test";
                 //更新公告网页
                 clientParameter.UpdateLogUrl = "https://www.baidu.com/";
                 //更新组件请求验证更新的服务端地址
-                clientParameter.ValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.ValidateUrl = $"http://127.0.0.1:5001/validate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
                 //更新组件更新包下载地址
-                clientParameter.UpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.UpdateUrl = $"http://127.0.0.1:5001/versions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
                 //主程序客户端请求验证更新的服务端地址
-                clientParameter.MainValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ mianType }/{ mainVersion }";
+                clientParameter.MainValidateUrl = $"http://127.0.0.1:5001/validate/{ mianType }/{ mainVersion }";
                 //主程序客户端更新包下载地址
-                clientParameter.MainUpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ mianType }/{ mainVersion }";
+                clientParameter.MainUpdateUrl = $"http://127.0.0.1:5001/versions/{ mianType }/{ mainVersion }";
 
                 generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
@@ -148,6 +148,11 @@ namespace AutoUpdate.Test
             {
                 return string.Empty;
             }
+        }
+
+        private void BtnLaunch_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(TxtEXEPath.Text, "testmessage");
         }
     }
 }

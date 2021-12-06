@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Content="Launch" Name="BtnLaunch" Click="BtnLaunch_Click"></Button>
+        <TextBox Width="200" Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
         <Button Width="100" Height="30" Content="Update" Click="Button_Click" Margin="5"></Button>
         <Button Width="100" Height="30" Content="MD5" Click="Button_Click_1" Margin="5"></Button>
         <TextBox Width="200" Name="TxtMD5" Height="25" Margin="5"></TextBox>

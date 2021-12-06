@@ -18,7 +18,7 @@ namespace GeneralUpdate.ClientCore
         {
             try
             {
-                var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.MainValidateUrl);
+                var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.ValidateUrl);
                 if (respDTO.Code == 200)
                 {
                     var body = respDTO.Body;

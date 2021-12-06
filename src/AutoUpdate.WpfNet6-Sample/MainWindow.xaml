@@ -1,0 +1,24 @@
+﻿<Window x:Class="AutoUpdate.WpfNet6_Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoUpdate.WpfNet6_Sample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ProgressBar Height="25" Width="250" Minimum="{Binding ProgressMin}" Maximum="{Binding ProgressMax}" Value="{Binding ProgressVal}"></ProgressBar>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <TextBlock Text="{Binding Tips1}"></TextBlock>
+            <TextBlock Text="{Binding Tips2}"></TextBlock>
+            <TextBlock Text="{Binding Tips3}"></TextBlock>
+            <TextBlock Text="{Binding Tips4}"></TextBlock>
+            <TextBlock Text="{Binding Tips5}"></TextBlock>
+            <TextBlock Text="{Binding Tips6}"></TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
