@@ -41,9 +41,9 @@ namespace AutoUpdate.Test
                 //客户端类型：1.主程序客户端 2.更新组件
                 clientParameter.ClientType = 2;
                 //更新程序exe名称
-                clientParameter.AppName = "AutoUpdate.Test";
+                clientParameter.AppName = "AutoUpdate.WpfNet6-Sample";
                 //主程序客户端exe名称
-                clientParameter.MainAppName = "AutoUpdate.MauiApp-Sample";
+                clientParameter.MainAppName = "AutoUpdate.Test";
                 //本机的客户端程序应用地址
                 clientParameter.InstallPath = @"D:\update_test";
                 //更新公告网页

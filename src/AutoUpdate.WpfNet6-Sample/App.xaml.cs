@@ -15,9 +15,9 @@ namespace AutoUpdate.WpfNet6_Sample
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
             var win = new MainWindow(e.Args[0]);
             win.ShowDialog();
+            base.OnStartup(e);
         }
     }
 }

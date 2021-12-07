@@ -1,12 +1,12 @@
-﻿using GeneralUpdate.Core;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Core;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using MvvmHelpers;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace AutoUpdate.WpfNet6_Sample.ViewModels
 {
@@ -19,6 +19,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         public MainViewModel(string args) 
         {
+            ProgressMin = 0;
             var bootStrap = new GeneralUpdateBootstrap();
             bootStrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
             bootStrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
@@ -26,8 +27,9 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
             bootStrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
             bootStrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
             bootStrap.Exception += OnException;
-            bootStrap.Option(UpdateOption.DownloadTimeOut, 30).
-            Strategy<DefaultStrategy>().
+            bootStrap.Strategy<DefaultStrategy>().
+            Option(UpdateOption.DownloadTimeOut, 60).
+            Option(UpdateOption.Format,"zip").
             RemoteAddressBase64(args);
             bootStrap.LaunchAsync();
         }
@@ -49,10 +51,28 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         private void OnMutiDownloadProgressChanged(object sender, GeneralUpdate.Core.Update.MutiDownloadProgressChangedEventArgs e)
         {
-            ProgressMin = 0;
-            ProgressVal = e.ProgressValue;
-            ProgressMax = e.TotalBytesToReceive;
-            Tips2 = $"{ e.ProgressValue }{ e.TotalBytesToReceive }";
+            switch (e.Type)
+            {
+                case ProgressType.Check:
+                    break;
+                case ProgressType.Donwload:
+                    ProgressVal = e.BytesReceived;
+
+                    if (ProgressMax != e.TotalBytesToReceive)
+                    {
+                        ProgressMax = e.TotalBytesToReceive;
+                    }
+                    Tips2 = $"当前下载进度：{ e.ProgressValue }% ， 已下载字节：{ e.BytesReceived }，总字节数：{ e.TotalBytesToReceive }，下载进度百分比：{ e.ProgressPercentage }";
+                    break;
+                case ProgressType.Updatefile:
+                    break;
+                case ProgressType.Done:
+                    break;
+                case ProgressType.Fail:
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void OnMutiDownloadCompleted(object sender, GeneralUpdate.Core.Update.MutiDownloadCompletedEventArgs e)
@@ -77,6 +97,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         private void OnMutiDownloadError(object sender, GeneralUpdate.Core.Update.MutiDownloadErrorEventArgs e)
         {
+            
             Tips5 = $"{ e.Version.Name },{ e.Exception.Message }.";
         }
 

@@ -27,6 +27,7 @@ namespace AutoApdate.ConsoleApp
             bootstrap.Strategy<DefaultStrategy>().
                 //下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
                 Option(UpdateOption.DownloadTimeOut, 60).
+                Option(UpdateOption.Format, "zip").
                 RemoteAddressBase64(resultBase64).
                 LaunchAsync();
 

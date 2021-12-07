@@ -6,11 +6,27 @@
         xmlns:local="clr-namespace:AutoUpdate.Test"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Content="Launch" Name="BtnLaunch" Click="BtnLaunch_Click"></Button>
-        <TextBox Width="200" Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
-        <Button Width="100" Height="30" Content="Update" Click="Button_Click" Margin="5"></Button>
-        <Button Width="100" Height="30" Content="MD5" Click="Button_Click_1" Margin="5"></Button>
-        <TextBox Width="200" Name="TxtMD5" Height="25" Margin="5"></TextBox>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+            <Button Width="100" Height="30" Content="获取文件MD5码" Click="Button_Click_1" Margin="5"></Button>
+            <Button Width="100" Height="30" Content="进程启动测试" Name="BtnLaunch" Click="BtnLaunch_Click"></Button>
+            <Button Width="100" Height="30" Content="开启测试更新" Click="Button_Click" Margin="5"></Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="MD5:"></TextBlock>
+            <TextBox Width="200" Name="TxtMD5" Height="25" Margin="5"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="进程启动EXE路径:"></TextBlock>
+            <TextBox Width="200" Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
+        </StackPanel>
+    </Grid>
 </Window>
