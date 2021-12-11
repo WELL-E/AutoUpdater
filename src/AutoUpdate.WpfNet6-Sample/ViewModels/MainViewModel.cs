@@ -46,7 +46,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         private void OnMutiDownloadStatistics(object sender, GeneralUpdate.Core.Update.MutiDownloadStatisticsEventArgs e)
         {
-            Tips1 = $"{ e.Speed }{ e.Remaining }";
+            Tips1 = $"Speed{ e.Speed }, Remaining{ e.Remaining }";
         }
 
         private void OnMutiDownloadProgressChanged(object sender, GeneralUpdate.Core.Update.MutiDownloadProgressChangedEventArgs e)
@@ -57,12 +57,11 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
                     break;
                 case ProgressType.Donwload:
                     ProgressVal = e.BytesReceived;
-
                     if (ProgressMax != e.TotalBytesToReceive)
                     {
                         ProgressMax = e.TotalBytesToReceive;
                     }
-                    Tips2 = $"当前下载进度：{ e.ProgressValue }% ， 已下载字节：{ e.BytesReceived }，总字节数：{ e.TotalBytesToReceive }，下载进度百分比：{ e.ProgressPercentage }";
+                    Tips2 = $"当前下载进度：{ e.ProgressValue }% ， 已下载字节：{ e.BytesReceived }，总字节数：{ e.TotalBytesToReceive }";
                     break;
                 case ProgressType.Updatefile:
                     break;
