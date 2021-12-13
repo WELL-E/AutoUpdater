@@ -24,7 +24,7 @@ namespace AutoUpdate.WpfNet6_Sample
         public MainWindow(string args)
         {
             InitializeComponent();
-            //DataContext = new MainViewModel(args);
+            DataContext = new MainViewModel(args);
         }
     }
 }

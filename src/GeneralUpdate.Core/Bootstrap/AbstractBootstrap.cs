@@ -95,7 +95,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
                 var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
                 Packet.Format = $".{pacektFormat}";
-                Packet.AppName = GetOption(UpdateOption.MainApp) ?? Packet.AppName;
+                Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
                 mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
                 mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));

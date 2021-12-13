@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoUpdate.WpfNet6_Sample"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="650">
+        Title="Update-APP" Height="350" Width="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>
@@ -22,17 +22,21 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="170" MaxWidth="170"></ColumnDefinition>
+                <ColumnDefinition Width="150" MaxWidth="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Download statistics:" FontSize="14" FontWeight="Bold" Margin="5"></TextBlock>
-            <TextBlock Grid.Column="1" Margin="5" Text="{Binding Tips1}"></TextBlock>
-            <TextBlock Margin="5" Grid.Row="1" Text="Download progress:" FontSize="14" FontWeight="Bold"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Tips2}"></TextBlock>
-            <TextBlock Grid.Row="2" Text="{Binding Tips3}" Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold" Margin="5"></TextBlock>
-            <TextBlock Grid.Row="3" Text="{Binding Tips4}" Grid.ColumnSpan="2" Margin="5"/>
-            <TextBlock Grid.Row="4" Text="{Binding Tips5}" Grid.ColumnSpan="2" Margin="5"/>
-            <TextBlock Grid.Row="5" Text="{Binding Tips6}" Grid.ColumnSpan="2" Margin="5"/>
+            <TextBlock Grid.Column="1" Text="Download statistics:" FontSize="14" FontWeight="Bold" Margin="5">
+                <Run Text="{Binding Tips1}"/>
+            </TextBlock>
+            <TextBlock Grid.Row="1" Text="Download progress:" Grid.Column="1" Margin="5" FontSize="14" FontWeight="Bold" >
+                <Run Text="{Binding Tips2}"></Run>
+            </TextBlock>
+            <!--<TextBlock Grid.Row="2"  Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold" Margin="5">
+                <Run Text="{Binding Tips3}"></Run>
+            </TextBlock>-->
+            <!--<TextBlock Grid.Row="3" Text="{Binding Tips4}" Grid.Column="1" Margin="5"/>
+            <TextBlock Grid.Row="4" Text="{Binding Tips5}" Grid.Column="1" Margin="5"/>
+            <TextBlock Grid.Row="5" Text="{Binding Tips6}" Grid.Column="1" Margin="5"/>-->
         </Grid>
         <Image Grid.Row="1" Source="/Resource/bot.jpg" Height="150" Width="150" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30" />
     </Grid>
