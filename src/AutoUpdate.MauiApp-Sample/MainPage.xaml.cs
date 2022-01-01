@@ -13,7 +13,7 @@ namespace AutoUpdate.MauiApp_Sample
         {
             InitializeComponent();
             BindingContext = new MainViewModel(prameter);
-            //SemanticScreenReader.Announce(CounterLabel.Text);
+            //wpf - DataContext
         }
     }
 }

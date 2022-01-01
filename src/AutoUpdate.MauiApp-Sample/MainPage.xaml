@@ -7,6 +7,8 @@
         <Grid RowSpacing="25" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
               Padding="{OnPlatform Android='30,60,30,30', Default='30'}">
 
+            <ProgressBar></ProgressBar>
+            
             <Button 
                 Text="Test launch update."
                 FontAttributes="Bold"
