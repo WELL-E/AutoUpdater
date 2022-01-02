@@ -1,10 +1,6 @@
 ﻿using GeneralUpdate.Core.Utils;
-using GeneralUpdate.WpfApp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace AutoUpdate.WpfApp
@@ -16,6 +12,7 @@ namespace AutoUpdate.WpfApp
         [STAThread]
         static void Main(string[] args)
         {
+            //ISingleInstanceApp Can only be used in the framework of .net framework .
             string[] resultArgs = null;
 
             if (args == null || args.Length == 0)
