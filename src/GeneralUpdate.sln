@@ -25,13 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.Common", "Gen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.Test", "AutoUpdate.Test\AutoUpdate.Test.csproj", "{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate.WpfApp", "AutoUpdate.WpfApp\AutoUpdate.WpfApp.csproj", "{D5277E30-C3F3-4C13-99A7-8F6FB0EF0A64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate.Single-Sample", "AutoUpdate.WpfApp\AutoUpdate.Single-Sample.csproj", "{D5277E30-C3F3-4C13-99A7-8F6FB0EF0A64}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.MauiApp-Sample", "AutoUpdate.MauiApp-Sample\AutoUpdate.MauiApp-Sample.csproj", "{7BD1F132-7461-4992-964A-61B492C1BE44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.MinimalService", "AutoUpdate.MinimalService\AutoUpdate.MinimalService.csproj", "{43695C1B-35CA-466A-B443-B83F6951E50F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate.WpfNet6-Sample", "AutoUpdate.WpfNet6-Sample\AutoUpdate.WpfNet6-Sample.csproj", "{879B20F4-22BF-46CA-A5F5-62A9DCF29CFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.WpfNet6-Sample", "AutoUpdate.WpfNet6-Sample\AutoUpdate.WpfNet6-Sample.csproj", "{879B20F4-22BF-46CA-A5F5-62A9DCF29CFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
