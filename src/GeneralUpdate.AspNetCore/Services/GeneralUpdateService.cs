@@ -100,5 +100,26 @@ namespace GeneralUpdate.AspNetCore.Services
                 throw new ArgumentNullException(@"'serverLastVersion' cannot be null!");
             }
         }
+
+        /// <summary>
+        /// Production differential package.
+        /// </summary>
+        /// <param name="oldPath">The folder path of the previous version.</param>
+        /// <param name="newPath">The folder path of the latest version.</param>
+        /// <param name="targetPath">Production differential package the path.</param>
+        /// <returns></returns>
+        public Task DifferentialPackage(string oldPath,string newPath,string targetPath) 
+        {
+            /*
+             * TODO: 
+             *    1.初始化好生成的路径
+             *    2.通过树形结构管理新旧版本
+             *    3.遍历树形结构根据文件的MD5码和具体的文件版本信息进行比对
+             *    4.遍历筛选完成后按照原来的文件树结构生成好差分包
+             *    5.向数据库插入差分包的版本信息
+             *    6.生成好更新日志便于版本管理
+             */
+            return Task.CompletedTask;
+        }
     }
 }
