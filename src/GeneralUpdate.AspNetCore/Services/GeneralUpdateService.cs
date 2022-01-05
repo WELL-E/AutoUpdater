@@ -121,5 +121,15 @@ namespace GeneralUpdate.AspNetCore.Services
              */
             return Task.CompletedTask;
         }
+
+        /// <summary>
+        /// Push the latest version of the content to the client through Signalr.
+        /// </summary>
+        /// <param name="cmd">Push the instructions that need to be executed(JSON).</param>
+        /// <returns></returns>
+        public Task PushLastVersion(string cmd) 
+        {
+            return Task.CompletedTask;
+        }
     }
 }
