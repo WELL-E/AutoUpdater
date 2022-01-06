@@ -132,7 +132,6 @@ namespace GeneralUpdate.AspNetCore.Services
             /*
              * TODO：
              *    1.从数据库中读取需要推送的版本信息
-             *    2.并制定更新的指令，通过‘cmd’来表示
              */
             return Task.CompletedTask;
         }
