@@ -139,7 +139,7 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <summary>
         /// Push the command.
         /// </summary>
-        /// <param name="cmd">JSON</param>
+        /// <param name="cmd">JSON</param>·
         /// <returns></returns>
         public Task PushCommand(string cmd)
         {
