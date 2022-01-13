@@ -5,9 +5,25 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal class AbstractTaskManager : INotifyCompletion
+    internal abstract class AbstractTaskManager : ITaskManger
     {
-        public void OnCompleted(Action continuation)
+        public bool AllComplated()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnPool(object task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Launch()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void ReslasePool()
         {
             throw new NotImplementedException();
         }
