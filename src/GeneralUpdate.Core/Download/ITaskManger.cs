@@ -5,14 +5,23 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal interface ITaskManger
+    internal interface ITaskManger<K,T> where T : class
     {
-        bool AllComplated();
+        /// <summary>
+        /// 添加观察者
+        /// </summary>
+        /// <param name="task"></param>
+        void EnPool(K key,T task);
 
-        void EnPool(object task);
+        /// <summary>
+        /// 减少观察者
+        /// </summary>
+        /// <param name="task"></param>
+        void DePool(K key);
 
-        void ReslasePool();
-
+        /// <summary>
+        /// 通知所有下载任务开启下载
+        /// </summary>
         void Launch();
     }
 }

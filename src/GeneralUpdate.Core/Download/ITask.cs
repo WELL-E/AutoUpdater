@@ -7,5 +7,6 @@ namespace GeneralUpdate.Core.Download
 {
     internal interface ITask
     {
+        void Dirty();
     }
 }

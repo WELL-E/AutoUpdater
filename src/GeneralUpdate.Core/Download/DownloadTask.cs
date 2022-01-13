@@ -25,5 +25,10 @@ namespace GeneralUpdate.Core.Download
         {
             return this;
         }
+
+        public override void Dirty()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

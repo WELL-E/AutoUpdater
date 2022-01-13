@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal sealed class DownloadManager<T> : AbstractTaskManager, IAwaiter<T>, IAwaitable<DownloadManager<T>, T> where T : class
+    internal sealed class DownloadManager<T> : AbstractTaskManager<string, AbstractTask>, IAwaiter<T>, IAwaitable<DownloadManager<T>, T> where T : class
     {
         public DownloadManager() { }
 
@@ -30,6 +30,15 @@ namespace GeneralUpdate.Core.Download
         public DownloadManager<T> GetAwaiter()
         {
             return this;
+        }
+
+        public override void Launch()
+        {
+            foreach (var taskKeyValuePair in DownloadTaskPool)
+            {
+                var task = taskKeyValuePair.Value;
+                if (task.IsValueCreated) task.Value.Dirty();
+            }
         }
     }
 }
