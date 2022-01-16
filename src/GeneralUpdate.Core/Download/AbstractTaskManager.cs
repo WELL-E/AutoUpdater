@@ -1,35 +1,55 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using GeneralUpdate.Core.Update;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal abstract class AbstractTaskManager<K,T> : ITaskManger<K, T> where T : class
+    /// <summary>
+    /// Abstract task manager class.
+    /// </summary>
+    /// <typeparam name="T">'T' is the download task.</typeparam>
+    internal abstract class AbstractTaskManager : ITaskManger<ITask>
     {
-        private ConcurrentDictionary<K, Lazy<T>> _downloadTaskPool;
+        #region Private Members
 
-        internal ConcurrentDictionary<K, Lazy<T>> DownloadTaskPool
-        { 
-            get => _downloadTaskPool ?? (_downloadTaskPool = new ConcurrentDictionary<K, Lazy<T>>());
+        private IList<ITask> _downloadTaskPool;
+
+        #endregion
+
+        #region Public Properties
+
+        protected IList<ITask> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask>()); }
+
+        //public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+        //public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
+
+        //public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
+        //public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
+
+        //public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+        //public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
+
+        //public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+        //public event MutiDownloadErrorEventHandler MutiDownloadError;
+
+        //public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+        //public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
+
+        #endregion
+
+        #region Public Methods
+
+        public void DePool(ITask task)
+        {
+            if (task == null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
         }
 
-        public void DePool(K key)
+        public void EnPool(ITask task)
         {
-            DownloadTaskPool.TryRemove(key, out _);
-        }
-
-        public void EnPool(K key, T task)
-        {
-            if (DownloadTaskPool.ContainsKey(key)) return;
-
-            DownloadTaskPool.TryAdd(key, new Lazy<T>(() =>
-            {
-                return task;
-            }));
+            if (task == null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
         }
 
         public abstract void Launch();
+
+        #endregion
     }
 }

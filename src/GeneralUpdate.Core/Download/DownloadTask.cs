@@ -1,34 +1,149 @@
-﻿using GeneralUpdate.Common.CustomAwaiter;
-using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Reflection;
+using System.Threading;
 
 namespace GeneralUpdate.Core.Download
 {
-    public sealed class DownloadTask<T> : AbstractTask, IAwaiter<T>, IAwaitable<DownloadTask<T>, T> where T : class
+    /// <summary>
+    /// Download task class.
+    /// </summary>
+    /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
+    internal sealed class DownloadTask<T> : AbstractTask
     {
-        public void OnCompleted(Action continuation)
+        #region Private Members
+
+        private DownloadManager _manager;
+        private T _version;
+        /// <summary>
+        /// Carry value.
+        /// </summary>
+        private const int DEFAULT_DELTA = 1048576;//1024*1024
+
+        #endregion
+
+        #region Constructors
+
+        public DownloadTask(DownloadManager manger,T version)
         {
-            throw new NotImplementedException();
+            _manager = manger;
+            _version = version;
         }
 
-        public bool IsCompleted { get; }
+        #endregion
 
-        public T GetResult()
+        #region Public Methods
+
+        public override void Launch()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var url = GetPropertyValue<string>(_version, "Url");
+                var path = GetPropertyValue<string>(_version, "Path");
+                InitStatisticsEvent();
+                InitProgressEvent();
+                InitCompletedEvent();
+                //TODO:初始化好路径
+                DownloadFileRange(url, path, null);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("'Launch' The method executes abnormally !", ex);
+            }
         }
 
-        public DownloadTask<T> GetAwaiter()
+        #endregion
+
+        #region Private Methods
+
+        private void InitStatisticsEvent() 
         {
-            return this;
+            if (SpeedTimer == null)
+            {
+                SpeedTimer = new Timer((state) =>
+                {
+                    var interval = DateTime.Now - StartTime;
+
+                    var downLoadSpeed = interval.Seconds < 1
+                        ? StatisticsUtil.ToUnit(ReceivedBytes - BeforBytes)
+                        : StatisticsUtil.ToUnit(ReceivedBytes - BeforBytes / interval.Seconds);
+
+                    var size = (TotalBytes - ReceivedBytes) / DEFAULT_DELTA;
+                    var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
+
+                    OnMutiDownloadStatistics(this,new MutiDownloadStatisticsEventArgs() { Version = _version , Remaining = remainingTime, Speed = downLoadSpeed });
+
+                    StartTime = DateTime.Now;
+                    BeforBytes = ReceivedBytes;
+                }, null, 0, 1000);
+            }
         }
 
-        public override void Dirty()
+        private void InitProgressEvent() 
         {
-            throw new NotImplementedException();
+            DownloadProgressChangedEx += new DownloadProgressChangedEventHandlerEx((sender, e) =>
+            {
+                ReceivedBytes = e.BytesReceived;
+                TotalBytes = e.TotalBytesToReceive;
+
+                var eventArgs = new MutiDownloadProgressChangedEventArgs(_version,
+                    ProgressType.Donwload,
+                    string.Empty,
+                    e.BytesReceived / DEFAULT_DELTA,
+                    e.TotalBytesToReceive / DEFAULT_DELTA,
+                    e.ProgressPercentage,
+                    e.UserState);
+
+                OnMutiDownloadProgressChanged(this, eventArgs);
+            });
         }
+
+        private void InitCompletedEvent() 
+        {
+            DownloadFileCompletedEx += new AsyncCompletedEventHandlerEx((sender, e) =>
+            {
+                try
+                {
+                    if (SpeedTimer != null)
+                    {
+                        SpeedTimer.Dispose();
+                        SpeedTimer = null;
+                    }
+
+                    var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
+                    OnMutiAsyncCompleted(this,eventArgs);
+
+                    Dispose();
+                }
+                catch (Exception exception)
+                {
+                    OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                }
+            });
+        }
+
+        private R GetPropertyValue<R>(T entity,string propertyName) 
+        {
+            R result = default(R);
+            Type entityType = typeof(T);
+            try
+            {
+                PropertyInfo info = entityType.GetProperty(propertyName);
+                result = (R)info.GetValue(entity);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
+            }
+            catch (AmbiguousMatchException ex) 
+            {
+                throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
+            }
+            return result;
+        }
+
+        #endregion
     }
 }

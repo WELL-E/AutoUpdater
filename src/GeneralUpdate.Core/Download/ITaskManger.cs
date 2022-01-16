@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-namespace GeneralUpdate.Core.Download
+﻿namespace GeneralUpdate.Core.Download
 {
-    internal interface ITaskManger<K,T> where T : class
+    /// <summary>
+    /// Download task interface.
+    /// </summary>
+    /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
+    internal interface ITaskManger<ITask>
     {
         /// <summary>
-        /// 添加观察者
+        /// Add download task .
         /// </summary>
         /// <param name="task"></param>
-        void EnPool(K key,T task);
+        void EnPool(ITask task);
 
         /// <summary>
-        /// 减少观察者
+        /// Delete download task .
         /// </summary>
         /// <param name="task"></param>
-        void DePool(K key);
+        void DePool(ITask task);
 
         /// <summary>
-        /// 通知所有下载任务开启下载
+        /// Start all task downloads .
         /// </summary>
         void Launch();
     }

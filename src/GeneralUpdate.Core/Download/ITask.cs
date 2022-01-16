@@ -7,6 +7,9 @@ namespace GeneralUpdate.Core.Download
 {
     internal interface ITask
     {
-        void Dirty();
+        /// <summary>
+        /// Start task download .
+        /// </summary>
+        void Launch();
     }
 }
