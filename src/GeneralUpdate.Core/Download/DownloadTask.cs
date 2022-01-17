@@ -42,11 +42,13 @@ namespace GeneralUpdate.Core.Download
             {
                 var url = GetPropertyValue<string>(_version, "Url");
                 var path = GetPropertyValue<string>(_version, "Path");
+                var name = GetPropertyValue<string>(_version, "Name");
+                InitTimeOut(_manager.TimeOut);
                 InitStatisticsEvent();
                 InitProgressEvent();
                 InitCompletedEvent();
-                //TODO:初始化好路径
-                DownloadFileRange(url, path, null);
+                var installPath = $"{ _manager.Path }\\{ name }{_manager.Format}";
+                DownloadFileRange(url, installPath, null);
             }
             catch (Exception ex)
             {

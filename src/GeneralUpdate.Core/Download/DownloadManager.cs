@@ -20,17 +20,23 @@ namespace GeneralUpdate.Core.Download
 
         private IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
 
-        internal string Path { get; set; }
-        internal string Format { get; set; }
+        private string _path;
+        private string _format;
+        private int _timeOut;
+
+        internal string Path { get => _path; }
+        internal string Format { get => _format; }
+        internal int TimeOut { get => _timeOut; }
 
         #endregion
 
         #region Constructors
 
-        internal DownloadManager(string path, string format) 
+        internal DownloadManager(string path, string format, int timeOut) 
         {
-            Path = path;
-            Format = format;
+            _path = path;
+            _format = format;
+            _timeOut = timeOut;
             //FailedVersions = new List<ValueTuple<UpdateVersion, string>>();
         }
 
@@ -50,6 +56,7 @@ namespace GeneralUpdate.Core.Download
                 {
                     task.Launch();
                 }
+                //TODO:下载完成之后按版本排序，实现IAwaiter异步方法
             }
             catch (ArgumentNullException ex)
             {
