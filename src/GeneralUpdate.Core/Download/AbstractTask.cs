@@ -12,11 +12,10 @@ namespace GeneralUpdate.Core.Download
     {
         #region Private Members
 
-        private DownloadFileRangeState state;
+        private DownloadFileRangeState _state;
         private long _beforBytes;
         private long _receivedBytes;
         private long _totalBytes;
-        private string _url;
         private int _timeOut;
 
         #endregion
@@ -28,21 +27,6 @@ namespace GeneralUpdate.Core.Download
 
         public delegate void AsyncCompletedEventHandlerEx(object sender, AsyncCompletedEventArgs e);
         public event AsyncCompletedEventHandlerEx DownloadFileCompletedEx;
-
-        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
-        public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
-
-        public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
-        public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
-
-        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
-        public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
-
-        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
-        public event MutiDownloadErrorEventHandler MutiDownloadError;
-
-        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
-        public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         protected Timer SpeedTimer { get; set; }
         protected DateTime StartTime { get; set; }
@@ -89,30 +73,6 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
-        public void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e) 
-        {
-            if (MutiDownloadStatistics != null)
-                this.MutiDownloadStatistics(sender,e);
-        }
-
-        public void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e) 
-        {
-            if (MutiDownloadProgressChanged != null)
-                this.MutiDownloadProgressChanged(sender,e);
-        }
-
-        public void OnMutiAsyncCompleted(object sender, MutiDownloadCompletedEventArgs e) 
-        {
-            if (MutiDownloadCompleted != null)
-                this.MutiDownloadCompleted(sender, e);
-        }
-
-        public void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e) 
-        {
-            if (MutiDownloadError != null)
-                this.MutiDownloadError(sender, e);
-        }
-
         public void InitTimeOut(int timeout)
         {
             if (timeout <= 0) timeout = 30;
@@ -135,7 +95,6 @@ namespace GeneralUpdate.Core.Download
 
             request.Timeout = _timeOut;
             request.ReadWriteTimeout = _timeOut;
-            _url = address.OriginalString;
             request.AllowAutoRedirect = false;
             request.AllowWriteStreamBuffering = true;
 
@@ -164,57 +123,57 @@ namespace GeneralUpdate.Core.Download
         public new void CancelAsync()
         {
             base.CancelAsync();
-            if (state != null && state.IsRangeDownload) state.IsRangeDownload = false;
+            if (_state != null && _state.IsRangeDownload) _state.IsRangeDownload = false;
         }
 
         public void DownloadFileRange(string url, string path, object userState)
         {
-            if (state != null && state.IsRangeDownload) return;
+            if (_state != null && _state.IsRangeDownload) return;
 
-            state = new DownloadFileRangeState(path, userState, this);
-            state.OnCompleted = () => DownloadFileCompletedEx;
-            state.IsRangeDownload = true;
-            long startPos = CheckFile(state);
+            _state = new DownloadFileRangeState(path, userState, this);
+            _state.OnCompleted = () => DownloadFileCompletedEx;
+            _state.IsRangeDownload = true;
+            long startPos = CheckFile(_state);
             if (startPos == -1) return;
 
             try
             {
-                state.Request = (HttpWebRequest)GetWebRequest(new Uri(url));
-                state.Request.ReadWriteTimeout = _timeOut;
-                state.Request.Timeout = _timeOut;
-                if (startPos > 0) state.Request.AddRange((int)startPos);
-                state.Respone = state.Request.GetResponse();
-                state.Stream = state.Respone.GetResponseStream();
-                long totalBytesReceived = state.Respone.ContentLength + startPos;
+                _state.Request = (HttpWebRequest)GetWebRequest(new Uri(url));
+                _state.Request.ReadWriteTimeout = _timeOut;
+                _state.Request.Timeout = _timeOut;
+                if (startPos > 0) _state.Request.AddRange((int)startPos);
+                _state.Respone = _state.Request.GetResponse();
+                _state.Stream = _state.Respone.GetResponseStream();
+                long totalBytesReceived = _state.Respone.ContentLength + startPos;
                 long bytesReceived = startPos;
                 if (totalBytesReceived != 0 && bytesReceived >= totalBytesReceived)
                 {
-                    state.Close();
+                    _state.Close();
                     try
                     {
-                        if (File.Exists(state.Path)) File.Delete(state.Path);
-                        File.Move(state.TempPath, state.Path);
+                        if (File.Exists(_state.Path)) File.Delete(_state.Path);
+                        File.Move(_state.TempPath, _state.Path);
                     }
                     catch (Exception e)
                     {
-                        state.Exception = e;
-                        state.Close();
+                        _state.Exception = e;
+                        _state.Close();
                     }
                 }
                 else
                 {
-                    WriteFile(state, startPos);
+                    WriteFile(_state, startPos);
                 }
             }
             catch (Exception e)
             {
-                state.Exception = e;
+                _state.Exception = e;
             }
             finally
             {
-                if (state != null)
+                if (_state != null)
                 {
-                    state.Close();
+                    _state.Close();
                 }
             }
         }

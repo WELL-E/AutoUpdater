@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Core.Update;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GeneralUpdate.Core.Download
 {
@@ -18,21 +17,6 @@ namespace GeneralUpdate.Core.Download
         #region Public Properties
 
         protected IList<ITask> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask>()); }
-
-        //public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
-        //public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
-
-        //public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
-        //public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
-
-        //public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
-        //public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
-
-        //public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
-        //public event MutiDownloadErrorEventHandler MutiDownloadError;
-
-        //public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
-        //public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
-using System.ComponentModel;
 using System.Reflection;
 using System.Threading;
 
@@ -17,10 +16,8 @@ namespace GeneralUpdate.Core.Download
 
         private DownloadManager _manager;
         private T _version;
-        /// <summary>
-        /// Carry value.
-        /// </summary>
-        private const int DEFAULT_DELTA = 1048576;//1024*1024
+        //1024*1024
+        private const int DEFAULT_DELTA = 1048576;
 
         #endregion
 
@@ -62,9 +59,11 @@ namespace GeneralUpdate.Core.Download
 
         private void InitStatisticsEvent() 
         {
-            if (SpeedTimer == null)
+            if (SpeedTimer != null) return;
+
+            SpeedTimer = new Timer(_ =>
             {
-                SpeedTimer = new Timer((state) =>
+                try
                 {
                     var interval = DateTime.Now - StartTime;
 
@@ -75,30 +74,41 @@ namespace GeneralUpdate.Core.Download
                     var size = (TotalBytes - ReceivedBytes) / DEFAULT_DELTA;
                     var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
 
-                    OnMutiDownloadStatistics(this,new MutiDownloadStatisticsEventArgs() { Version = _version , Remaining = remainingTime, Speed = downLoadSpeed });
+                    _manager.OnMutiDownloadStatistics(this, new MutiDownloadStatisticsEventArgs() { Version = _version, Remaining = remainingTime, Speed = downLoadSpeed });
 
                     StartTime = DateTime.Now;
                     BeforBytes = ReceivedBytes;
-                }, null, 0, 1000);
-            }
+                }
+                catch (Exception exception)
+                {
+                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                }
+            }, null, 0, 1000);
         }
 
         private void InitProgressEvent() 
         {
             DownloadProgressChangedEx += new DownloadProgressChangedEventHandlerEx((sender, e) =>
             {
-                ReceivedBytes = e.BytesReceived;
-                TotalBytes = e.TotalBytesToReceive;
+                try
+                {
+                    ReceivedBytes = e.BytesReceived;
+                    TotalBytes = e.TotalBytesToReceive;
 
-                var eventArgs = new MutiDownloadProgressChangedEventArgs(_version,
-                    ProgressType.Donwload,
-                    string.Empty,
-                    e.BytesReceived / DEFAULT_DELTA,
-                    e.TotalBytesToReceive / DEFAULT_DELTA,
-                    e.ProgressPercentage,
-                    e.UserState);
+                    var eventArgs = new MutiDownloadProgressChangedEventArgs(_version,
+                        ProgressType.Donwload,
+                        string.Empty,
+                        e.BytesReceived / DEFAULT_DELTA,
+                        e.TotalBytesToReceive / DEFAULT_DELTA,
+                        e.ProgressPercentage,
+                        e.UserState);
 
-                OnMutiDownloadProgressChanged(this, eventArgs);
+                    _manager.OnMutiDownloadProgressChanged(this, eventArgs);
+                }
+                catch (Exception exception)
+                {
+                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                }
             });
         }
 
@@ -115,13 +125,13 @@ namespace GeneralUpdate.Core.Download
                     }
 
                     var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
-                    OnMutiAsyncCompleted(this,eventArgs);
+                    _manager.OnMutiAsyncCompleted(this,eventArgs);
 
                     Dispose();
                 }
                 catch (Exception exception)
                 {
-                    OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
                 }
             });
         }

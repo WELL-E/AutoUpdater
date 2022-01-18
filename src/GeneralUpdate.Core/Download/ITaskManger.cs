@@ -22,7 +22,5 @@
         /// Start all task downloads .
         /// </summary>
         void Launch();
-
-
     }
 }
