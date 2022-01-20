@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Common.CustomAwaiter;
+using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Reflection;
@@ -10,7 +11,7 @@ namespace GeneralUpdate.Core.Download
     /// Download task class.
     /// </summary>
     /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    internal sealed class DownloadTask<T> : AbstractTask
+    internal sealed class DownloadTask<T> : AbstractTask, IAwaiter
     {
         #region Private Members
 
@@ -18,6 +19,8 @@ namespace GeneralUpdate.Core.Download
         private T _version;
         //1024*1024
         private const int DEFAULT_DELTA = 1048576;
+
+        public bool IsCompleted => throw new NotImplementedException();
 
         #endregion
 
@@ -154,6 +157,16 @@ namespace GeneralUpdate.Core.Download
                 throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             return result;
+        }
+
+        public void GetResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCompleted(Action continuation)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

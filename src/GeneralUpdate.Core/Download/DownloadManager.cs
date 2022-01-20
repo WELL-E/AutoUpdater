@@ -1,10 +1,9 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
 using GeneralUpdate.Common.CustomAwaiter;
+using System.Diagnostics;
 
 namespace GeneralUpdate.Core.Download
 {
@@ -12,10 +11,10 @@ namespace GeneralUpdate.Core.Download
     {
         #region Private Members
 
-        private IList<(object, string)> _failedVersions;
         private string _path;
         private string _format;
         private int _timeOut;
+        private IList<(object, string)> _failedVersions;
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace GeneralUpdate.Core.Download
             _path = path;
             _format = format;
             _timeOut = timeOut;
-            _failedVersions = new List<ValueTuple<UpdateVersion, string>>();
+            _failedVersions = new List<ValueTuple<object, string>>();
         }
 
         #endregion
@@ -105,6 +104,8 @@ namespace GeneralUpdate.Core.Download
             _failedVersions.Add((e.Version,e.Exception.Message));
         }
 
+
+        [DebuggerStepThrough]
         public void GetResult()
         {
             
