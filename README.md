@@ -23,7 +23,7 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 - 源码"sql"目录下包含mysql数据库表内容的生成脚本。
 
 ### 帮助文档 ###
-- https://www.bilibili.com/video/BV1aX4y137dd
+- 讲解视频： https://www.bilibili.com/video/BV1aX4y137dd
 - 官方网站： http://justerzhu.cn/
 
 ### 讨论组 ###
@@ -45,7 +45,7 @@ GeneralUpdate开源项目讨论QQ群：748744489
 - https://www.nuget.org/packages/GeneralUpdate.Core/
 
 ### 更新流程图 ###
-![](http://justerzhu.cn/wp-content/uploads/2022/01/图片2.png)
+![](imgs/flow2.png)
 
 ### 运行效果及更新流程展示 ###
 ![](imgs/run.jpg)
@@ -198,5 +198,4 @@ GeneralUpdate开源项目讨论QQ群：748744489
 
 作者：Juster.zhu & Charles.Yu
 
-![](imgs/vx2.jpg)
-![](imgs/alipay2.jpg)
+![](imgs/money.jpg)
