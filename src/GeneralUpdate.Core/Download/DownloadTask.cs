@@ -3,6 +3,7 @@ using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 
 namespace GeneralUpdate.Core.Download
@@ -11,22 +12,23 @@ namespace GeneralUpdate.Core.Download
     /// Download task class.
     /// </summary>
     /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    internal sealed class DownloadTask<T> : AbstractTask, IAwaiter
+    internal sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
     {
         #region Private Members
 
-        private DownloadManager _manager;
-        private T _version;
+        private Exception _exception;
+        private DownloadManager<T> _manager;
+        public T _version { get; private set; }
         //1024*1024
         private const int DEFAULT_DELTA = 1048576;
 
-        public bool IsCompleted => throw new NotImplementedException();
+        public bool IsCompleted { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public DownloadTask(DownloadManager manger,T version)
+        public DownloadTask(DownloadManager<T> manger,T version)
         {
             _manager = manger;
             _version = version;
@@ -36,7 +38,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
-        public override void Launch()
+        public DownloadTask<T> Launch()
         {
             try
             {
@@ -54,6 +56,29 @@ namespace GeneralUpdate.Core.Download
             {
                 throw new Exception("'Launch' The method executes abnormally !", ex);
             }
+            return this;
+        }
+
+        public DownloadTask<T> GetResult()
+        {
+            if (_exception != null)
+            {
+                ExceptionDispatchInfo.Capture(_exception).Throw();
+            }
+            return this;
+        }
+
+        public void OnCompleted(Action continuation)
+        {
+            if (IsCompleted)
+            {
+                continuation?.Invoke();
+            }
+        }
+
+        public DownloadTask<T> GetAwaiter()
+        {
+            return this;
         }
 
         #endregion
@@ -157,16 +182,6 @@ namespace GeneralUpdate.Core.Download
                 throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             return result;
-        }
-
-        public void GetResult()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCompleted(Action continuation)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

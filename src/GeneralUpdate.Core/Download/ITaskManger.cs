@@ -4,23 +4,18 @@
     /// Download task interface.
     /// </summary>
     /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    internal interface ITaskManger<ITask>
+    internal interface ITaskManger<T>
     {
         /// <summary>
         /// Add download task .
         /// </summary>
         /// <param name="task"></param>
-        void EnPool(ITask task);
+        void EnPool(T task);
 
         /// <summary>
         /// Delete download task .
         /// </summary>
         /// <param name="task"></param>
-        void DePool(ITask task);
-
-        /// <summary>
-        /// Start all task downloads .
-        /// </summary>
-        void Launch();
+        void DePool(T task);
     }
 }

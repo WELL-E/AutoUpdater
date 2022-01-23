@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-namespace GeneralUpdate.Core.Download
+﻿namespace GeneralUpdate.Core.Download
 {
-    internal interface ITask
+    internal interface ITask<T>
     {
-        /// <summary>
-        /// Start task download .
-        /// </summary>
-        void Launch();
     }
 }

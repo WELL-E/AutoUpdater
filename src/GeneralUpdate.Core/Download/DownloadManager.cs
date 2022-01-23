@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using GeneralUpdate.Common.CustomAwaiter;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal sealed class DownloadManager : AbstractTaskManager, IAwaiter
+    internal sealed class DownloadManager<T> : AbstractTaskManager<T> where T : class
     {
         #region Private Members
 
@@ -15,6 +14,9 @@ namespace GeneralUpdate.Core.Download
         private string _format;
         private int _timeOut;
         private IList<(object, string)> _failedVersions;
+        private IList<ITask<T>> _downloadTaskPool;
+
+        public IList<ITask<T>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<T>>()); }
 
         #endregion
 
@@ -41,8 +43,6 @@ namespace GeneralUpdate.Core.Download
         internal string Format { get => _format; }
         internal int TimeOut { get => _timeOut; }
 
-        public bool IsCompleted { get; }
-
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
@@ -62,15 +62,15 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
-        public override void Launch()
+        public async Task AsyncLaunch()
         {
             try
             {
                 foreach (var task in DownloadTaskPool)
                 {
-                    task.Launch();
+                    var downloadTask = task as DownloadTask<T>;
+                    await downloadTask.Launch();
                 }
-                //TODO:实现IAwaiter异步方法,统计下载失败的版本号信息
             }
             catch (ArgumentNullException ex)
             {
@@ -104,16 +104,14 @@ namespace GeneralUpdate.Core.Download
             _failedVersions.Add((e.Version,e.Exception.Message));
         }
 
-
-        [DebuggerStepThrough]
-        public void GetResult()
+        public override void DePool(ITask<T> task)
         {
-            
+            if (task != null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
         }
 
-        public void OnCompleted(Action continuation)
+        public override void EnPool(ITask<T> task)
         {
-            continuation.Invoke();
+            if (task != null && !DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
         }
 
         #endregion
@@ -121,6 +119,5 @@ namespace GeneralUpdate.Core.Download
         #region Private Methods
 
         #endregion
-
     }
 }

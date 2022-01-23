@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Common.CustomAwaiter;
+using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using System.Threading;
 
 namespace GeneralUpdate.Core.Download
 {
-    public abstract class AbstractTask : WebClient, ITask
+    public abstract class AbstractTask<T> : WebClient, ITask<T>
     {
         #region Private Members
 
@@ -335,6 +336,5 @@ namespace GeneralUpdate.Core.Download
             #endregion
         }
 
-        public abstract void Launch();
     }
 }

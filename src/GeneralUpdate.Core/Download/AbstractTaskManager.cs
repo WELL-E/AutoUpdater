@@ -6,34 +6,10 @@ namespace GeneralUpdate.Core.Download
     /// Abstract task manager class.
     /// </summary>
     /// <typeparam name="T">'T' is the download task.</typeparam>
-    internal abstract class AbstractTaskManager : ITaskManger<ITask>
+    internal abstract class AbstractTaskManager<T> : ITaskManger<ITask<T>>
     {
-        #region Private Members
+        public abstract void DePool(ITask<T> task);
 
-        private IList<ITask> _downloadTaskPool;
-
-        #endregion
-
-        #region Public Properties
-
-        protected IList<ITask> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask>()); }
-
-        #endregion
-
-        #region Public Methods
-
-        public void DePool(ITask task)
-        {
-            if (task == null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
-        }
-
-        public void EnPool(ITask task)
-        {
-            if (task == null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
-        }
-
-        public abstract void Launch();
-
-        #endregion
+        public abstract void EnPool(ITask<T> task);
     }
 }
