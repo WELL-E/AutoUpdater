@@ -14,4 +14,8 @@
     <None Remove="nuget.exe" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="G7z\Events\" />
+  </ItemGroup>
+
 </Project>
