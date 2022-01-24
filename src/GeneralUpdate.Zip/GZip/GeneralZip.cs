@@ -1,4 +1,5 @@
 ﻿using GeneralUpdate.Zip.Events;
+using GeneralUpdate.Zip.Factory;
 using GeneralUpdate.Zip.GZip.Events;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Text.RegularExpressions;
  */
 namespace GeneralUpdate.Zip.GZip
 {
-    public class GeneralZip
+    public class GeneralZip : IOperation
     {
         public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
         public event UnZipProgressEventHandler UnZipProgress;
@@ -282,5 +283,14 @@ namespace GeneralUpdate.Zip.GZip
             return fList;
         }
 
+        public bool CreatZip()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Zip()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
