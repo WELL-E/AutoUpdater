@@ -2,6 +2,9 @@
 using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Strategys;
 using GeneralUpdate.ClientCore.Update;
+using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Events;
+using GeneralUpdate.Zip.Factory;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -18,17 +21,19 @@ namespace AutoUpdate.Test
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ClientParameter clientParameter;
-        private GeneralClientBootstrap generalClientBootstrap;
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        #region GeneralUpdate Core
+
+        private ClientParameter clientParameter;
+        private GeneralClientBootstrap generalClientBootstrap;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Task.Run(async()=> 
+            Task.Run(async () =>
             {
                 //主程序信息
                 var mainVersion = "1.1.1";
@@ -80,9 +85,9 @@ namespace AutoUpdate.Test
 
         private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
-             //e.Remaining 剩余下载时间
-             //e.Speed 下载速度
-             //e.Version 当前下载的版本信息
+            //e.Remaining 剩余下载时间
+            //e.Speed 下载速度
+            //e.Version 当前下载的版本信息
         }
 
         private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
@@ -108,7 +113,6 @@ namespace AutoUpdate.Test
 
         private void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
         {
-
             Debug.WriteLine($"{ e.Version.Name } download completed.");
         }
 
@@ -117,19 +121,33 @@ namespace AutoUpdate.Test
             Debug.WriteLine($"{ e.Version.Name } error!");
         }
 
+
+        #endregion
+
+        #region Process launch
+
+        private void BtnLaunch_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(TxtEXEPath.Text, "testmessage");
+        }
+
+        #endregion
+
+        #region MD5
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
             bool? isOpen = openFile.ShowDialog(this);
             if (isOpen.Value)
             {
-               var name = openFile.FileName;
-               var md5 = GetFileMD5(name);
-               TxtMD5.Text= md5;
+                var name = openFile.FileName;
+                var md5 = GetFileMD5(name);
+                TxtMD5.Text = md5;
             }
         }
 
-        internal string GetFileMD5(string fileName)
+        private string GetFileMD5(string fileName)
         {
             try
             {
@@ -150,9 +168,44 @@ namespace AutoUpdate.Test
             }
         }
 
-        private void BtnLaunch_Click(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region GeneralUpdate Zip
+
+        /// <summary>
+        /// Create Zip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCreateZip_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(TxtEXEPath.Text, "testmessage");
+            var factory = new GeneralZipFactory();
+            factory.CompressProgress += (s, e) => { };
+            factory.UnZipProgress += (s, e) => { };
+            factory.Configs("", "").
+                CreatefOperate(OperationType.GZip).
+                CreatZip();
         }
+
+        /// <summary>
+        /// UnZip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnUnZip_Click(object sender, RoutedEventArgs e)
+        {
+            var factory = new GeneralZipFactory();
+            factory.CompressProgress += OnCompressProgress;
+            factory.UnZipProgress += OnUnZipProgress;
+            factory.Configs("", "").
+                CreatefOperate(OperationType.GZip).
+                UnZip();
+        }
+
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) { }
+
+        private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e) { }
+
+        #endregion
     }
 }

@@ -7,26 +7,74 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-            <Button Width="100" Height="30" Content="获取文件MD5码" Click="Button_Click_1" Margin="5"></Button>
-            <Button Width="100" Height="30" Content="进程启动测试" Name="BtnLaunch" Click="BtnLaunch_Click"></Button>
-            <Button Width="100" Height="30" Content="开启测试更新" Click="Button_Click" Margin="5"></Button>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Text="MD5:"></TextBlock>
-            <TextBox Width="200" Name="TxtMD5" Height="25" Margin="5"></TextBox>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <TextBlock Text="进程启动EXE路径:"></TextBlock>
-            <TextBox Width="200" Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
-        </StackPanel>
+        <TabControl>
+            <TabItem Header="Zip Test">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button x:Name="BtnCreateZip" Width="100" Height="30" Content="Create Zip" Margin="5,0,0,0" Click="BtnCreateZip_Click" />
+                        <Button x:Name="BtnUnZip" Width="100" Height="30" Content="UnZip" Margin="5,0,0,0" Click="BtnUnZip_Click" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="35">
+                            <TextBlock Height="15" Text="CreateZip Path:"></TextBlock>
+                            <TextBox Width="200" Name="TxtZipPath" Height="25" Margin="5"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="35">
+                            <TextBlock Height="15" Text="UnZip Path:"></TextBlock>
+                            <TextBox Width="200" Name="TxtUnZipPath" Height="25" Margin="5"></TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Update Test">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button Width="100" Height="30" Content="开启测试更新" Click="Button_Click" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="File MD5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130*"/>
+                        <ColumnDefinition Width="267*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button Width="100" Height="30" Content="获取文件MD5码" Click="Button_Click_1" Margin="5,0,0,0"></Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Height="35" Grid.ColumnSpan="2">
+                        <TextBlock Height="15" Text="MD5:"></TextBlock>
+                        <TextBox Width="200" Name="TxtMD5" Height="25" Margin="5"></TextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Process launch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button Width="100" Height="30" Content="进程启动测试" Name="BtnLaunch" Margin="5,0,0,0" Click="BtnLaunch_Click"></Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Height="35">
+                        <TextBlock Height="15" Text="进程启动EXE路径:"></TextBlock>
+                        <TextBox Width="200" x:Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

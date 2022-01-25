@@ -17,10 +17,12 @@ namespace GeneralUpdate.Zip.GZip
 {
     public class GeneralZip : IOperation
     {
+        private string _sourcePath, _targetPath;
+
         public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
         public event UnZipProgressEventHandler UnZipProgress;
 
-        public delegate void CompressProgressEventHandler(object sender, CompressProgressEventArgs e);
+        public delegate void CompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e);
         public event CompressProgressEventHandler CompressProgress;
 
         /// <summary>
@@ -285,12 +287,28 @@ namespace GeneralUpdate.Zip.GZip
 
         public bool CreatZip()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
-        public bool Zip()
+        public bool UnZip()
         {
-            throw new NotImplementedException();
+            return false;
+        }
+
+        public void OnCompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e)
+        {
+            if (CompressProgress != null) CompressProgress(sender,e);
+        }
+
+        public void OnUnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e)
+        {
+            if(UnZipProgress != null) UnZipProgress(sender,e);
+        }
+
+        public void Configs(string sourcePath, string targetPath)
+        {
+            _sourcePath = sourcePath;
+            _targetPath = targetPath;
         }
     }
 }

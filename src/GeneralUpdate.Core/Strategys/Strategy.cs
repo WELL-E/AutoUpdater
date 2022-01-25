@@ -3,6 +3,7 @@ using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.GZip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

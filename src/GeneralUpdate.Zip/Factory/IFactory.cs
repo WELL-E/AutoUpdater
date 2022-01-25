@@ -4,13 +4,13 @@ using System.Text;
 
 namespace GeneralUpdate.Zip.Factory
 {
-    internal interface IFactory
+    public interface IFactory
     {
         IFactory CreatefOperate(OperationType type);
 
         IFactory CreatZip();
 
-        IFactory Zip();
+        IFactory UnZip();
 
         IFactory Configs(string sourcePath,string targetPath);
     }

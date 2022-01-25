@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Zip.Factory;
+﻿using GeneralUpdate.Zip.Events;
+using GeneralUpdate.Zip.Factory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,17 @@ namespace GeneralUpdate.Zip.GRAR
             throw new NotImplementedException();
         }
 
-        public bool Zip()
+        public void OnCompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UnZip()
         {
             throw new NotImplementedException();
         }

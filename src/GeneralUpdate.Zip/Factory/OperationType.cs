@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GeneralUpdate.Zip.Factory
 {
-    internal enum OperationType
+    public enum OperationType
     {
         GZip = 1,
         GRAR,
