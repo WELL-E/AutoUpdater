@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 /*
@@ -287,12 +286,12 @@ namespace GeneralUpdate.Zip.GZip
 
         public bool CreatZip()
         {
-            return false;
+            return CreatZip(_sourcePath, _targetPath);
         }
 
         public bool UnZip()
         {
-            return false;
+            return UnZip(_sourcePath,_targetPath);
         }
 
         public void OnCompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e)
