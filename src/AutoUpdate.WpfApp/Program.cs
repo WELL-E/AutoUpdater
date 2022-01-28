@@ -34,12 +34,12 @@ namespace AutoUpdate.WpfApp
             if (resultArgs.Length != 6) return;
             if (SingleInstance<Program>.InitializeAsFirstInstance(AppId))
             {
-                var win = new MainWindow();
+                //var win = new MainWindow();
                 //var vm = new MainViewModel(resultArgs, win.Close);
                 //win.DataContext = vm;
 
                 var application = new Program();
-                application.Run(win);
+                //application.Run(win);
                 SingleInstance<Program>.Cleanup();
             }
         }

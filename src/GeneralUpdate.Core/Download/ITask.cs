@@ -1,6 +1,6 @@
 ﻿namespace GeneralUpdate.Core.Download
 {
-    internal interface ITask<T>
+    public interface ITask<T>
     {
     }
 }

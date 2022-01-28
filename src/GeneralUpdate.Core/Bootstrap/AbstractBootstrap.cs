@@ -1,6 +1,7 @@
 ﻿using GeneralUpdate.Common.DTOs;
 using GeneralUpdate.Common.Models;
 using GeneralUpdate.Common.Utils;
+using GeneralUpdate.Core.Download;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
@@ -21,7 +22,6 @@ namespace GeneralUpdate.Core.Bootstrap
 
         private readonly ConcurrentDictionary<UpdateOption, UpdateOptionValue> options;
         private volatile Func<TStrategy> strategyFactory;
-        private GeneralMutiWebClient mutiWebClient;
         private UpdatePacket _packet;
         private IStrategy strategy;
         private const string DefaultFormat = "zip";
@@ -102,14 +102,18 @@ namespace GeneralUpdate.Core.Bootstrap
                 Packet.Format = $".{pacektFormat}";
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-                mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
-                mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
-                mutiWebClient.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-                mutiWebClient.MutiDownloadCompleted += OnMutiDownloadCompleted;
-                mutiWebClient.MutiDownloadError += OnMutiDownloadError;
-                mutiWebClient.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-                mutiWebClient.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                mutiWebClient.MutiDownloadAsync();
+
+                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.Format, GetOption(UpdateOption.DownloadTimeOut));
+                manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                manager.MutiDownloadError += OnMutiDownloadError;
+                manager.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                Packet.UpdateVersions.ForEach((v) => 
+                {
+                    manager.EnPool(new DownloadTask<UpdateVersion>(manager, v));
+                });
+                await manager.AsyncLaunch();
             }
             catch (Exception ex)
             {

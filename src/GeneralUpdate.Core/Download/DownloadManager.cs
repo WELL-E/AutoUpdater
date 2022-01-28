@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Download
 {
-    internal sealed class DownloadManager<T> : AbstractTaskManager<T> where T : class
+    public sealed class DownloadManager<T> : AbstractTaskManager<T> where T : class
     {
         #region Private Members
 
@@ -16,7 +16,7 @@ namespace GeneralUpdate.Core.Download
         private IList<(object, string)> _failedVersions;
         private IList<ITask<T>> _downloadTaskPool;
 
-        public IList<ITask<T>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<T>>()); }
+        private IList<ITask<T>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<T>>()); }
 
         #endregion
 

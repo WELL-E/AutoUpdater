@@ -8,6 +8,11 @@ namespace GeneralUpdate.Zip.GRAR
 {
     internal class GeneralRAR : IOperation
     {
+        public void Configs(string sourcePath, string targetPath)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CreatZip()
         {
             throw new NotImplementedException();

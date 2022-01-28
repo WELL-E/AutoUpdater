@@ -76,7 +76,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         private void OnMutiDownloadCompleted(object sender, GeneralUpdate.Core.Update.MutiDownloadCompletedEventArgs e)
         {
-            Tips3 = $"{ e.Version.Name } download completed.";
+            //Tips3 = $"{ e.Version.Name } download completed.";
         }
 
         private void OnMutiAllDownloadCompleted(object sender, GeneralUpdate.Core.Update.MutiAllDownloadCompletedEventArgs e)
@@ -97,7 +97,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
         private void OnMutiDownloadError(object sender, GeneralUpdate.Core.Update.MutiDownloadErrorEventArgs e)
         {
             
-            Tips5 = $"{ e.Version.Name },{ e.Exception.Message }.";
+            //Tips5 = $"{ e.Version.Name },{ e.Exception.Message }.";
         }
 
         private void OnException(object sender, GeneralUpdate.Core.Update.ExceptionEventArgs e)

@@ -6,7 +6,7 @@ namespace GeneralUpdate.Core.Download
     /// Abstract task manager class.
     /// </summary>
     /// <typeparam name="T">'T' is the download task.</typeparam>
-    internal abstract class AbstractTaskManager<T> : ITaskManger<ITask<T>>
+    public abstract class AbstractTaskManager<T> : ITaskManger<ITask<T>>
     {
         public abstract void DePool(ITask<T> task);
 
