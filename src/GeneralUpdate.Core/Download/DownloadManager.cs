@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Download
 {
+    /// <summary>
+    /// download task manager.
+    /// </summary>
+    /// <typeparam name="T">update version infomation.</typeparam>
     public sealed class DownloadManager<T> : AbstractTaskManager<T> where T : class
     {
         #region Private Members
@@ -22,6 +26,12 @@ namespace GeneralUpdate.Core.Download
 
         #region Constructors
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="format"></param>
+        /// <param name="timeOut"></param>
         internal DownloadManager(string path, string format, int timeOut)
         {
             _path = path;
@@ -40,7 +50,11 @@ namespace GeneralUpdate.Core.Download
         /// </summary>
         internal IList<(object, string)> FailedVersions { get => _failedVersions; }
         internal string Path { get => _path; }
+
+        //zip format
         internal string Format { get => _format; }
+
+        
         internal int TimeOut { get => _timeOut; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
@@ -62,6 +76,12 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
+        /// <summary>
+        /// launch update.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="AmbiguousMatchException"></exception>
         public async Task AsyncLaunch()
         {
             try
