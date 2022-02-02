@@ -2,7 +2,6 @@
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
-using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.GZip;
 using System;
 using System.Collections.Generic;
@@ -128,15 +127,14 @@ namespace GeneralUpdate.Core.Strategys
                 GeneralZip gZip = new GeneralZip();
                 gZip.UnZipProgress += (sender,e) => 
                 {
-                    if (ProgressEventAction == null) return;
-
                     var version = new UpdateVersion(versionInfo.MD5, 
                         versionInfo.PubTime, 
                         versionInfo.Version, 
                         null,
                         versionInfo.Name);
                     var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
-                    ProgressEventAction(this, eventArgs);
+
+                    if (ProgressEventAction != null) ProgressEventAction(this, eventArgs);
                 };
                 bool isUnZip = gZip.UnZip(zipfilepath, unzippath);
                 return isUnZip;

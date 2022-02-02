@@ -63,20 +63,7 @@ namespace GeneralUpdate.Core.Bootstrap
         /// Launch udpate.
         /// </summary>
         /// <returns></returns>
-        public virtual TBootstrap LaunchAsync()
-        {
-            Task.Run(async()=> 
-            {
-                await LaunchTaskAsync();
-            });
-            return (TBootstrap)this;
-        }
-
-        /// <summary>
-        /// Launch udpate.
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<TBootstrap> LaunchTaskAsync()
+        public virtual async Task<TBootstrap> LaunchAsync()
         {
             try
             {

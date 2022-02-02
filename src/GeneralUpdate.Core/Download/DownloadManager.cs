@@ -54,7 +54,6 @@ namespace GeneralUpdate.Core.Download
         //zip format
         internal string Format { get => _format; }
 
-        
         internal int TimeOut { get => _timeOut; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
