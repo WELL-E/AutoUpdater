@@ -17,7 +17,7 @@ namespace GeneralUpdate.Core.Download
         #region Private Members
 
         private Exception _exception;
-        private DownloadManager<T> _manager;
+        private DownloadManager _manager;
         public T _version { get; private set; }
         //1024*1024
         private const int DEFAULT_DELTA = 1048576;
@@ -28,7 +28,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Constructors
 
-        public DownloadTask(DownloadManager<T> manger,T version)
+        public DownloadTask(DownloadManager manger,T version)
         {
             _manager = manger;
             _version = version;

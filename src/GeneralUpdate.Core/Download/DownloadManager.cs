@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,7 +11,7 @@ namespace GeneralUpdate.Core.Download
     /// download task manager.
     /// </summary>
     /// <typeparam name="T">update version infomation.</typeparam>
-    public sealed class DownloadManager<T> : AbstractTaskManager<T> where T : class
+    public sealed class DownloadManager : AbstractTaskManager<UpdateVersion>
     {
         #region Private Members
 
@@ -18,9 +19,9 @@ namespace GeneralUpdate.Core.Download
         private string _format;
         private int _timeOut;
         private IList<(object, string)> _failedVersions;
-        private IList<ITask<T>> _downloadTaskPool;
+        private IList<ITask<UpdateVersion>> _downloadTaskPool;
 
-        private IList<ITask<T>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<T>>()); }
+        private IList<ITask<UpdateVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<UpdateVersion>>()); }
 
         #endregion
 
@@ -87,7 +88,7 @@ namespace GeneralUpdate.Core.Download
             {
                 foreach (var task in DownloadTaskPool)
                 {
-                    var downloadTask = task as DownloadTask<T>;
+                    var downloadTask = task as DownloadTask<UpdateVersion>;
                     await downloadTask.Launch();
                 }
             }
@@ -123,12 +124,12 @@ namespace GeneralUpdate.Core.Download
             _failedVersions.Add((e.Version,e.Exception.Message));
         }
 
-        public override void DePool(ITask<T> task)
+        public override void Remove(ITask<UpdateVersion> task)
         {
             if (task != null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
         }
 
-        public override void EnPool(ITask<T> task)
+        public override void Add(ITask<UpdateVersion> task)
         {
             if (task != null && !DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
         }

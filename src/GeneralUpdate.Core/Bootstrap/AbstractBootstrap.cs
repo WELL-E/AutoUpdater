@@ -90,7 +90,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
 
-                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.Format, GetOption(UpdateOption.DownloadTimeOut));
+                var manager = new DownloadManager(Packet.TempPath, Packet.Format, GetOption(UpdateOption.DownloadTimeOut));
                 manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
                 manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
                 manager.MutiDownloadError += OnMutiDownloadError;
@@ -98,7 +98,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
                 Packet.UpdateVersions.ForEach((v) => 
                 {
-                    manager.EnPool(new DownloadTask<UpdateVersion>(manager, v));
+                    manager.Add(new DownloadTask<UpdateVersion>(manager, v));
                 });
                 await manager.AsyncLaunch();
             }

@@ -10,12 +10,12 @@
         /// Add download task .
         /// </summary>
         /// <param name="task"></param>
-        void EnPool(T task);
+        void Add(T task);
 
         /// <summary>
         /// Delete download task .
         /// </summary>
         /// <param name="task"></param>
-        void DePool(T task);
+        void Remove(T task);
     }
 }
