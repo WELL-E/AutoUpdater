@@ -7,6 +7,9 @@ using System;
 
 namespace GeneralUpdate.Zip
 {
+    /// <summary>
+    /// The compression factory chooses the compressed package format you want to operate .
+    /// </summary>
     public class GeneralZipFactory : IFactory
     {
         private IOperation _operation;
@@ -17,6 +20,13 @@ namespace GeneralUpdate.Zip
         public delegate void CompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e);
         public event CompressProgressEventHandler CompressProgress;
 
+        /// <summary>
+        /// configuration path .
+        /// </summary>
+        /// <param name="sourcePath">source path </param>
+        /// <param name="targetPath"> target path</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IFactory Configs(string sourcePath, string targetPath)
         {
             if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(targetPath)) throw new Exception("'Configs' path not set !");
@@ -24,6 +34,11 @@ namespace GeneralUpdate.Zip
             return this;
         }
 
+        /// <summary>
+        /// Select archive format .
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public IFactory CreatefOperate(OperationType type)
         {
             switch (type)
@@ -53,12 +68,20 @@ namespace GeneralUpdate.Zip
             _operation.OnCompressProgressEventHandler(sender, e);
         }
 
+        /// <summary>
+        /// Creat zip.
+        /// </summary>
+        /// <returns></returns>
         public IFactory CreatZip()
         {
             _operation.CreatZip();
             return this;
         }
 
+        /// <summary>
+        /// Un zip.
+        /// </summary>
+        /// <returns></returns>
         public IFactory UnZip()
         {
             _operation.UnZip();

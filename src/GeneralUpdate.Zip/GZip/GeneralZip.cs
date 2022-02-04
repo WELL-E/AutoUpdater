@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 /*
- * 该文件大部分代码来自于https://www.cnblogs.com/Chary/p/No0000DF.html
- * 原作者：CharyGao
+ * Source address : https://www.cnblogs.com/Chary/p/No0000DF.html
+ * author ：CharyGao
  */
 namespace GeneralUpdate.Zip.GZip
 {
@@ -25,12 +25,12 @@ namespace GeneralUpdate.Zip.GZip
         public event CompressProgressEventHandler CompressProgress;
 
         /// <summary>
-        /// 创建 zip 存档，该文档包含指定目录的文件和子目录。
+        /// Creates a zip archive containing the files and subdirectories of the specified directory. 
         /// </summary>
-        /// <param name="sourceDirectoryName">将要压缩存档的文件目录的路径，可以为相对路径或绝对路径。 相对路径是指相对于当前工作目录的路径。</param>
-        /// <param name="destinationArchiveFileName">将要生成的压缩包的存档路径，可以为相对路径或绝对路径。相对路径是指相对于当前工作目录的路径。</param>
-        /// <param name="compressionLevel">指示压缩操作是强调速度还是强调压缩大小的枚举值</param>
-        /// <param name="includeBaseDirectory">压缩包中是否包含父目录</param>
+        /// <param name="sourceDirectoryName">The path of the file directory to be compressed and archived, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory. </param>
+        /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory. </param>
+        /// <param name="compressionLevel">Enumeration value indicating whether the compression operation emphasizes speed or compression size .</param>
+        /// <param name="includeBaseDirectory">Whether the archive contains the parent directory .</param>
         public bool CreatZip(string sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression, bool includeBaseDirectory = true)
         {
             int i = 1;
@@ -109,11 +109,11 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// 创建 zip 存档，该存档包含指定目录的文件和目录。
+        /// Creates a zip archive containing the files and directories of the specified directory. 
         /// </summary>
-        /// <param name="sourceDirectoryName">将要压缩存档的文件目录的路径，可以为相对路径或绝对路径。 相对路径是指相对于当前工作目录的路径。</param>
-        /// <param name="destinationArchiveFileName">将要生成的压缩包的存档路径，可以为相对路径或绝对路径。 相对路径是指相对于当前工作目录的路径。</param>
-        /// <param name="compressionLevel">指示压缩操作是强调速度还是强调压缩大小的枚举值</param>
+        /// <param name="sourceDirectoryName">The path of the file directory to be compressed and archived, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
+        /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
+        /// <param name="compressionLevel">Enumeration value indicating whether the compression operation emphasizes speed or compression size.</param>
         public bool CreatZip(Dictionary<string, string> sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression)
         {
             int i = 1;
@@ -156,7 +156,7 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// 递归删除磁盘上的指定文件夹目录及文件
+        /// Recursively delete the specified folder directory and file on the disk.
         /// </summary>
         /// <param name="baseDirectory"></param>
         /// <returns></returns>
@@ -183,7 +183,7 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// 递归获取磁盘上的指定目录下所有文件的集合，返回类型是：字典[文件名，要压缩的相对文件名]
+        /// Recursively get the set of all files in the specified directory on the disk, the return type is: dictionary [file name, relative file name to be compressed] 
         /// </summary>
         /// <param name="strBaseDir"></param>
         /// <param name="includeBaseDirectory"></param>
@@ -206,7 +206,7 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// 解压Zip文件，并覆盖保存到指定的目标路径文件夹下
+        /// Unzip the Zip file and save it to the specified target path folder .
         /// </summary>
         /// <param name="zipFilePath">将要解压缩的zip文件的路径</param>
         /// <param name="unZipDir">解压后将zip中的文件存储到磁盘的目标路径</param>
@@ -256,9 +256,9 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// 获取Zip压缩包中的文件列表
+        /// Get a list of files in a Zip archive .
         /// </summary>
-        /// <param name="zipFilePath">Zip压缩包文件的物理路径</param>
+        /// <param name="zipFilePath">The physical path of the Zip archive file.</param>
         /// <returns></returns>
         public List<string> GetZipFileList(string zipFilePath)
         {
