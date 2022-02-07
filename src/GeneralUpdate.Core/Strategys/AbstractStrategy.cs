@@ -19,7 +19,7 @@ namespace GeneralUpdate.Core.Strategys
 
         public virtual T GetOption<T>(UpdateOption<T> option)
         {
-            return default(T);
+            throw new NotImplementedException();
         }
 
         protected virtual bool StartApp(string appName) { throw new NotImplementedException(); }
