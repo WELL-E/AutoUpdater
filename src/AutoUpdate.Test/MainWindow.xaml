@@ -37,7 +37,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                        <Button Width="100" Height="30" Content="开启测试更新" Click="Button_Click" Margin="5,0,0,0"/>
+                        <Button Width="100" Height="30" Content="Enable test update " Click="Button_Click" Margin="5,0,0,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -52,7 +52,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                        <Button Width="100" Height="30" Content="获取文件MD5码" Click="Button_Click_1" Margin="5,0,0,0"></Button>
+                        <Button Width="120" Height="30" Content="Get file MD5 code " Click="Button_Click_1" Margin="5,0,0,0"></Button>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Height="35" Grid.ColumnSpan="2">
                         <TextBlock Height="15" Text="MD5:"></TextBlock>
@@ -64,15 +64,30 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="35"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                        <Button Width="100" Height="30" Content="进程启动测试" Name="BtnLaunch" Margin="5,0,0,0" Click="BtnLaunch_Click"></Button>
+                        <Button Width="120" Height="30" Content="Process startup test " Name="BtnLaunch" Margin="5,0,0,0" Click="BtnLaunch_Click"></Button>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Height="35">
-                        <TextBlock Height="15" Text="进程启动EXE路径:"></TextBlock>
+                        <TextBlock Height="15" Text="Process startup .exe path :"></TextBlock>
                         <TextBox Width="200" x:Name="TxtEXEPath" Height="25" Margin="5"></TextBox>
                     </StackPanel>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="JSON(Json string to add parameters .)"></TextBlock>
+                        <TextBox Grid.Row="1" x:Name="TxtParmeterJson"></TextBox>
+                        <TextBlock Text="BASE64(Base64 string result .)" Grid.Column="1"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtBase64"></TextBox>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>
