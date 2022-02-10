@@ -37,7 +37,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                        <Button Width="100" Height="30" Content="Enable test update " Click="Button_Click" Margin="5,0,0,0"/>
+                        <Button Width="120" Height="30" Content="Enable test update " Click="Button_Click" Margin="5,0,0,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

@@ -153,13 +153,20 @@ namespace AutoUpdate.Test
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            bool? isOpen = openFile.ShowDialog(this);
-            if (isOpen.Value)
+            try
             {
-                var name = openFile.FileName;
-                var md5 = GetFileMD5(name);
-                TxtMD5.Text = md5;
+                OpenFileDialog openFile = new OpenFileDialog();
+                bool? isOpen = openFile.ShowDialog(this);
+                if (isOpen.Value)
+                {
+                    var name = openFile.FileName;
+                    var md5 = GetFileMD5(name);
+                    TxtMD5.Text = md5;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to get MD5: { ex.Message } ");
             }
         }
 
@@ -195,12 +202,19 @@ namespace AutoUpdate.Test
         /// <param name="e"></param>
         private void BtnCreateZip_Click(object sender, RoutedEventArgs e)
         {
-            var factory = new GeneralZipFactory();
-            factory.CompressProgress += (s, e) => { };
-            factory.UnZipProgress += (s, e) => { };
-            factory.Configs("", "").
-                CreatefOperate(OperationType.GZip).
-                CreatZip();
+            try
+            {
+                var factory = new GeneralZipFactory();
+                factory.CompressProgress += (s, e) => { };
+                factory.UnZipProgress += (s, e) => { };
+                factory.Configs(TxtZipPath.Text, TxtUnZipPath.Text).
+                    CreatefOperate(OperationType.GZip).
+                    CreatZip();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"CreatZip error : { ex.Message } ");
+            }
         }
 
         /// <summary>
@@ -210,12 +224,19 @@ namespace AutoUpdate.Test
         /// <param name="e"></param>
         private void BtnUnZip_Click(object sender, RoutedEventArgs e)
         {
-            var factory = new GeneralZipFactory();
-            factory.CompressProgress += OnCompressProgress;
-            factory.UnZipProgress += OnUnZipProgress;
-            factory.Configs("", "").
-                CreatefOperate(OperationType.GZip).
-                UnZip();
+            try
+            {
+                var factory = new GeneralZipFactory();
+                factory.CompressProgress += OnCompressProgress;
+                factory.UnZipProgress += OnUnZipProgress;
+                factory.Configs(TxtZipPath.Text, TxtUnZipPath.Text).
+                    CreatefOperate(OperationType.GZip).
+                    UnZip();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"UnZip error : { ex.Message } ");
+            }
         }
 
         private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) { }
