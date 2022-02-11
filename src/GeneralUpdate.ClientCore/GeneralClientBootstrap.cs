@@ -44,6 +44,30 @@ namespace GeneralUpdate.ClientCore
             return await Task.FromResult(this);
         }
 
+        /// <summary>
+        /// Configure server address .
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public GeneralClientBootstrap Config(string url)
+        {
+            ClientParameter clientParameter = new ClientParameter();
+
+            ValidateConfig(clientParameter);
+            Packet.ClientVersion = clientParameter.ClientVersion;
+            Packet.ClientType = clientParameter.ClientType;
+            Packet.ValidateUrl = clientParameter.ValidateUrl;
+            Packet.UpdateUrl = clientParameter.UpdateUrl;
+            Packet.MainValidateUrl = clientParameter.MainValidateUrl;
+            Packet.MainUpdateUrl = clientParameter.MainUpdateUrl;
+            Packet.AppName = clientParameter.AppName;
+            Packet.MainAppName = clientParameter.MainAppName;
+            Packet.InstallPath = clientParameter.InstallPath;
+            Packet.UpdateLogUrl = clientParameter.UpdateLogUrl;
+            Packet.IsUpdate = clientParameter.IsUpdate;
+            return this;
+        }
+
         public GeneralClientBootstrap Config(ClientParameter clientParameter)
         {
             ValidateConfig(clientParameter);

@@ -83,9 +83,9 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="JSON(Json string to add parameters .)"></TextBlock>
+                        <TextBlock Text="JSON (Json string to add parameters .)"></TextBlock>
                         <TextBox Grid.Row="1" x:Name="TxtParmeterJson"></TextBox>
-                        <TextBlock Text="BASE64(Base64 string result .)" Grid.Column="1"></TextBlock>
+                        <TextBlock Text="BASE64 (Base64 string result .)" Grid.Column="1"></TextBlock>
                         <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtBase64"></TextBox>
                     </Grid>
                 </Grid>
