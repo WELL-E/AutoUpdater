@@ -51,20 +51,20 @@ namespace GeneralUpdate.ClientCore
         /// <returns></returns>
         public GeneralClientBootstrap Config(string url)
         {
-            ClientParameter clientParameter = new ClientParameter();
-
-            ValidateConfig(clientParameter);
-            Packet.ClientVersion = clientParameter.ClientVersion;
-            Packet.ClientType = clientParameter.ClientType;
-            Packet.ValidateUrl = clientParameter.ValidateUrl;
-            Packet.UpdateUrl = clientParameter.UpdateUrl;
-            Packet.MainValidateUrl = clientParameter.MainValidateUrl;
-            Packet.MainUpdateUrl = clientParameter.MainUpdateUrl;
-            Packet.AppName = clientParameter.AppName;
-            Packet.MainAppName = clientParameter.MainAppName;
-            Packet.InstallPath = clientParameter.InstallPath;
-            Packet.UpdateLogUrl = clientParameter.UpdateLogUrl;
-            Packet.IsUpdate = clientParameter.IsUpdate;
+            string basePath =  System.Environment.CurrentDirectory;
+            string mainAppName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            string clienVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Packet.ClientVersion = clienVersion;
+            Packet.ClientType = 1;
+            Packet.ValidateUrl = url;
+            Packet.UpdateUrl = url;
+            Packet.MainValidateUrl = url;
+            Packet.MainUpdateUrl = url;
+            Packet.AppName = "GeneralUpdate";
+            Packet.MainAppName = mainAppName;
+            Packet.InstallPath = basePath;
+            Packet.UpdateLogUrl = null;
+            Packet.IsUpdate = true;
             return this;
         }
 
