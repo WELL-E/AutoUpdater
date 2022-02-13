@@ -29,7 +29,18 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 | Universal Windows Platform 10.0.16299 | 理论支持，未验证 |
 | Unity 2018.1                          | 理论支持，未验证 |
 
+| UI框架名称 | 是否支持           |
+| ---------- | ------------------ |
+| WPF        | 支持               |
+| UWP        | 未验证，等待反馈   |
+| MAUI       | 暂不支持，正在兼容 |
+| Avalonia   | 未验证，等待反馈   |
+| WinUI      | 未验证，等待反馈   |
+
+
+
 ### 功能介绍 ###
+
 - GeneralUpdate.Core：断点续传、逐版本更新。
 - GeneralUpdate.ClientCore：断点续传、逐版本更新、更新组件自更新、便捷启动更新组件
 - GeneralUpdate.AspNetCore：服务端支持更新包下载地址、版本信息等内容。
