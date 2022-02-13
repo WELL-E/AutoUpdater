@@ -13,6 +13,22 @@
 ### 组件介绍 ###
 GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。
 
+### 支持框架
+
+理论支撑：https://docs.microsoft.com/zh-cn/dotnet/standard/net-standard
+
+| 框架名称                              | 是否支持         |
+| ------------------------------------- | ---------------- |
+| .NET Core 2.0                         | 支持             |
+| .NET 5 6 7                            | 支持             |
+| .NET Framework 4.6.1                  | 支持             |
+| Mono 5.4                              | 理论支持，未验证 |
+| Xamarin.iOS                           | 理论支持，未验证 |
+| Xamarin.Mac                           | 理论支持，未验证 |
+| Xamarin.Android                       | 理论支持，未验证 |
+| Universal Windows Platform 10.0.16299 | 理论支持，未验证 |
+| Unity 2018.1                          | 理论支持，未验证 |
+
 ### 功能介绍 ###
 - GeneralUpdate.Core：断点续传、逐版本更新。
 - GeneralUpdate.ClientCore：断点续传、逐版本更新、更新组件自更新、便捷启动更新组件
