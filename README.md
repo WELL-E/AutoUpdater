@@ -10,7 +10,12 @@
 
 ![](imgs/GeneralUpdate_h.png)
 
+
+
+​                                                                                                                       [English introduction]([AutoUpdater/README_en.md at master · WELL-E/AutoUpdater (github.com)](https://github.com/WELL-E/AutoUpdater/blob/master/README_en.md))
+
 ### 组件介绍 ###
+
 GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。
 
 ### 支持框架
