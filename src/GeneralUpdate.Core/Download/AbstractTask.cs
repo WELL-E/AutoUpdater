@@ -109,7 +109,6 @@ namespace GeneralUpdate.Core.Download
             request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13";
             request.Headers.Add(collection);
             request.CookieContainer = cookieContainer;
-
             request.ServicePoint.BindIPEndPointDelegate = (servicePoint, remoteEndPoint, retryCount) =>
             {
                 if (remoteEndPoint.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
@@ -117,7 +116,6 @@ namespace GeneralUpdate.Core.Download
                 else
                     return new IPEndPoint(IPAddress.Any, 0);
             };
-
             return request;
         }
 
@@ -335,6 +333,5 @@ namespace GeneralUpdate.Core.Download
 
             #endregion
         }
-
     }
 }

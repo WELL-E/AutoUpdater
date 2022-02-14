@@ -18,9 +18,9 @@ namespace GeneralUpdate.Core.Download
 
         private Exception _exception;
         private DownloadManager _manager;
+        private const int DEFAULT_DELTA = 1048576;//1024*1024
+
         public T _version { get; private set; }
-        //1024*1024
-        private const int DEFAULT_DELTA = 1048576;
 
         public bool IsCompleted { get; private set; }
 
