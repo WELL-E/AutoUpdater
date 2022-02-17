@@ -8,60 +8,127 @@ namespace GeneralUpdate.ClientCore.Hubs
 {
     public class VersionHub
     {
+        private const string ClientNameflag = "GeneralUpdate.Client";
+        private const string ReceiveMessageflag = "ReceiveMessage";
+        private const string SendMessageflag = "SendMessage";
+        private const string Onlineflag = "Online";
+        private const string Loginflag = "Login";
+        private const string SignOutflag = "SignOut";
+
         private HubConnection connection = null;
-        private const string ClientName = "GeneralUpdate.Client";
+        private VersionHub _instance;
+        private readonly object _lock = new object();
 
-        public VersionHub() 
+        public VersionHub Instance 
         {
-            //初始化SignalR的hub，然后指定服务器地址
-            connection = new HubConnectionBuilder()
-               .WithUrl("https://localhost:44394/chathub")
-               //重连机制
-               .WithAutomaticReconnect(new RandomRetryPolicy())
-               .Build();
-            //关闭连接
-            connection.Closed += async (error) =>
+            get
             {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await connection.StartAsync();
-            };
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new VersionHub();
+                        }
+                    }
+                }
+                return _instance;
+            } 
+        }
 
-            //重连
-            connection.Reconnecting += error =>
+        private VersionHub() { }
+
+        /// <summary>
+        /// Subscribe to the latest version.
+        /// </summary>
+        public void Subscribe(string url,Action<Exception> onException) 
+        {
+            if (string.IsNullOrWhiteSpace(url)) throw new Exception("url not set !");
+
+            try
             {
-                ////TODO:重连处理
-                // Notify users the connection was lost and the client is reconnecting.
-                // Start queuing or dropping messages.
-                return Task.CompletedTask;
-            };
-
-            //接收消息
-            connection.On<string, string>("ReceiveMessage", (user, message) =>
+                if (connection == null)
+                {
+                    connection = new HubConnectionBuilder()
+                            .WithUrl(url)
+                            .WithAutomaticReconnect(new RandomRetryPolicy())
+                            .Build();
+                    connection.On<string>(ReceiveMessageflag, OnReceiveMessageHandler);
+                    connection.On<string>(Onlineflag, OnOnlineMessageHandler);
+                    connection.Reconnected += OnReconnected;
+                    connection.Closed += OnClosed;
+                }
+                connection.StartAsync();
+            }
+            catch (Exception ex)
             {
-                //TODO:接收到新版本推送处理
-            });
-
-            //离线、上线通知
-            connection.On<string>("online", (message) =>
-            {
-                //TODO:离线、上线通知处理
-            });
-
-            connection.StartAsync();
+                onException(ex);
+            }
         }
 
         /// <summary>
-        /// 发送消息给服务器
+        /// Receives the message.
         /// </summary>
-        /// <param name="user">用户名</param>
-        /// <param name="msg">消息内容</param>
+        /// <param name="message"></param>
+        private void OnReceiveMessageHandler(string message) 
+        {
+            //TODO:接收到新版本推送处理
+            //1.解析base64加密字符串
+            //2.json解析为版本对象
+            //3.http请求最新版本信息
+            //4.下载、更新
+            //5.暴露出更新完成通知、更新过程事件通知
+        }
+
+        /// <summary>
+        /// Online and offline notification.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnOnlineMessageHandler(string message)
+        {
+            //TODO:暴露出离线、上线通知
+        }
+
+        /// <summary>
+        /// Reconnection notice.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task OnReconnected(string arg)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Shut down.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private async Task OnClosed(Exception arg)
+        {
+            try
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await connection.StartAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Send message to server.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="msg"></param>
         /// <returns></returns>
         public async Task Send(string user, string msg)
         {
             try
             {
-                await connection.InvokeAsync("SendMessage",
-                    user, msg);
+                await connection.InvokeAsync(SendMessageflag, user, msg);
             }
             catch (Exception ex)
             {
@@ -69,22 +136,35 @@ namespace GeneralUpdate.ClientCore.Hubs
         }
 
         /// <summary>
-        /// 上线
+        /// Login
         /// </summary>
         /// <returns></returns>
         public async Task Login()
         {
-            await connection.InvokeAsync("Login", ClientName);
+            try
+            {
+                await connection.InvokeAsync(Loginflag, ClientNameflag);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         /// <summary>
-        /// 离线
+        /// Sign out
         /// </summary>
         /// <returns></returns>
         public async Task SignOut()
         {
-            await connection.InvokeAsync("SignOut", ClientName);
-            await connection.StopAsync();
+            try
+            {
+                await connection.InvokeAsync(SignOutflag, ClientNameflag);
+                await connection.StopAsync();
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }
