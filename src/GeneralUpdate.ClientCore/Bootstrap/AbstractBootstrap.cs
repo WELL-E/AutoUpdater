@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
+using GeneralUpdate.ClientCore.Download;
 
 namespace GeneralUpdate.ClientCore.Bootstrap
 {
@@ -93,14 +94,17 @@ namespace GeneralUpdate.ClientCore.Bootstrap
                 Packet.Format = $".{pacektFormat}";
                 Packet.AppName = GetOption(UpdateOption.MainApp) ?? Packet.AppName;
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-                mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
-                mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
-                mutiWebClient.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-                mutiWebClient.MutiDownloadCompleted += OnMutiDownloadCompleted;
-                mutiWebClient.MutiDownloadError += OnMutiDownloadError;
-                mutiWebClient.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-                mutiWebClient.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                mutiWebClient.MutiDownloadAsync();
+                var manager = new DownloadManager(Packet.TempPath, Packet.Format, GetOption(UpdateOption.DownloadTimeOut));
+                manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                manager.MutiDownloadError += OnMutiDownloadError;
+                manager.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                Packet.UpdateVersions.ForEach((v) =>
+                {
+                    manager.Add(new DownloadTask<UpdateVersion>(manager, v));
+                });
+                await manager.AsyncLaunch();
             }
             catch (Exception ex)
             {

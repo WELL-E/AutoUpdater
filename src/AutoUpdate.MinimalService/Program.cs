@@ -20,14 +20,14 @@ async Task<List<UpdateVersionDTO>> UpdateVersions(int clientType, string clientV
 {
     //TODO:Link database query information.Different version information can be returned according to the 'clientType' of request.
     var results = new List<UpdateVersionDTO>();
-    results.Add(new UpdateVersionDTO("f698f9032c0d5401bacd3b0f53099618", 1626711760, "1.1.3",
-    "http://192.168.50.225/updatepacket1.zip",
+    results.Add(new UpdateVersionDTO("ce9ef1257467cca72bce8f6bf0e83a54", 1626711760, "1.1.3",
+    "http://192.168.50.170/Update1.zip",
     "updatepacket1"));
-    results.Add(new UpdateVersionDTO("6a1046a66cedf509bfb2a771b2a7a64e", 1626711820, "1.1.4",
-    "http://192.168.50.225/updatepacket2.zip",
+    results.Add(new UpdateVersionDTO("d9a3785f08ed3dd92872bd807ebfb917", 1626711820, "1.1.4",
+    "http://192.168.50.170/Update2.zip",
     "updatepacket2"));
-    results.Add(new UpdateVersionDTO("7689c472ce73a4b8f1b7c791731337e1", 1626711880, "1.1.5",
-    "http://192.168.50.225/updatepacket3.zip",
+    results.Add(new UpdateVersionDTO("224da586553d60315c55e689a789b7bd", 1626711880, "1.1.5",
+    "http://192.168.50.170/Update3.zip",
     "updatepacket3"));
     return await Task.FromResult(results);
 }
@@ -36,9 +36,9 @@ async Task<List<UpdateVersionDTO>> GetValidateInfos(int clientType, string clien
 {
     //TODO:Link database query information.Different version information can be returned according to the 'clientType' of request.
     var results = new List<UpdateVersionDTO>();
-    results.Add(new UpdateVersionDTO("f698f9032c0d5401bacd3b0f53099618", 1626711760, "1.1.3", null, null));
-    results.Add(new UpdateVersionDTO("6a1046a66cedf509bfb2a771b2a7a64e", 1626711820, "1.1.4", null, null));
-    results.Add(new UpdateVersionDTO("7689c472ce73a4b8f1b7c791731337e1", 1626711880, "1.1.5", null, null));
+    results.Add(new UpdateVersionDTO("ce9ef1257467cca72bce8f6bf0e83a54", 1626711760, "1.1.3", null, null));
+    results.Add(new UpdateVersionDTO("d9a3785f08ed3dd92872bd807ebfb917", 1626711820, "1.1.4", null, null));
+    results.Add(new UpdateVersionDTO("224da586553d60315c55e689a789b7bd", 1626711880, "1.1.5", null, null));
     return await Task.FromResult(results);
 }
 

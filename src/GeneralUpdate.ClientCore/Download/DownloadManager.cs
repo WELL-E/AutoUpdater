@@ -34,7 +34,7 @@ namespace GeneralUpdate.ClientCore.Download
         /// <param name="path"></param>
         /// <param name="format"></param>
         /// <param name="timeOut"></param>
-        internal DownloadManager(string path, string format, int timeOut)
+        public DownloadManager(string path, string format, int timeOut)
         {
             _path = path;
             _format = format;
@@ -50,13 +50,13 @@ namespace GeneralUpdate.ClientCore.Download
         /// Record download exception information for all versions.
         /// object: is 'UpdateVersion' , string: is error infomation.
         /// </summary>
-        internal IList<(object, string)> FailedVersions { get => _failedVersions; }
-        internal string Path { get => _path; }
+        public IList<(object, string)> FailedVersions { get => _failedVersions; }
+        public string Path { get => _path; }
 
         //zip format
-        internal string Format { get => _format; }
+        public string Format { get => _format; }
 
-        internal int TimeOut { get => _timeOut; }
+        public int TimeOut { get => _timeOut; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;

@@ -45,13 +45,12 @@ namespace GeneralUpdate.ClientCore.Download
             try
             {
                 var url = GetPropertyValue<string>(_version, "Url");
-                var path = GetPropertyValue<string>(_version, "Path");
                 var name = GetPropertyValue<string>(_version, "Name");
                 InitTimeOut(_manager.TimeOut);
                 InitStatisticsEvent();
                 InitProgressEvent();
                 InitCompletedEvent();
-                var installPath = $"{ _manager.Path }\\{ name }{_manager.Format}";
+                var installPath = $"{ _manager.Path }{ name }{_manager.Format}";
                 DownloadFileRange(url, installPath, null);
             }
             catch (Exception ex)
