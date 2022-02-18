@@ -1,7 +1,6 @@
 ﻿using GeneralUpdate.Zip.Events;
 using GeneralUpdate.Zip.Factory;
 using GeneralUpdate.Zip.G7z;
-using GeneralUpdate.Zip.GRAR;
 using GeneralUpdate.Zip.GZip;
 using System;
 
@@ -45,9 +44,6 @@ namespace GeneralUpdate.Zip
             {
                 case OperationType.GZip:
                     _operation = new GeneralZip();
-                    break;
-                case OperationType.GRAR:
-                    _operation = new GeneralRAR();
                     break;
                 case OperationType.G7z:
                     _operation = new General7z();

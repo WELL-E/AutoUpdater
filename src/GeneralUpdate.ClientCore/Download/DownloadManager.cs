@@ -1,6 +1,10 @@
-﻿using System;
+﻿using GeneralUpdate.ClientCore.Models;
+using GeneralUpdate.ClientCore.Update;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore.Download
 {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GeneralUpdate.ClientCore.Download
 {
-    internal class ITask
+    public interface ITask<T>
     {
     }
 }

@@ -93,14 +93,14 @@ namespace GeneralUpdate.ClientCore.Bootstrap
                 Packet.Format = $".{pacektFormat}";
                 Packet.AppName = GetOption(UpdateOption.MainApp) ?? Packet.AppName;
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-                //mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
-                //mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
-                //mutiWebClient.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-                //mutiWebClient.MutiDownloadCompleted += OnMutiDownloadCompleted;
-                //mutiWebClient.MutiDownloadError += OnMutiDownloadError;
-                //mutiWebClient.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-                //mutiWebClient.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                //mutiWebClient.MutiDownloadAsync();
+                mutiWebClient = new GeneralMutiWebClient(Packet.UpdateVersions, Packet.TempPath, Packet.Format);
+                mutiWebClient.InitTimeOut(GetOption(UpdateOption.DownloadTimeOut));
+                mutiWebClient.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                mutiWebClient.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                mutiWebClient.MutiDownloadError += OnMutiDownloadError;
+                mutiWebClient.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                mutiWebClient.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                mutiWebClient.MutiDownloadAsync();
             }
             catch (Exception ex)
             {

@@ -165,14 +165,14 @@ namespace GeneralUpdate.Zip.GZip
             var successed = true;
             try
             {
-                if (Directory.Exists(baseDirectory)) //如果存在这个文件夹删除之 
+                if (Directory.Exists(baseDirectory)) 
                 {
                     foreach (var directory in Directory.GetFileSystemEntries(baseDirectory))
                         if (File.Exists(directory))
-                            File.Delete(directory); //直接删除其中的文件  
+                            File.Delete(directory); 
                         else
-                            successed = DeleteFolder(directory); //递归删除子文件夹 
-                    Directory.Delete(baseDirectory); //删除已空文件夹     
+                            successed = DeleteFolder(directory);
+                    Directory.Delete(baseDirectory);   
                 }
             }
             catch
@@ -208,8 +208,8 @@ namespace GeneralUpdate.Zip.GZip
         /// <summary>
         /// Unzip the Zip file and save it to the specified target path folder .
         /// </summary>
-        /// <param name="zipFilePath">将要解压缩的zip文件的路径</param>
-        /// <param name="unZipDir">解压后将zip中的文件存储到磁盘的目标路径</param>
+        /// <param name="zipFilePath"></param>
+        /// <param name="unZipDir"></param>
         /// <returns></returns>
         public bool UnZip(string zipFilePath, string unZipDir)
         {
