@@ -1,12 +1,14 @@
-﻿using GeneralUpdate.Common.CustomAwaiter;
-using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
+﻿using GeneralUpdate.ClientCore.CustomAwaiter;
+using GeneralUpdate.ClientCore.Update;
+using GeneralUpdate.ClientCore.Utils;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using System.Text;
 using System.Threading;
 
-namespace GeneralUpdate.Core.Download
+namespace GeneralUpdate.ClientCore.Download
 {
     /// <summary>
     /// Download task class.
@@ -28,7 +30,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Constructors
 
-        public DownloadTask(DownloadManager manger,T version)
+        public DownloadTask(DownloadManager manger, T version)
         {
             _manager = manger;
             _version = version;
@@ -85,7 +87,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Private Methods
 
-        private void InitStatisticsEvent() 
+        private void InitStatisticsEvent()
         {
             if (SpeedTimer != null) return;
 
@@ -114,7 +116,7 @@ namespace GeneralUpdate.Core.Download
             }, null, 0, 1000);
         }
 
-        private void InitProgressEvent() 
+        private void InitProgressEvent()
         {
             DownloadProgressChangedEx += new DownloadProgressChangedEventHandlerEx((sender, e) =>
             {
@@ -140,7 +142,7 @@ namespace GeneralUpdate.Core.Download
             });
         }
 
-        private void InitCompletedEvent() 
+        private void InitCompletedEvent()
         {
             DownloadFileCompletedEx += new AsyncCompletedEventHandlerEx((sender, e) =>
             {
@@ -153,7 +155,7 @@ namespace GeneralUpdate.Core.Download
                     }
 
                     var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
-                    _manager.OnMutiAsyncCompleted(this,eventArgs);
+                    _manager.OnMutiAsyncCompleted(this, eventArgs);
 
                     Dispose();
                 }
@@ -164,7 +166,7 @@ namespace GeneralUpdate.Core.Download
             });
         }
 
-        private R GetPropertyValue<R>(T entity,string propertyName) 
+        private R GetPropertyValue<R>(T entity, string propertyName)
         {
             R result = default(R);
             Type entityType = typeof(T);
@@ -177,7 +179,7 @@ namespace GeneralUpdate.Core.Download
             {
                 throw new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
             }
-            catch (AmbiguousMatchException ex) 
+            catch (AmbiguousMatchException ex)
             {
                 throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }

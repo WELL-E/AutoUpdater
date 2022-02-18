@@ -61,7 +61,7 @@ namespace GeneralUpdate.ClientCore.Update
 
     public class MutiDownloadStatisticsEventArgs : EventArgs
     {
-        public UpdateVersion Version { get; set; }
+        public object Version { get; set; }
 
         public DateTime Remaining { get; set; }
 
@@ -72,13 +72,13 @@ namespace GeneralUpdate.ClientCore.Update
     {
         public ProgressType Type { get; set; }
 
-        public UpdateVersion Version { get; set; }
+        public object Version { get; set; }
 
         public string Message { get; set; }
 
         public double ProgressValue { get; set; }
 
-        public MutiDownloadProgressChangedEventArgs(UpdateVersion version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
+        public MutiDownloadProgressChangedEventArgs(object version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
             : base(received, toReceive, progressPercentage, userState)
         {
             ProgressValue = progressPercentage;
@@ -90,9 +90,9 @@ namespace GeneralUpdate.ClientCore.Update
 
     public class MutiDownloadCompletedEventArgs : AsyncCompletedEventArgs
     {
-        public UpdateVersion Version { get; set; }
+        public object Version { get; set; }
 
-        public MutiDownloadCompletedEventArgs(UpdateVersion version, Exception error, bool cancelled, object userState) : base(error, cancelled, userState)
+        public MutiDownloadCompletedEventArgs(object version, Exception error, bool cancelled, object userState) : base(error, cancelled, userState)
         {
             Version = version;
         }
@@ -115,9 +115,9 @@ namespace GeneralUpdate.ClientCore.Update
     {
         public Exception Exception { get; set; }
 
-        public UpdateVersion Version { get; set; }
+        public object Version { get; set; }
 
-        public MutiDownloadErrorEventArgs(Exception exception, UpdateVersion updateVersion)
+        public MutiDownloadErrorEventArgs(Exception exception, object updateVersion)
         {
             Exception = exception;
             Version = updateVersion;
