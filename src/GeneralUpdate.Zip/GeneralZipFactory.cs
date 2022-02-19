@@ -23,13 +23,12 @@ namespace GeneralUpdate.Zip
         /// configuration path .
         /// </summary>
         /// <param name="sourcePath">source path </param>
-        /// <param name="targetPath"> target path</param>
+        /// <param name="destinationPath"> destination path</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IFactory Configs(string sourcePath, string targetPath)
+        public IFactory Configs(string sourcePath, string destinationPath)
         {
-            if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(targetPath)) throw new Exception("'Configs' path not set !");
-            _operation.Configs(sourcePath, targetPath);
+            if (_operation != null) _operation.Configs(sourcePath, destinationPath);
             return this;
         }
 
@@ -56,12 +55,12 @@ namespace GeneralUpdate.Zip
 
         private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e)
         {
-            _operation.OnUnZipProgressEventHandler(sender, e);
+            if(_operation != null) _operation.OnUnZipProgressEventHandler(sender, e);
         }
 
         private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)
         {
-            _operation.OnCompressProgressEventHandler(sender, e);
+            if (_operation != null) _operation.OnCompressProgressEventHandler(sender, e);
         }
 
         /// <summary>
