@@ -1,16 +1,13 @@
 # GeneralUpdate #
-![](https://img.shields.io/badge/GeneralUpdate.Core-3.6.10-green)
-![](https://img.shields.io/badge/GeneralUpdate.Common-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.ClientCore-1.1.2-green)
-![](https://img.shields.io/badge/GeneralUpdate.AspNetCore-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.Zip-1.0.0-green)
-![](https://img.shields.io/badge/GeneralUpdate.Single-1.0.0-green)
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
 
 ![](imgs/GeneralUpdate_h.png)
 
+[English introduction](https://github.com/WELL-E/AutoUpdater/blob/master/README_en.md)
+
 ### 组件介绍 ###
+
 GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程序。该组件将更新的核心部分抽离出来方便应用于多种项目当中目前适用于wpf，控制台应用，winfrom。
 
 ### 支持框架
@@ -29,16 +26,24 @@ GeneralUpdate是基于.net standard开发的一款（c/s应用）自动升级程
 | Universal Windows Platform 10.0.16299 | 理论支持，未验证 |
 | Unity 2018.1                          | 理论支持，未验证 |
 
-| UI框架名称        | 是否支持           |
-| ----------------- | ------------------ |
-| WPF               | 支持               |
-| UWP               | 未验证，等待反馈   |
-| MAUI              | 暂不支持，正在兼容 |
-| Avalonia          | 未验证，等待反馈   |
-| WinUI             | 未验证，等待反馈   |
-| Console（控制台） | 支持               |
+| UI框架名称        | 是否支持                      |
+| ----------------- | ----------------------------- |
+| WPF               | 支持                          |
+| UWP               | 商店模式下不可更新（lindexi） |
+| MAUI              | 暂不支持，正在兼容            |
+| Avalonia          | 未验证，等待反馈              |
+| WinUI             | 未验证，等待反馈              |
+| Console（控制台） | 支持                          |
 
+### 操作系统
 
+| 操作系统名称 | 是否支持 |
+| ------------ | -------- |
+| Windows      | 支持     |
+| Linux        | 未验证   |
+| Mac          | 未验证   |
+| iOS          | 暂不支持 |
+| Android      | 暂不支持 |
 
 ### 功能介绍 ###
 

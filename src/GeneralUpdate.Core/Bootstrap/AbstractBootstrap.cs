@@ -71,16 +71,25 @@ namespace GeneralUpdate.Core.Bootstrap
                     new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
 
                 var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(Packet.UpdateUrl);
-                if (updateResp.Code == 200)
+                if (updateResp != null)
                 {
-                    var body = updateResp.Body;
-                    Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
-                    Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
+                    if (updateResp.Code == 200)
+                    {
+                        var body = updateResp.Body;
+                        Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
+                        Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
+                    }
+                    else
+                    {
+                        MutiDownloadProgressChanged.Invoke(this,
+                            new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
+                    }
                 }
                 else
                 {
                     MutiDownloadProgressChanged.Invoke(this,
-                        new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
+                        new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Error! Check update failed : The UpdateVersions get failed.\nPlease check your UpdateUrl is right!UpdateUrl:" + Packet.UpdateUrl));
+                    return (TBootstrap)this;
                 }
 
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");

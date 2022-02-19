@@ -28,7 +28,7 @@ namespace GeneralUpdate.Core.Download
         #region Constructors
 
         /// <summary>
-        /// 
+        ///  download manager constructors.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="format"></param>
