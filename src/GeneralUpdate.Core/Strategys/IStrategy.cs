@@ -4,19 +4,19 @@ using System;
 namespace GeneralUpdate.Core.Strategys
 {
     /// <summary>
-    /// 更新策略
+    /// Update the strategy, if you need to extend it, you need to inherit this interface.
     /// </summary>
     public interface IStrategy
     {
         /// <summary>
-        /// 执行策略
+        /// execution strategy.
         /// </summary>
         void Excute();
-        
+
         /// <summary>
-        /// 创建策略
+        /// Create a policy.
         /// </summary>
-        /// <param name="file">策略需要根据文件进行处理</param>
+        /// <param name="file">Abstraction for updating package information.</param>
         void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> eventAction,Action<object, ExceptionEventArgs> errorEventAction);
     }
 }
