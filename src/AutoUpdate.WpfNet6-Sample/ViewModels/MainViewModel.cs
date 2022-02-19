@@ -54,6 +54,10 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
             switch (e.Type)
             {
                 case ProgressType.Check:
+                    if (!string.IsNullOrEmpty(e.Message))
+                    {
+                        Tips5 = e.Message;
+                    }
                     break;
                 case ProgressType.Donwload:
                     ProgressVal = e.BytesReceived;
