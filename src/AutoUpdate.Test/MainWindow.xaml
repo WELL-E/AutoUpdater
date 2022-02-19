@@ -8,6 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
+            <!--ZIP-->
             <TabItem Header="Zip Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -37,6 +38,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--GUpdate.Core-->
             <TabItem Header="GUpdate.Core Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -48,6 +50,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--GUpdate.Client-->
             <TabItem Header="GUpdate.Client Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -59,6 +62,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--MD5-->
             <TabItem Header="File MD5">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -78,6 +82,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--Process launch-->
             <TabItem Header="Process launch">
                 <Grid>
                     <Grid.RowDefinitions>

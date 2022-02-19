@@ -6,12 +6,10 @@ namespace GeneralUpdate.Zip.Factory
 {
     public interface IFactory
     {
-        IFactory CreatefOperate(OperationType type);
+        IFactory CreatefOperate(OperationType type, string sourcePath, string destinationPath, bool includeBaseDirectory = false, Encoding encoding = null);
 
         IFactory CreatZip();
 
         IFactory UnZip();
-
-        IFactory Configs(string sourcePath,string targetPath);
     }
 }

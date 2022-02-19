@@ -3,11 +3,9 @@ using System.Text;
 
 namespace GeneralUpdate.Zip.Factory
 {
-    internal interface IOperation
+    public interface IOperation
     {
-        void Configs(string sourcePath,string destinationPath);
-
-        void Configs(string sourcePath, string destinationPath, Encoding encoding);
+        void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false);
 
         bool CreatZip();
 

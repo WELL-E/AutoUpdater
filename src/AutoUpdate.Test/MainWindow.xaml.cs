@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace AutoUpdate.Test
 {
@@ -156,10 +157,9 @@ namespace AutoUpdate.Test
             try
             {
                 var factory = new GeneralZipFactory();
-                factory.CompressProgress += (s, e) => { };
-                factory.UnZipProgress += (s, e) => { };
-                factory.Configs(TxtZipPath.Text, TxtUnZipPath.Text).
-                    CreatefOperate(GetOperationType()).
+                factory.CompressProgress += OnCompressProgress;
+                //压缩该路径下所有的文件：D:\Updatetest_hub\Run_app ， D:\Updatetest_hub
+                factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text).
                     CreatZip();
             }
             catch (Exception ex)
@@ -178,10 +178,10 @@ namespace AutoUpdate.Test
             try
             {
                 var factory = new GeneralZipFactory();
-                factory.CompressProgress += OnCompressProgress;
                 factory.UnZipProgress += OnUnZipProgress;
-                factory.Configs(TxtZipPath.Text, TxtUnZipPath.Text).
-                    CreatefOperate(GetOperationType()).
+                factory.Completed += OnCompleted;
+                //解压文件包：D:\Updatetest_hub\Run_app\1.zip , D:\Updatetest_hub
+                factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text, true).
                     UnZip();
             }
             catch (Exception ex)
@@ -190,11 +190,16 @@ namespace AutoUpdate.Test
             }
         }
 
+        private void OnCompleted(object sender, CompleteEventArgs e)
+        {
+            Debug.WriteLine($"IsCompleted { e.IsCompleted }.");
+        }
+
         private OperationType GetOperationType() 
         {
             OperationType operationType = 0;
-
-            switch (CmbxZipFormat.SelectedItem.ToString())
+            var item =  CmbxZipFormat.SelectedItem as ComboBoxItem;
+            switch (item.Content)
             {
                 case "ZIP":
                     operationType = OperationType.GZip;
@@ -206,9 +211,9 @@ namespace AutoUpdate.Test
             return operationType;
         }
 
-        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) { }
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) { Debug.WriteLine($"CompressProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
 
-        private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e) { }
+        private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e) { Debug.WriteLine($"UnZipProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
 
         #endregion
 
