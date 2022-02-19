@@ -23,6 +23,8 @@ namespace GeneralUpdate.Zip.G7z
     {
         private string _sourcePath, _destinationPath;
         private Encoding _encoding;
+        private int _unZipCount = 0;
+        private int _unzipTotalCount = 0;
 
         public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
         public event UnZipProgressEventHandler UnZipProgress;
@@ -36,31 +38,20 @@ namespace GeneralUpdate.Zip.G7z
             {
                 using (Stream stream = File.OpenWrite(_sourcePath))
                 {
-                    WriterOptions writerOptions = new WriterOptions(CompressionType.Unknown)
-                    {
-                        LeaveStreamOpen = true,
-                    };
-
+                    WriterOptions writerOptions = new WriterOptions(CompressionType.Unknown)  { LeaveStreamOpen = true  };
                     writerOptions.ArchiveEncoding.Default = _encoding;
-
                     using (var writer = WriterFactory.Open(stream, ArchiveType.SevenZip, writerOptions))
                     {
                         writer.WriteAll(SOLUTION_BASE_PATH, "*", SearchOption.AllDirectories);
                     }
                 }
-
                 using (Stream stream = File.OpenRead(_destinationPath))
                 {
                     ReaderOptions readerOptions = new ReaderOptions();
-
                     readerOptions.ArchiveEncoding.Default = _encoding;
-
                     using (var reader = ReaderFactory.Open(new NonDisposingStream(stream), readerOptions))
                     {
-                        reader.WriteAllToDirectory(SOLUTION_BASE_PATH, new ExtractionOptions()
-                        {
-                            ExtractFullPath = true
-                        });
+                        reader.WriteAllToDirectory(SOLUTION_BASE_PATH, new ExtractionOptions() { ExtractFullPath = true });
                     }
                 }
                 return true;
@@ -75,24 +66,30 @@ namespace GeneralUpdate.Zip.G7z
         {
             try
             {
+                bool isComplete = false;
                 using (var archive = ArchiveFactory.Open(SOURSE_PATH, null))
                 {
-                    foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                   var entries =  archive.Entries;
+                    _unzipTotalCount = entries.Count();
+                    archive.FilePartExtractionBegin += OnFilePartExtractionBegin;
+                    foreach (var entry in entries.Where(entry => !entry.IsDirectory))
                     {
-                        entry.WriteToDirectory(_destinationPath,
-                            new ExtractionOptions()
-                            {
-                                ExtractFullPath = true,
-                                Overwrite = true
-                            });
+                        _unZipCount++;
+                        entry.WriteToDirectory(_destinationPath, new ExtractionOptions() {  ExtractFullPath = true,  Overwrite = true });
                     }
+                    isComplete = archive.IsComplete;
                 }
-                return true;
+                return isComplete;
             }
             catch (Exception)
             {
                 return false;
             }
+        }
+
+        private void OnFilePartExtractionBegin(object sender, FilePartExtractionBeginEventArgs e)
+        {
+            if (UnZipProgress != null) UnZipProgress(sender,new BaseUnZipProgressEventArgs() { Size = e.CompressedSize, Name = e.Name , Index = _unZipCount , Count = _unzipTotalCount , Path = Path.Combine(_destinationPath,e.Name) });
         }
 
         public void OnCompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e)
@@ -109,16 +106,14 @@ namespace GeneralUpdate.Zip.G7z
         {
             _sourcePath = sourcePath;
             _destinationPath = destinationPath ?? SOLUTION_BASE_PATH;
-            _encoding = Encoding.Default;
+            _encoding = _encoding ?? Encoding.UTF8;
             Verifypath(sourcePath, destinationPath);
         }
 
         public void Configs(string sourcePath, string destinationPath, Encoding encoding)
         {
-            _sourcePath = sourcePath;
-            _destinationPath = destinationPath ?? SOLUTION_BASE_PATH;
             _encoding = encoding ?? Encoding.UTF8;
-            Verifypath(sourcePath, destinationPath);
+            Configs(sourcePath, destinationPath);
         }
     }
 }
