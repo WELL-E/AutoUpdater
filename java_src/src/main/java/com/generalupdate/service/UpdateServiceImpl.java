@@ -29,7 +29,7 @@ public class UpdateServiceImpl implements UpdateService {
             return new UpdateResponseDto(200,jsonResult,"");
         }catch (Exception exception){
             exception.printStackTrace();
-            return new UpdateResponseDto(400,jsonResult,"" + exception.getMessage());
+            return new UpdateResponseDto(500,jsonResult,"Server internal error." + exception.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     /**
-     * 比较版本号的大小,前者大则返回一个正数,后者大返回一个负数,相等则返回0
+     * Compare the size of the version number, the former returns a positive number, the latter returns a negative number, and equal returns 0.
      * @param version1
      * @param version2
      * @return
