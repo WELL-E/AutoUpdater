@@ -121,35 +121,5 @@ namespace GeneralUpdate.AspNetCore.Services
              */
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Push the latest version of the content to the client through Signalr.
-        /// </summary>
-        /// <param name="cmd">Push the instructions that need to be executed(JSON).</param>
-        /// <returns></returns>
-        public Task PushLastVersion(Func<IEnumerable<UpdateVersionDTO>> getUpdateVersion) 
-        {
-            /*
-             * TODO：
-             *    1.从数据库中读取需要推送的版本信息
-             */
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Push the command.
-        /// </summary>
-        /// <param name="cmd">JSON</param>·
-        /// <returns></returns>
-        public Task PushCommand(string cmd)
-        {
-            /*
-             * TODO：
-             *    1.从数据库中读取需要推送的版本信息
-             *    2.并制定更新的指令，通过‘cmd’来表示
-             *    3.开放推送指令，用于推送临时补救意外情况。例如：更新包压缩了错误文件导致失败
-             */
-            return Task.CompletedTask;
-        }
     }
 }
