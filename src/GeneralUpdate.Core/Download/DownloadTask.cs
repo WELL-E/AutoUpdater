@@ -12,7 +12,7 @@ namespace GeneralUpdate.Core.Download
     /// Download task class.
     /// </summary>
     /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    internal sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
+    public sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
     {
         #region Private Members
 

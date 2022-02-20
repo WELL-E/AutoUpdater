@@ -102,15 +102,6 @@ namespace GeneralUpdate.ClientCore
                 throw new NullReferenceException("Install path not set.");
             }
 
-            //if (string.IsNullOrEmpty(clientParameter.UpdateLogUrl))
-            //{
-            //    throw new NullReferenceException("Update log url not set.");
-            //}
-            //else if (!DataValidateUtil.IsURL(clientParameter.UpdateLogUrl))
-            //{
-            //    throw new Exception("Illegal update log url address.");
-            //}
-
             if (string.IsNullOrEmpty(clientParameter.UpdateUrl))
             {
                 throw new NullReferenceException("Update url not set.");

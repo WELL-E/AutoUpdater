@@ -1,28 +1,25 @@
 ﻿using GeneralUpdate.Zip.Events;
 using GeneralUpdate.Zip.Factory;
-using GeneralUpdate.Zip.GZip.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
-/*
- * Source address : https://www.cnblogs.com/Chary/p/No0000DF.html
- * author ：CharyGao
- */
 namespace GeneralUpdate.Zip.GZip
 {
-    public class GeneralZip : IOperation
+    /// <summary>
+    /// Source address  : https://www.cnblogs.com/Chary/p/No0000DF.html
+    /// Author ：Chary Gao .
+    /// Tribute to the original author .
+    /// Secondary developer : Juster Z
+    /// </summary>
+    public class GeneralZip : BaseCompress
     {
-        private string _sourcePath, _targetPath;
-
-        public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
-        public event UnZipProgressEventHandler UnZipProgress;
-
-        public delegate void CompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e);
-        public event CompressProgressEventHandler CompressProgress;
+        private string  _destinationPath;
+        private bool _includeBaseDirectory;
 
         /// <summary>
         /// Creates a zip archive containing the files and subdirectories of the specified directory. 
@@ -58,7 +55,7 @@ namespace GeneralUpdate.Zip.GZip
                                         if (toZipedFileName != null && (zipArchiveEntry.FullName.StartsWith(toZipedFileName) || toZipedFileName.StartsWith(zipArchiveEntry.FullName)))
                                         {
                                             i++;
-                                            CompressProgress(this, new CompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName , Name = zipArchiveEntry.Name });
+                                            OnCompressProgressEventHandler(this, new BaseCompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName , Name = zipArchiveEntry.Name });
                                             toDelArchives.Add(zipArchiveEntry);
                                         }
                                     }
@@ -87,7 +84,7 @@ namespace GeneralUpdate.Zip.GZip
                                     if (toZipedFileName != null && (zipArchiveEntry.FullName.StartsWith(toZipedFileName) || toZipedFileName.StartsWith(zipArchiveEntry.FullName)))
                                     {
                                         i++;
-                                        CompressProgress(this, new CompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName, Name = zipArchiveEntry.Name });
+                                        OnCompressProgressEventHandler(this, new BaseCompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName, Name = zipArchiveEntry.Name });
                                         toDelArchives.Add(zipArchiveEntry);
                                     }
                                 }
@@ -135,7 +132,7 @@ namespace GeneralUpdate.Zip.GZip
                                     if (toZipedFileName != null && (zipArchiveEntry.FullName.StartsWith(toZipedFileName) || toZipedFileName.StartsWith(zipArchiveEntry.FullName)))
                                     {
                                         i++;
-                                        CompressProgress(this, new CompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = toZipedFileName });
+                                        OnCompressProgressEventHandler(this, new BaseCompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = toZipedFileName });
                                         toDelArchives.Add(zipArchiveEntry);
                                     }
                                 }
@@ -165,14 +162,14 @@ namespace GeneralUpdate.Zip.GZip
             var successed = true;
             try
             {
-                if (Directory.Exists(baseDirectory)) //如果存在这个文件夹删除之 
+                if (Directory.Exists(baseDirectory)) 
                 {
                     foreach (var directory in Directory.GetFileSystemEntries(baseDirectory))
                         if (File.Exists(directory))
-                            File.Delete(directory); //直接删除其中的文件  
+                            File.Delete(directory); 
                         else
-                            successed = DeleteFolder(directory); //递归删除子文件夹 
-                    Directory.Delete(baseDirectory); //删除已空文件夹     
+                            successed = DeleteFolder(directory);
+                    Directory.Delete(baseDirectory);   
                 }
             }
             catch
@@ -198,7 +195,7 @@ namespace GeneralUpdate.Zip.GZip
             if (includeBaseDirectory)
                 namePrefix += directoryInfo.Name + "\\";
             foreach (var directory in directories)
-                resultDictionary = resultDictionary.Concat(GetAllDirList(directory.FullName, true, namePrefix)).ToDictionary(k => k.Key, k => k.Value); //FullName是某个子目录的绝对地址，
+                resultDictionary = resultDictionary.Concat(GetAllDirList(directory.FullName, true, namePrefix)).ToDictionary(k => k.Key, k => k.Value); 
             foreach (var fileInfo in fileInfos)
                 if (!resultDictionary.ContainsKey(fileInfo.FullName))
                     resultDictionary.Add(fileInfo.FullName, namePrefix + fileInfo.Name);
@@ -208,12 +205,12 @@ namespace GeneralUpdate.Zip.GZip
         /// <summary>
         /// Unzip the Zip file and save it to the specified target path folder .
         /// </summary>
-        /// <param name="zipFilePath">将要解压缩的zip文件的路径</param>
-        /// <param name="unZipDir">解压后将zip中的文件存储到磁盘的目标路径</param>
+        /// <param name="zipFilePath"></param>
+        /// <param name="unZipDir"></param>
         /// <returns></returns>
         public bool UnZip(string zipFilePath, string unZipDir)
         {
-            bool resualt;
+            bool isComplete = false;
             try
             {
                 unZipDir = unZipDir.EndsWith(@"\") ? unZipDir : unZipDir + @"\";
@@ -235,8 +232,8 @@ namespace GeneralUpdate.Zip.GZip
                             {
                                 var entryFilePath = Regex.Replace(entries.FullName.Replace("/", @"\"), @"^\\*", "");
                                 var filePath = directoryInfo + entryFilePath;
-                                UnZipProgress(this, new BaseUnZipProgressEventArgs { Size = entries.Length, Count = count, Index = i + 1 , Path = entries.FullName, Name = entries.Name }); 
-                                 var content = new byte[entries.Length];
+                                OnUnZipProgressEventHandler(this, new BaseUnZipProgressEventArgs { Size = entries.Length, Count = count, Index = i + 1, Path = entries.FullName, Name = entries.Name });
+                                var content = new byte[entries.Length];
                                 entries.Open().Read(content, 0, content.Length);
                                 var greatFolder = Directory.GetParent(filePath);
                                 if (!greatFolder.Exists)
@@ -246,13 +243,17 @@ namespace GeneralUpdate.Zip.GZip
                         }
                     }
                 }
-                resualt = true;
+                isComplete = true;
             }
             catch
             {
-                resualt = false;
+                isComplete = false;
             }
-            return resualt;
+            finally 
+            {
+                OnCompletedEventHandler(this, new CompleteEventArgs(isComplete));
+            }
+            return isComplete;
         }
 
         /// <summary>
@@ -284,30 +285,23 @@ namespace GeneralUpdate.Zip.GZip
             return fList;
         }
 
-        public bool CreatZip()
+        public override bool CreatZip()
         {
-            return CreatZip(_sourcePath, _targetPath);
+            return CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal,_includeBaseDirectory);
         }
 
-        public bool UnZip()
+        public override bool UnZip()
         {
-            return UnZip(_sourcePath,_targetPath);
+            return UnZip(SOURSE_PATH, _destinationPath);
         }
 
-        public void OnCompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e)
+        public override void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false)
         {
-            if (CompressProgress != null) CompressProgress(sender,e);
-        }
-
-        public void OnUnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e)
-        {
-            if(UnZipProgress != null) UnZipProgress(sender,e);
-        }
-
-        public void Configs(string sourcePath, string targetPath)
-        {
-            _sourcePath = sourcePath;
-            _targetPath = targetPath;
+            SOURSE_PATH = sourcePath;
+            COMPRESS_NAME = $"{ Path.GetFileNameWithoutExtension(sourcePath) }.zip";
+            _destinationPath = string.IsNullOrWhiteSpace(destinationPath) ?  SOLUTION_BASE_PATH : destinationPath;
+            _includeBaseDirectory = includeBaseDirectory;
+            Verifypath(sourcePath, destinationPath);
         }
     }
 }

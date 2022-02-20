@@ -7,7 +7,6 @@ namespace GeneralUpdate.Zip.Factory
     public enum OperationType
     {
         GZip = 1,
-        GRAR,
         G7z
     }
 }
