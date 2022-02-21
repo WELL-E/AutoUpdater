@@ -100,11 +100,11 @@ namespace GeneralUpdate.ClientCore.Bootstrap
                 manager.MutiDownloadError += OnMutiDownloadError;
                 manager.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
                 manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                Packet.UpdateVersions.ForEach((v) =>
+                Packet.UpdateVersions.ForEach((version) =>
                 {
-                    manager.Add(new DownloadTask<UpdateVersion>(manager, v));
+                    manager.Add(new DownloadTask<UpdateVersion>(manager, version));
                 });
-                await manager.AsyncLaunch();
+                await manager.LaunchAsync();
             }
             catch (Exception ex)
             {
@@ -226,6 +226,8 @@ namespace GeneralUpdate.ClientCore.Bootstrap
         {
             try
             {
+                if(e.FailedVersions.Count > 0) throw new Exception("Failed to execute strategy, You need to view the 'FailedVersions' in the error notification event !", null);
+
                 if (MutiAllDownloadCompleted != null)
                     MutiAllDownloadCompleted.Invoke(this, e);
 

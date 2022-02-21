@@ -124,6 +124,7 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
+                //TODO：需适应7z zip压缩包解压格式
                 GeneralZip gZip = new GeneralZip();
                 gZip.UnZipProgress += (sender,e) => 
                 {

@@ -55,7 +55,7 @@ namespace GeneralUpdate.ClientCore.Download
             }
             catch (Exception ex)
             {
-                throw new Exception("'Launch' The method executes abnormally !", ex);
+                throw _exception =  new Exception("'Launch' The method executes abnormally !", ex);
             }
             return this;
         }
@@ -160,7 +160,12 @@ namespace GeneralUpdate.ClientCore.Download
                 }
                 catch (Exception exception)
                 {
+                    _manager.FailedVersions.Add(new ValueTuple<object, string> {   });
                     _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                }
+                finally 
+                {
+                    IsCompleted = true;
                 }
             });
         }
@@ -176,11 +181,11 @@ namespace GeneralUpdate.ClientCore.Download
             }
             catch (ArgumentNullException ex)
             {
-                throw new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
+                throw _exception = new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             catch (AmbiguousMatchException ex)
             {
-                throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
+                throw _exception = new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             return result;
         }

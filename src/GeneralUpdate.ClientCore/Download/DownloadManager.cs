@@ -83,22 +83,26 @@ namespace GeneralUpdate.ClientCore.Download
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="AmbiguousMatchException"></exception>
-        public async Task AsyncLaunch()
+        public async Task LaunchAsync()
         {
             try
             {
+                //TODO:添加并行操作
                 foreach (var task in DownloadTaskPool)
                 {
                     var downloadTask = task as DownloadTask<UpdateVersion>;
                     await downloadTask.Launch();
                 }
+                MutiAllDownloadCompleted(this,new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
             }
             catch (ArgumentNullException ex)
             {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ArgumentNullException'.", ex);
             }
             catch (AmbiguousMatchException ex)
             {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new AmbiguousMatchException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AmbiguousMatchException'.", ex);
             }
         }

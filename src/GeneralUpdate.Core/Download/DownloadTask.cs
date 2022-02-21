@@ -153,13 +153,17 @@ namespace GeneralUpdate.Core.Download
                     }
 
                     var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
-                    _manager.OnMutiAsyncCompleted(this,eventArgs);
+                    _manager.OnMutiAsyncCompleted(this, eventArgs);
 
                     Dispose();
                 }
                 catch (Exception exception)
                 {
                     _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                }
+                finally 
+                {
+                    IsCompleted = true;
                 }
             });
         }

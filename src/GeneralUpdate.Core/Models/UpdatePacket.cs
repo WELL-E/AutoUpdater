@@ -52,6 +52,9 @@ namespace GeneralUpdate.Core.Models
         /// </summary>
         public string UpdateLogUrl { get; set; }
 
+        /// <summary>
+        /// Version information that needs to be updated.
+        /// </summary>
         public List<UpdateVersion> UpdateVersions { get; set; }
 
     }

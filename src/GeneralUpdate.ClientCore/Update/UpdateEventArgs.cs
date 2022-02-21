@@ -102,9 +102,9 @@ namespace GeneralUpdate.ClientCore.Update
     {
         public bool IsAllDownloadCompleted { get; set; }
 
-        public IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
+        public IList<ValueTuple<object, string>> FailedVersions { get; set; }
 
-        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<UpdateVersion, string>> failedVersions)
+        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<object, string>> failedVersions)
         {
             IsAllDownloadCompleted = isAllDownloadCompleted;
             FailedVersions = failedVersions;
