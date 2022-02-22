@@ -104,7 +104,7 @@ namespace GeneralUpdate.ClientCore.Bootstrap
                 {
                     manager.Add(new DownloadTask<UpdateVersion>(manager, version));
                 });
-                await manager.LaunchAsync();
+                manager.LaunchTaskAsync();
             }
             catch (Exception ex)
             {

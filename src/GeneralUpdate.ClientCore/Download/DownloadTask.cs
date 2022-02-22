@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore.Download
 {
@@ -80,6 +81,11 @@ namespace GeneralUpdate.ClientCore.Download
         public DownloadTask<T> GetAwaiter()
         {
             return this;
+        }
+
+        public async Task AsTask(DownloadTask<T> awaiter)
+        {
+            await awaiter;
         }
 
         #endregion
