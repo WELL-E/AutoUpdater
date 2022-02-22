@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using GeneralUpdate.ClientCore.GZip;
 using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Update;
 using GeneralUpdate.ClientCore.Utils;
+using GeneralUpdate.ClientCore.ZipFactory;
+using GeneralUpdate.ClientCore.ZipFactory.Factory;
 
 namespace GeneralUpdate.ClientCore.Strategies
 {
@@ -16,12 +17,15 @@ namespace GeneralUpdate.ClientCore.Strategies
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
         protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
 
+        private OperationType _operationType;
+
         public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction, 
             Action<object, ExceptionEventArgs> exceptionEventAction)
         {
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
+            _operationType = Packet.Format.Equals("ZIP") ? OperationType.GZip : OperationType.G7z;
         }
 
         public override void Execute()
@@ -44,12 +48,7 @@ namespace GeneralUpdate.ClientCore.Strategies
                     if (UnZip(version, zipFilePath, Packet.InstallPath))
                     {
                         version.IsUnZip = true;
-                        var versionArgs = new UpdateVersion(version.MD5,
-                            version.PubTime,
-                            version.Version,
-                            null,
-                            version.Name);
-
+                        var versionArgs = new UpdateVersion(version.MD5, version.PubTime, version.Version, null, version.Name);
                         var message = version.IsUnZip ? "update completed." : "Update failed!";
                         var type = version.IsUnZip ? ProgressType.Done : ProgressType.Fail;
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
@@ -115,26 +114,27 @@ namespace GeneralUpdate.ClientCore.Strategies
         /// <summary>
         /// UnZip
         /// </summary>
+        /// <param name="zipfilepath"></param>
+        /// <param name="unzippath"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         protected bool UnZip(UpdateVersion versionInfo, string zipfilepath, string unzippath)
         {
             try
             {
-                //TODO：需适应7z zip压缩包解压格式
-                GeneralZip gZip = new GeneralZip();
-                gZip.UnZipProgress += (sender,e) => 
+                bool isComplated = false;
+                var generalZipFactory = new GeneralZipFactory();
+                generalZipFactory.UnZipProgress += (sender,e) => 
                 {
                     if (ProgressEventAction == null) return;
-
-                    var version = new UpdateVersion(versionInfo.MD5, 
-                        versionInfo.PubTime, 
-                        versionInfo.Version, 
-                        null,
-                        versionInfo.Name);
+                    var version = new UpdateVersion(versionInfo.MD5,  versionInfo.PubTime,  versionInfo.Version,  null, versionInfo.Name);
                     var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
                     ProgressEventAction(this, eventArgs);
                 };
-                bool isUnZip = gZip.UnZip(zipfilepath, unzippath);
-                return isUnZip;
+                generalZipFactory.Completed += (sender, e) => { isComplated = true; };
+                generalZipFactory.CreateOperation(_operationType, zipfilepath, unzippath).
+                    UnZip();
+                return isComplated;
             }
             catch (Exception ex)
             {
@@ -176,6 +176,17 @@ namespace GeneralUpdate.ClientCore.Strategies
                     ExceptionEventAction(this, new ExceptionEventArgs(ex));
                 return false;
             }
+        }
+
+        public bool VerifyFileMd5(string fileName, string md5)
+        {
+            var packetMD5 = FileUtil.GetFileMD5(fileName);
+
+            if (md5.ToUpper().Equals(packetMD5.ToUpper()))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

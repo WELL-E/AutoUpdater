@@ -252,8 +252,9 @@ namespace AutoUpdate.Test
                 clientParameter.MainUpdateUrl = $"http://127.0.0.1:5001/versions/{ mianType }/{ mainVersion }";
 
                 generalClientBootstrap = new GeneralClientBootstrap();
-                //单个或多个更新包下载通知事件
-                generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                generalClientBootstrap.Option(UpdateOption.Format, "ZIP");
+                 //单个或多个更新包下载通知事件
+                 generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
                 //单个或多个更新包下载速度、剩余下载事件、当前下载版本信息通知事件
                 generalClientBootstrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
                 //单个或多个更新包下载完成
