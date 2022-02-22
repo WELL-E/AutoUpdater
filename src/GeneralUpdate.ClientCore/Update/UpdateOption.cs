@@ -17,17 +17,17 @@ namespace GeneralUpdate.ClientCore.Update
         public static UpdateOption<T> ValueOf<T>(string name) => (UpdateOption<T>)Pool.ValueOf<T>(name);
 
         /// <summary>
-        /// 更新包的文件格式
+        /// The file format of the update package.
         /// </summary>
         public static readonly UpdateOption<string> Format = ValueOf<string>("FORMAT");
 
         /// <summary>
-        /// 主程序名称
+        /// main program name.
         /// </summary>
         public static readonly UpdateOption<string> MainApp = ValueOf<string>("MAINAPP");
 
         /// <summary>
-        /// 下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+        /// Download timeout (unit: seconds), if not specified, the default timeout is 30 seconds.
         /// </summary>
         public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
 

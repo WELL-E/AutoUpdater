@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeneralUpdate.ClientCore.GZip.Events
+namespace GeneralUpdate.ClientCore.ZipFactory.Events
 {
-    public class UnZipProgressEventArgs
+    public class BaseCompressProgressEventArgs
     {
         public long Size { get; set; }
 
