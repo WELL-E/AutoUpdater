@@ -11,7 +11,6 @@ namespace GeneralUpdate.ClientCore.Download
     /// <summary>
     /// download task manager.
     /// </summary>
-    /// <typeparam name="T">update version infomation.</typeparam>
     public sealed class DownloadManager : AbstractTaskManager<UpdateVersion>
     {
         #region Private Members

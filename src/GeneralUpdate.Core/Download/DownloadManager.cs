@@ -10,7 +10,6 @@ namespace GeneralUpdate.Core.Download
     /// <summary>
     /// download task manager.
     /// </summary>
-    /// <typeparam name="T">update version infomation.</typeparam>
     public sealed class DownloadManager : AbstractTaskManager<UpdateVersion>
     {
         #region Private Members
@@ -47,7 +46,7 @@ namespace GeneralUpdate.Core.Download
 
         /// <summary>
         /// Record download exception information for all versions.
-        /// object: is 'UpdateVersion' , string: is error infomation.
+        /// object: is 'UpdateVersion' , string: is error information.
         /// </summary>
         internal IList<(object, string)> FailedVersions { get => _failedVersions; }
         internal string Path { get => _path; }
@@ -57,19 +56,19 @@ namespace GeneralUpdate.Core.Download
 
         internal int TimeOut { get => _timeOut; }
 
-        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MultiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
-        public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
+        public delegate void MutiDownloadProgressChangedEventHandler(object csender, MultiDownloadProgressChangedEventArgs e);
         public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
 
-        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+        public delegate void MutiAsyncCompletedEventHandler(object sender, MultiDownloadCompletedEventArgs e);
         public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
 
-        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+        public delegate void MutiDownloadErrorEventHandler(object sender, MultiDownloadErrorEventArgs e);
         public event MutiDownloadErrorEventHandler MutiDownloadError;
 
-        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+        public delegate void MutiDownloadStatisticsEventHandler(object sender, MultiDownloadStatisticsEventArgs e);
         public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         #endregion
@@ -88,8 +87,10 @@ namespace GeneralUpdate.Core.Download
             {
                 foreach (var task in DownloadTaskPool)
                 {
-                    var downloadTask = task as DownloadTask<UpdateVersion>;
-                    await downloadTask.Launch();
+                    if (task is DownloadTask<UpdateVersion> downloadTask)
+                    {
+                        await downloadTask.Launch();
+                    }
                 }
             }
             catch (ArgumentNullException ex)
@@ -102,22 +103,22 @@ namespace GeneralUpdate.Core.Download
             }
         }
 
-        public void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
+        public void OnMultiDownloadStatistics(object sender, MultiDownloadStatisticsEventArgs e)
         {
             if (MutiDownloadStatistics != null) this.MutiDownloadStatistics(sender, e);
         }
 
-        public void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
+        public void OnMultiDownloadProgressChanged(object sender, MultiDownloadProgressChangedEventArgs e)
         {
             if (MutiDownloadProgressChanged != null) this.MutiDownloadProgressChanged(sender, e);
         }
 
-        public void OnMutiAsyncCompleted(object sender, MutiDownloadCompletedEventArgs e)
+        public void OnMultiAsyncCompleted(object sender, MultiDownloadCompletedEventArgs e)
         {
             if (MutiDownloadCompleted != null) this.MutiDownloadCompleted(sender, e);
         }
 
-        public void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
+        public void OnMultiDownloadError(object sender, MultiDownloadErrorEventArgs e)
         {
             if (MutiDownloadError != null) this.MutiDownloadError(sender, e);
 

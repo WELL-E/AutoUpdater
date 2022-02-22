@@ -7,7 +7,7 @@ namespace GeneralUpdate.Zip.Factory
     {
         void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false);
 
-        bool CreatZip();
+        bool CreateZip();
 
         bool UnZip();
 

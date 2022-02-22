@@ -102,14 +102,14 @@ namespace GeneralUpdate.Core.Download
                     var size = (TotalBytes - ReceivedBytes) / DEFAULT_DELTA;
                     var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
 
-                    _manager.OnMutiDownloadStatistics(this, new MutiDownloadStatisticsEventArgs() { Version = _version, Remaining = remainingTime, Speed = downLoadSpeed });
+                    _manager.OnMultiDownloadStatistics(this, new MultiDownloadStatisticsEventArgs() { Version = _version, Remaining = remainingTime, Speed = downLoadSpeed });
 
                     StartTime = DateTime.Now;
                     BeforBytes = ReceivedBytes;
                 }
                 catch (Exception exception)
                 {
-                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                    _manager.OnMultiDownloadError(this, new MultiDownloadErrorEventArgs(exception, _version));
                 }
             }, null, 0, 1000);
         }
@@ -123,19 +123,19 @@ namespace GeneralUpdate.Core.Download
                     ReceivedBytes = e.BytesReceived;
                     TotalBytes = e.TotalBytesToReceive;
 
-                    var eventArgs = new MutiDownloadProgressChangedEventArgs(_version,
-                        ProgressType.Donwload,
+                    var eventArgs = new MultiDownloadProgressChangedEventArgs(_version,
+                        ProgressType.Download,
                         string.Empty,
                         e.BytesReceived / DEFAULT_DELTA,
                         e.TotalBytesToReceive / DEFAULT_DELTA,
                         e.ProgressPercentage,
                         e.UserState);
 
-                    _manager.OnMutiDownloadProgressChanged(this, eventArgs);
+                    _manager.OnMultiDownloadProgressChanged(this, eventArgs);
                 }
                 catch (Exception exception)
                 {
-                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                    _manager.OnMultiDownloadError(this, new MultiDownloadErrorEventArgs(exception, _version));
                 }
             });
         }
@@ -152,14 +152,14 @@ namespace GeneralUpdate.Core.Download
                         SpeedTimer = null;
                     }
 
-                    var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
-                    _manager.OnMutiAsyncCompleted(this, eventArgs);
+                    var eventArgs = new MultiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
+                    _manager.OnMultiAsyncCompleted(this, eventArgs);
 
                     Dispose();
                 }
                 catch (Exception exception)
                 {
-                    _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
+                    _manager.OnMultiDownloadError(this, new MultiDownloadErrorEventArgs(exception, _version));
                 }
                 finally 
                 {

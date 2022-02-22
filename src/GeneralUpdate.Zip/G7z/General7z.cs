@@ -27,7 +27,7 @@ namespace GeneralUpdate.Zip.G7z
         private int _unZipCount = 0;
         private int _unzipTotalCount = 0;
 
-        public override bool CreatZip()
+        public override bool CreateZip()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace GeneralUpdate.Zip.G7z
             COMPRESS_NAME = $"{ Path.GetFileNameWithoutExtension(sourcePath) }.7z";
             _destinationPath = destinationPath ?? SOLUTION_BASE_PATH;
             _encoding = encoding ?? Encoding.Default;
-            Verifypath(sourcePath, destinationPath);
+            VerifyPath(sourcePath, destinationPath);
         }
     }
 }

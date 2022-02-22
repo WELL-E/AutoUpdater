@@ -1,10 +1,10 @@
 using GeneralUpdate.ClientCore.Bootstrap;
 using GeneralUpdate.ClientCore.DTOs;
 using GeneralUpdate.ClientCore.Models;
-using GeneralUpdate.ClientCore.Strategys;
 using GeneralUpdate.ClientCore.Utils;
 using System;
 using System.Threading.Tasks;
+using GeneralUpdate.ClientCore.Strategies;
 
 namespace GeneralUpdate.ClientCore
 {

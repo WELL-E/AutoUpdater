@@ -1,13 +1,13 @@
 ﻿using GeneralUpdate.ClientCore.DTOs;
 using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Utils;
-using GeneralUpdate.ClientCore.Strategys;
 using GeneralUpdate.ClientCore.Update;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using GeneralUpdate.ClientCore.Download;
+using GeneralUpdate.ClientCore.Strategies;
 
 namespace GeneralUpdate.ClientCore.Bootstrap
 {
@@ -130,7 +130,7 @@ namespace GeneralUpdate.ClientCore.Bootstrap
         protected IStrategy ExcuteStrategy()
         {
             var strategy = InitStrategy();
-            strategy.Excute();
+            strategy.Execute();
             return strategy;
         }
 

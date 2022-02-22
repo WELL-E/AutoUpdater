@@ -1,9 +1,8 @@
-﻿using GeneralUpdate.ClientCore.Update;
+﻿using System;
+using GeneralUpdate.ClientCore.Update;
 using GeneralUpdate.ClientCore.Utils;
-using System;
-using System.IO;
 
-namespace GeneralUpdate.ClientCore.Strategys
+namespace GeneralUpdate.ClientCore.Strategies
 {
     public abstract class AbstractStrategy : IStrategy
     {
@@ -12,7 +11,7 @@ namespace GeneralUpdate.ClientCore.Strategys
             throw new NotImplementedException();
         }
 
-        public virtual void Excute()
+        public virtual void Execute()
         {
             throw new NotImplementedException();
         }

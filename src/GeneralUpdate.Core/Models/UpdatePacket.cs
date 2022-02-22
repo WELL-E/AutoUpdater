@@ -38,7 +38,7 @@ namespace GeneralUpdate.Core.Models
         public string MainAppName { get; set; }
 
         /// <summary>
-        /// Update package file format(Defult format is Zip).
+        /// Update package file format(Default format is Zip).
         /// </summary>
         public string Format { get; set; }
 

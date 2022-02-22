@@ -1,21 +1,20 @@
-﻿using GeneralUpdate.ClientCore.DTOs;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using GeneralUpdate.ClientCore.DTOs;
 using GeneralUpdate.ClientCore.Models;
 using GeneralUpdate.ClientCore.Update;
 using GeneralUpdate.ClientCore.Utils;
-using GeneralUpdate.Core.Strategys;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
-namespace GeneralUpdate.ClientCore.Strategys
+namespace GeneralUpdate.ClientCore.Strategies
 {
     public class ClientStrategy : DefaultStrategy
     {
-        public override void Excute()
+        public override void Execute()
         {
             if (Packet.IsUpdate)
             {
-                base.Excute();
+                base.Execute();
             }
             else
             {

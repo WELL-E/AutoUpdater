@@ -1,15 +1,14 @@
-﻿using GeneralUpdate.ClientCore.Models;
-using GeneralUpdate.ClientCore.Update;
-using GeneralUpdate.ClientCore.Utils;
-using GeneralUpdate.ClientCore.GZip;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using GeneralUpdate.ClientCore.Strategys;
+using GeneralUpdate.ClientCore.GZip;
+using GeneralUpdate.ClientCore.Models;
+using GeneralUpdate.ClientCore.Update;
+using GeneralUpdate.ClientCore.Utils;
 
-namespace GeneralUpdate.Core.Strategys
+namespace GeneralUpdate.ClientCore.Strategies
 {
     public class DefaultStrategy : AbstractStrategy
     {
@@ -25,7 +24,7 @@ namespace GeneralUpdate.Core.Strategys
             ExceptionEventAction = exceptionEventAction;
         }
 
-        public override void Excute()
+        public override void Execute()
         {
             try
             {
@@ -116,10 +115,6 @@ namespace GeneralUpdate.Core.Strategys
         /// <summary>
         /// UnZip
         /// </summary>
-        /// <param name="zipfilepath"></param>
-        /// <param name="unzippath"></param>
-        /// <param name="action"></param>
-        /// <returns></returns>
         protected bool UnZip(UpdateVersion versionInfo, string zipfilepath, string unzippath)
         {
             try

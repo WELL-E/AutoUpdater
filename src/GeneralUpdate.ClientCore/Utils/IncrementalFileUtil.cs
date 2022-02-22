@@ -81,7 +81,7 @@ namespace GeneralUpdate.ClientCore.Utils
                         FileUtil.DeleteFile(revertFile);
                     }
                 }
-                FileUtil.DelectDir(backupsPath);
+                FileUtil.DeleteDir(backupsPath);
             }
             catch (Exception)
             {
@@ -103,25 +103,25 @@ namespace GeneralUpdate.ClientCore.Utils
 
             _incrementalFiles = new List<FileBase>();
 
-            foreach (var newfile in _newFiles)
+            foreach (var newFile in _newFiles)
             {
 
-                var file = _oldFiles.FirstOrDefault(i=>i.Name.Equals(newfile.Name));
+                var file = _oldFiles.FirstOrDefault(i=>i.Name.Equals(newFile.Name));
                 if (file != null)
                 {
-                    newfile.Status = FileStatus.Old;
+                    newFile.Status = FileStatus.Old;
                     _incrementalFiles.Add(file);
                 }
                 else
                 {
-                    newfile.Status = FileStatus.New;
-                    _incrementalFiles.Add(newfile);
+                    newFile.Status = FileStatus.New;
+                    _incrementalFiles.Add(newFile);
                 }
             }
             return _incrementalFiles;
         }
 
-        public void GetOldFileinfo(string path) 
+        public void GetOldFileInfo(string path) 
         {
             if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(path))
             {
@@ -130,7 +130,7 @@ namespace GeneralUpdate.ClientCore.Utils
             _oldFiles = FileUtil.GetFiles(path);
         }
 
-        public void GetNewFileinfo(string path)
+        public void GetNewFileInfo(string path)
         {
             if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(path))
             {

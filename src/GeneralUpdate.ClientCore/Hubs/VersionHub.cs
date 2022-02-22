@@ -8,12 +8,12 @@ namespace GeneralUpdate.ClientCore.Hubs
 {
     public class VersionHub
     {
-        private const string ClientNameflag = "GeneralUpdate.Client";
-        private const string ReceiveMessageflag = "ReceiveMessage";
-        private const string SendMessageflag = "SendMessage";
-        private const string Onlineflag = "Online";
-        private const string Loginflag = "Login";
-        private const string SignOutflag = "SignOut";
+        private const string ClientNameFlag = "GeneralUpdate.Client";
+        private const string ReceiveMessageFlag = "ReceiveMessage";
+        private const string SendMessageFlag = "SendMessage";
+        private const string OnlineFlag = "Online";
+        private const string LoginFlag = "Login";
+        private const string SignOutFlag = "SignOut";
 
         private HubConnection connection = null;
         private VersionHub _instance;
@@ -54,8 +54,8 @@ namespace GeneralUpdate.ClientCore.Hubs
                             .WithUrl(url)
                             .WithAutomaticReconnect(new RandomRetryPolicy())
                             .Build();
-                    connection.On<string>(ReceiveMessageflag, OnReceiveMessageHandler);
-                    connection.On<string>(Onlineflag, OnOnlineMessageHandler);
+                    connection.On<string>(ReceiveMessageFlag, OnReceiveMessageHandler);
+                    connection.On<string>(OnlineFlag, OnOnlineMessageHandler);
                     connection.Reconnected += OnReconnected;
                     connection.Closed += OnClosed;
                 }
@@ -128,7 +128,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(SendMessageflag, user, msg);
+                await connection.InvokeAsync(SendMessageFlag, user, msg);
             }
             catch (Exception ex)
             {
@@ -143,7 +143,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(Loginflag, ClientNameflag);
+                await connection.InvokeAsync(LoginFlag, ClientNameFlag);
             }
             catch (Exception ex)
             {
@@ -159,7 +159,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(SignOutflag, ClientNameflag);
+                await connection.InvokeAsync(SignOutFlag, ClientNameFlag);
                 await connection.StopAsync();
             }
             catch (Exception ex)

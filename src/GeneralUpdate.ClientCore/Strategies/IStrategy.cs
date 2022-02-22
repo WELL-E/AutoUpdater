@@ -1,7 +1,7 @@
-﻿using GeneralUpdate.ClientCore.Update;
-using System;
+﻿using System;
+using GeneralUpdate.ClientCore.Update;
 
-namespace GeneralUpdate.ClientCore.Strategys
+namespace GeneralUpdate.ClientCore.Strategies
 {
     /// <summary>
     /// 更新策略
@@ -11,7 +11,7 @@ namespace GeneralUpdate.ClientCore.Strategys
         /// <summary>
         /// 执行策略
         /// </summary>
-        void Excute();
+        void Execute();
         
         /// <summary>
         /// 创建策略

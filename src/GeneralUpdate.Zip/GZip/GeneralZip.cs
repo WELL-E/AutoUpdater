@@ -28,7 +28,7 @@ namespace GeneralUpdate.Zip.GZip
         /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory. </param>
         /// <param name="compressionLevel">Enumeration value indicating whether the compression operation emphasizes speed or compression size .</param>
         /// <param name="includeBaseDirectory">Whether the archive contains the parent directory .</param>
-        public bool CreatZip(string sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression, bool includeBaseDirectory = true)
+        public bool CreateZip(string sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression, bool includeBaseDirectory = true)
         {
             int i = 1;
             try
@@ -111,7 +111,7 @@ namespace GeneralUpdate.Zip.GZip
         /// <param name="sourceDirectoryName">The path of the file directory to be compressed and archived, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
         /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
         /// <param name="compressionLevel">Enumeration value indicating whether the compression operation emphasizes speed or compression size.</param>
-        public bool CreatZip(Dictionary<string, string> sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression)
+        public bool CreateZip(Dictionary<string, string> sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression)
         {
             int i = 1;
             try
@@ -159,7 +159,7 @@ namespace GeneralUpdate.Zip.GZip
         /// <returns></returns>
         private bool DeleteFolder(string baseDirectory)
         {
-            var successed = true;
+            var succeed = true;
             try
             {
                 if (Directory.Exists(baseDirectory)) 
@@ -168,15 +168,15 @@ namespace GeneralUpdate.Zip.GZip
                         if (File.Exists(directory))
                             File.Delete(directory); 
                         else
-                            successed = DeleteFolder(directory);
+                            succeed = DeleteFolder(directory);
                     Directory.Delete(baseDirectory);   
                 }
             }
             catch
             {
-                successed = false;
+                succeed = false;
             }
-            return successed;
+            return succeed;
         }
 
         /// <summary>
@@ -285,9 +285,9 @@ namespace GeneralUpdate.Zip.GZip
             return fList;
         }
 
-        public override bool CreatZip()
+        public override bool CreateZip()
         {
-            return CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal,_includeBaseDirectory);
+            return CreateZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal,_includeBaseDirectory);
         }
 
         public override bool UnZip()
@@ -301,7 +301,7 @@ namespace GeneralUpdate.Zip.GZip
             COMPRESS_NAME = $"{ Path.GetFileNameWithoutExtension(sourcePath) }.zip";
             _destinationPath = string.IsNullOrWhiteSpace(destinationPath) ?  SOLUTION_BASE_PATH : destinationPath;
             _includeBaseDirectory = includeBaseDirectory;
-            Verifypath(sourcePath, destinationPath);
+            VerifyPath(sourcePath, destinationPath);
         }
     }
 }

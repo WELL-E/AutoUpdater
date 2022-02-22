@@ -1,18 +1,16 @@
-﻿using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
-using System;
-using System.IO;
+﻿using System;
+using GeneralUpdate.Core.Update;
 
-namespace GeneralUpdate.Core.Strategys
+namespace GeneralUpdate.Core.Strategies
 {
     public abstract class AbstractStrategy : IStrategy
     {
-        public virtual void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> eventAction, Action<object, ExceptionEventArgs> errorEventAction)
+        public virtual void Create(IFile file, Action<object, MultiDownloadProgressChangedEventArgs> eventAction, Action<object, ExceptionEventArgs> errorEventAction)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void Excute()
+        public virtual void Execute()
         {
             throw new NotImplementedException();
         }

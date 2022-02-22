@@ -11,13 +11,13 @@ namespace GeneralUpdate.ClientCore.Utils
 {
     internal static class FileUtil
     {
-        public static bool CreateFloder(string path) 
+        public static bool CreateFolder(string path) 
         {
             try
             {
                 if (System.IO.Directory.Exists(path))
                 {
-                    DelectDir(path);
+                    DeleteDir(path);
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace GeneralUpdate.ClientCore.Utils
             return true;
         }
 
-        public static void DelectDir(string srcPath)
+        public static void DeleteDir(string srcPath)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace GeneralUpdate.ClientCore.Utils
             Directory.Delete(sourceDir);
         }
 
-        public static JObject ConfigurationBulider(string jsonPath)
+        public static JObject ConfigurationBuilder(string jsonPath)
         {
             using (System.IO.StreamReader file = System.IO.File.OpenText(jsonPath))
             {
@@ -204,8 +204,8 @@ namespace GeneralUpdate.ClientCore.Utils
             var files = dir.GetFiles();
             foreach (var file in files)
             {
-                var temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, isOverWrite);
+                var tempPath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(tempPath, isOverWrite);
                 if (action != null)
                 {
                     action.Invoke(file.Name);
@@ -216,8 +216,8 @@ namespace GeneralUpdate.ClientCore.Utils
             {
                 foreach (var subdir in dirs)
                 {
-                    var temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, true, isOverWrite, action);
+                    var tempPath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, tempPath, true, isOverWrite, action);
                 }
             }
 

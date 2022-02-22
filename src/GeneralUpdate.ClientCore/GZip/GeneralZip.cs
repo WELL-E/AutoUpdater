@@ -24,7 +24,7 @@ namespace GeneralUpdate.ClientCore.GZip
         /// <param name="destinationArchiveFileName">将要生成的压缩包的存档路径，可以为相对路径或绝对路径。相对路径是指相对于当前工作目录的路径。</param>
         /// <param name="compressionLevel">指示压缩操作是强调速度还是强调压缩大小的枚举值</param>
         /// <param name="includeBaseDirectory">压缩包中是否包含父目录</param>
-        public bool CreatZip(string sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression, bool includeBaseDirectory = true)
+        public bool CreateZip(string sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression, bool includeBaseDirectory = true)
         {
             int i = 1;
             try
@@ -107,7 +107,7 @@ namespace GeneralUpdate.ClientCore.GZip
         /// <param name="sourceDirectoryName">将要压缩存档的文件目录的路径，可以为相对路径或绝对路径。 相对路径是指相对于当前工作目录的路径。</param>
         /// <param name="destinationArchiveFileName">将要生成的压缩包的存档路径，可以为相对路径或绝对路径。 相对路径是指相对于当前工作目录的路径。</param>
         /// <param name="compressionLevel">指示压缩操作是强调速度还是强调压缩大小的枚举值</param>
-        public bool CreatZip(Dictionary<string, string> sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression)
+        public bool CreateZip(Dictionary<string, string> sourceDirectoryName, string destinationArchiveFileName, CompressionLevel compressionLevel = CompressionLevel.NoCompression)
         {
             int i = 1;
             try
@@ -155,7 +155,7 @@ namespace GeneralUpdate.ClientCore.GZip
         /// <returns></returns>
         private bool DeleteFolder(string baseDirectory)
         {
-            var successed = true;
+            var succeed = true;
             try
             {
                 if (Directory.Exists(baseDirectory)) //如果存在这个文件夹删除之 
@@ -164,15 +164,15 @@ namespace GeneralUpdate.ClientCore.GZip
                         if (File.Exists(directory))
                             File.Delete(directory); //直接删除其中的文件  
                         else
-                            successed = DeleteFolder(directory); //递归删除子文件夹 
+                            succeed = DeleteFolder(directory); //递归删除子文件夹 
                     Directory.Delete(baseDirectory); //删除已空文件夹     
                 }
             }
             catch
             {
-                successed = false;
+                succeed = false;
             }
-            return successed;
+            return succeed;
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace GeneralUpdate.ClientCore.GZip
         /// <returns></returns>
         public bool UnZip(string zipFilePath, string unZipDir)
         {
-            bool resualt;
+            bool result;
             try
             {
                 unZipDir = unZipDir.EndsWith(@"\") ? unZipDir : unZipDir + @"\";
@@ -239,13 +239,13 @@ namespace GeneralUpdate.ClientCore.GZip
                         }
                     }
                 }
-                resualt = true;
+                result = true;
             }
             catch
             {
-                resualt = false;
+                result = false;
             }
-            return resualt;
+            return result;
         }
 
         /// <summary>

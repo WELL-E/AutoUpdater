@@ -43,9 +43,9 @@ namespace GeneralUpdate.Zip.Factory
             SOLUTION_BASE_PATH = AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public void Verifypath(string soursePath , string destinationPath) 
+        public void VerifyPath(string sourcePath , string destinationPath) 
         {
-            if (string.IsNullOrWhiteSpace(soursePath) || string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentNullException("'Sourse path' or 'Destination path' Is null or empty.");
+            if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentNullException("'Sourse path' or 'Destination path' Is null or empty.");
 
             if (!Directory.Exists(destinationPath)) throw new Exception("The destination directory does not exist !");
         }
@@ -58,7 +58,7 @@ namespace GeneralUpdate.Zip.Factory
 
         public abstract void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false);
 
-        public abstract bool CreatZip();
+        public abstract bool CreateZip();
 
         public abstract bool UnZip();
     }
