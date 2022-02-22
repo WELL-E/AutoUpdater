@@ -3,7 +3,6 @@ using GeneralUpdate.Common.Models;
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Download;
 using GeneralUpdate.Core.Models;
-using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
@@ -11,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
+using GeneralUpdate.Core.Strategies;
 
 namespace GeneralUpdate.Core.Bootstrap
 {
@@ -26,19 +26,19 @@ namespace GeneralUpdate.Core.Bootstrap
         private IStrategy strategy;
         private const string DefaultFormat = "zip";
 
-        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MultiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
-        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MutiDownloadProgressChangedEventArgs e);
+        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MultiDownloadProgressChangedEventArgs e);
         public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
 
-        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+        public delegate void MutiAsyncCompletedEventHandler(object sender, MultiDownloadCompletedEventArgs e);
         public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
 
-        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+        public delegate void MutiDownloadErrorEventHandler(object sender, MultiDownloadErrorEventArgs e);
         public event MutiDownloadErrorEventHandler MutiDownloadError;
 
-        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+        public delegate void MutiDownloadStatisticsEventHandler(object sender, MultiDownloadStatisticsEventArgs e);
         public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         public delegate void ExceptionEventHandler(object sender, ExceptionEventArgs e);
@@ -68,7 +68,7 @@ namespace GeneralUpdate.Core.Bootstrap
             try
             {
                 MutiDownloadProgressChanged.Invoke(this,
-                    new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
+                    new MultiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
 
                 var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(Packet.UpdateUrl);
                 if (updateResp.Code == 200)
@@ -80,7 +80,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 else
                 {
                     MutiDownloadProgressChanged.Invoke(this,
-                        new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
+                        new MultiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
                 }
 
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
@@ -126,7 +126,7 @@ namespace GeneralUpdate.Core.Bootstrap
         protected IStrategy ExcuteStrategy()
         {
             var strategy = InitStrategy();
-            strategy.Excute();
+            strategy.Execute();
             return strategy;
         }
 
@@ -182,13 +182,13 @@ namespace GeneralUpdate.Core.Bootstrap
 
         #region Callback event.
 
-        private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
+        private void OnMutiDownloadStatistics(object sender, MultiDownloadStatisticsEventArgs e)
         {
             if (MutiDownloadStatistics != null)
                 MutiDownloadStatistics.Invoke(this,e);
         }
 
-        protected void MutiDownloadProgressAction(object sender, MutiDownloadProgressChangedEventArgs e)
+        protected void MutiDownloadProgressAction(object sender, MultiDownloadProgressChangedEventArgs e)
         {
             if (MutiDownloadProgressChanged != null)
                 MutiDownloadProgressChanged.Invoke(sender, e);
@@ -200,25 +200,25 @@ namespace GeneralUpdate.Core.Bootstrap
                 Exception.Invoke(this, e);
         }
 
-        private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
+        private void OnMutiDownloadProgressChanged(object sender, MultiDownloadProgressChangedEventArgs e)
         {
             if (MutiDownloadProgressChanged != null)
                 MutiDownloadProgressChanged.Invoke(this, e);
         }
 
-        private void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
+        private void OnMutiDownloadCompleted(object sender, MultiDownloadCompletedEventArgs e)
         {
             if (MutiDownloadCompleted != null)
                 MutiDownloadCompleted.Invoke(sender, e);
         }
 
-        private void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
+        private void OnMutiDownloadError(object sender, MultiDownloadErrorEventArgs e)
         {
             if (MutiDownloadError != null)
                 MutiDownloadError.Invoke(this, e);
         }
 
-        private void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
+        private void OnMutiAllDownloadCompleted(object sender, MultiAllDownloadCompletedEventArgs e)
         {
             try
             {

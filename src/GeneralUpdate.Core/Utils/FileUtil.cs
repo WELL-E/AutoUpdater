@@ -11,13 +11,13 @@ namespace GeneralUpdate.Core.Utils
 {
     internal static class FileUtil
     {
-        public static bool CreateFloder(string path) 
+        public static bool CreateFolder(string path) 
         {
             try
             {
                 if (System.IO.Directory.Exists(path))
                 {
-                    DelectDir(path);
+                    DeleteDir(path);
                 }
                 else
                 {
@@ -73,13 +73,13 @@ namespace GeneralUpdate.Core.Utils
             return true;
         }
 
-        public static void DelectDir(string srcPath)
+        public static void DeleteDir(string srcPath)
         {
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(srcPath);
-                FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();
-                foreach (FileSystemInfo i in fileinfo)
+                FileSystemInfo[] fileInfo = dir.GetFileSystemInfos();
+                foreach (FileSystemInfo i in fileInfo)
                 {
                     if (i is DirectoryInfo)
                     {
@@ -152,7 +152,7 @@ namespace GeneralUpdate.Core.Utils
             Directory.Delete(sourceDir);
         }
 
-        public static JObject ConfigurationBulider(string jsonPath)
+        public static JObject ConfigurationBuilder(string jsonPath)
         {
             using (System.IO.StreamReader file = System.IO.File.OpenText(jsonPath))
             {

@@ -184,3 +184,4 @@ FakesAssemblies/
 
 # SVN Repo
 .svn/
+/src/.vs

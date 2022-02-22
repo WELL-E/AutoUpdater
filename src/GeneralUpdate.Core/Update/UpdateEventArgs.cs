@@ -13,11 +13,11 @@ namespace GeneralUpdate.Core.Update
         /// <summary>
         /// Download the update package
         /// </summary>
-        Donwload,
+        Download,
         /// <summary>
         /// 更新文件
         /// </summary>
-        Updatefile,
+        UpdateFile,
         /// <summary>
         /// update completed
         /// </summary>
@@ -57,9 +57,9 @@ namespace GeneralUpdate.Core.Update
         }
     }
 
-    #region Muti
+    #region Multi
 
-    public class MutiDownloadStatisticsEventArgs : EventArgs
+    public class MultiDownloadStatisticsEventArgs : EventArgs
     {
         public object Version { get; set; }
 
@@ -68,7 +68,7 @@ namespace GeneralUpdate.Core.Update
         public string Speed { get; set; }
     }
 
-    public class MutiDownloadProgressChangedEventArgs : DownloadProgressChangedEventArgsEx
+    public class MultiDownloadProgressChangedEventArgs : DownloadProgressChangedEventArgsEx
     {
         public ProgressType Type { get; set; }
 
@@ -78,7 +78,7 @@ namespace GeneralUpdate.Core.Update
 
         public double ProgressValue { get; set; }
 
-        public MutiDownloadProgressChangedEventArgs(object version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
+        public MultiDownloadProgressChangedEventArgs(object version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
             : base(received, toReceive, progressPercentage, userState)
         {
             ProgressValue = progressPercentage;
@@ -88,36 +88,36 @@ namespace GeneralUpdate.Core.Update
         }
     }
 
-    public class MutiDownloadCompletedEventArgs : AsyncCompletedEventArgs
+    public class MultiDownloadCompletedEventArgs : AsyncCompletedEventArgs
     {
         public object Version { get; set; }
 
-        public MutiDownloadCompletedEventArgs(object version, Exception error, bool cancelled, object userState) : base(error, cancelled, userState)
+        public MultiDownloadCompletedEventArgs(object version, Exception error, bool cancelled, object userState) : base(error, cancelled, userState)
         {
             Version = version;
         }
     }
 
-    public class MutiAllDownloadCompletedEventArgs : EventArgs
+    public class MultiAllDownloadCompletedEventArgs : EventArgs
     {
         public bool IsAllDownloadCompleted { get; set; }
 
         public IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
 
-        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<UpdateVersion, string>> failedVersions)
+        public MultiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<UpdateVersion, string>> failedVersions)
         {
             IsAllDownloadCompleted = isAllDownloadCompleted;
             FailedVersions = failedVersions;
         }
     }
 
-    public class MutiDownloadErrorEventArgs : EventArgs
+    public class MultiDownloadErrorEventArgs : EventArgs
     {
         public Exception Exception { get; set; }
 
         public object Version { get; set; }
 
-        public MutiDownloadErrorEventArgs(Exception exception, object updateVersion)
+        public MultiDownloadErrorEventArgs(Exception exception, object updateVersion)
         {
             Exception = exception;
             Version = updateVersion;

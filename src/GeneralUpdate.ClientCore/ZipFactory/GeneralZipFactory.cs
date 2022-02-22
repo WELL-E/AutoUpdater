@@ -26,9 +26,7 @@ namespace GeneralUpdate.ClientCore.ZipFactory
         /// <summary>
         /// Select archive format .
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public IFactory CreatefOperate(OperationType type, string sourcePath, string destinationPath, bool includeBaseDirectory = false, Encoding encoding = null)
+        public IFactory CreateOperation(OperationType type, string sourcePath, string destinationPath, bool includeBaseDirectory = false, Encoding encoding = null)
         {
             switch (type)
             {
@@ -63,10 +61,10 @@ namespace GeneralUpdate.ClientCore.ZipFactory
         }
 
         /// <summary>
-        /// Creat zip.
+        /// Create zip.
         /// </summary>
         /// <returns></returns>
-        public IFactory CreatZip()
+        public IFactory CreateZip()
         {
             _operation.CreatZip();
             return this;

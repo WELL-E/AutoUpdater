@@ -310,19 +310,19 @@ namespace GeneralUpdate.Core.Utils
         /// </summary>
         private int _failed;
 
-        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MultiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
-        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MutiDownloadProgressChangedEventArgs e);
+        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MultiDownloadProgressChangedEventArgs e);
         public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
 
-        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+        public delegate void MutiAsyncCompletedEventHandler(object sender, MultiDownloadCompletedEventArgs e);
         public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
 
-        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+        public delegate void MutiDownloadErrorEventHandler(object sender, MultiDownloadErrorEventArgs e);
         public event MutiDownloadErrorEventHandler MutiDownloadError;
 
-        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+        public delegate void MutiDownloadStatisticsEventHandler(object sender, MultiDownloadStatisticsEventArgs e);
         public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         private IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
@@ -357,12 +357,12 @@ namespace GeneralUpdate.Core.Utils
             }
             catch (Exception ex)
             {
-                MutiDownloadError(this, new MutiDownloadErrorEventArgs(ex, null));
+                MutiDownloadError(this, new MultiDownloadErrorEventArgs(ex, null));
                 throw new Exception($"Muti download error: { ex.Message }, { ex.StackTrace }.");
             }
             finally
             {
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(_failed == 0, FailedVersions));
+                MutiAllDownloadCompleted(this, new MultiAllDownloadCompletedEventArgs(_failed == 0, FailedVersions));
             }
         }
 
@@ -388,7 +388,7 @@ namespace GeneralUpdate.Core.Utils
                         var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
 
                         MutiDownloadStatistics.Invoke(this,
-                            new MutiDownloadStatisticsEventArgs { Version = webClient.Version , Remaining = remainingTime, Speed = downLoadSpeed });
+                            new MultiDownloadStatisticsEventArgs { Version = webClient.Version , Remaining = remainingTime, Speed = downLoadSpeed });
 
                         webClient.StartTime = DateTime.Now;
                         webClient.BeforBytes = webClient.ReceivedBytes;
@@ -400,8 +400,8 @@ namespace GeneralUpdate.Core.Utils
                     webClient.ReceivedBytes = e.BytesReceived;
                     webClient.TotalBytes = e.TotalBytesToReceive;
                     
-                    var eventArgs = new MutiDownloadProgressChangedEventArgs(webClient.Version,
-                        ProgressType.Donwload,
+                    var eventArgs = new MultiDownloadProgressChangedEventArgs(webClient.Version,
+                        ProgressType.Download,
                         string.Empty,
                         e.BytesReceived / DEFAULT_DELTA,
                         e.TotalBytesToReceive / DEFAULT_DELTA,
@@ -423,7 +423,7 @@ namespace GeneralUpdate.Core.Utils
 
                         if (webClient != null)
                         {
-                            var eventArgs = new MutiDownloadCompletedEventArgs(webClient.Version, e.Error, e.Cancelled, e.UserState);
+                            var eventArgs = new MultiDownloadCompletedEventArgs(webClient.Version, e.Error, e.Cancelled, e.UserState);
                             if (MutiDownloadCompleted != null)
                                 MutiDownloadCompleted(sender, eventArgs);
 
@@ -457,7 +457,7 @@ namespace GeneralUpdate.Core.Utils
         {
             Interlocked.Increment(ref _failed);
             FailedVersions.Add(new ValueTuple<UpdateVersion, string>(version, exception.Message));
-            MutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, version));
+            MutiDownloadError(this, new MultiDownloadErrorEventArgs(exception, version));
         }
     }
 }

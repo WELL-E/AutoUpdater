@@ -83,7 +83,7 @@ namespace GeneralUpdate.Core.Utils
                         FileUtil.DeleteFile(revertFile);
                     }
                 }
-                FileUtil.DelectDir(backupsPath);
+                FileUtil.DeleteDir(backupsPath);
             }
             catch (Exception)
             {
@@ -123,7 +123,7 @@ namespace GeneralUpdate.Core.Utils
             return _incrementalFiles;
         }
 
-        public void GetOldFileinfo(string path) 
+        public void GetOldFileInfo(string path) 
         {
             if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(path))
             {
@@ -132,7 +132,7 @@ namespace GeneralUpdate.Core.Utils
             _oldFiles = FileUtil.GetFiles(path);
         }
 
-        public void GetNewFileinfo(string path)
+        public void GetNewFileInfo(string path)
         {
             if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(path))
             {
