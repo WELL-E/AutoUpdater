@@ -1,17 +1,15 @@
 ﻿using GeneralUpdate.Core.Update;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Models
 {
     public enum FileStatus
     {
         None = -1,
+
         //本地已有文件
         Old = 0,
+
         //新增文件
         New = 1
     }

@@ -1,5 +1,4 @@
-﻿using System;
-//using GeneralUpdate.Core;
+﻿//using GeneralUpdate.Core;
 //using GeneralUpdate.Core.Strategys;
 //using GeneralUpdate.Core.Update;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,24 +11,24 @@ namespace UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-           //var args = new string[6] {
-           //     "0.0.0.0",
-           //     "1.1.1.1",
-           //     "https://github.com/WELL-E",
-           //      "http://192.168.50.225:7000/update.zip",
-           //      @"E:\PlatformPath",
-           //     "5086d584dd81360a15d84d863adadfb3",
-           //      };
+            //var args = new string[6] {
+            //     "0.0.0.0",
+            //     "1.1.1.1",
+            //     "https://github.com/WELL-E",
+            //      "http://192.168.50.225:7000/update.zip",
+            //      @"E:\PlatformPath",
+            //     "5086d584dd81360a15d84d863adadfb3",
+            //      };
 
-           // GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
-           // bootstrap.DownloadStatistics += OnDownloadStatistics;
-           // bootstrap.ProgressChanged += OnProgressChanged;
-           // bootstrap.Strategy<DefultStrategy>().
-           //     Option(UpdateOption.Format, "zip").
-           //     Option(UpdateOption.MainApp, "your application name").
-           //     Option(UpdateOption.DownloadTimeOut, 60).
-           //     RemoteAddress(args).
-           //     Launch();
+            // GeneralUpdateBootstrap bootstrap = new GeneralUpdateBootstrap();
+            // bootstrap.DownloadStatistics += OnDownloadStatistics;
+            // bootstrap.ProgressChanged += OnProgressChanged;
+            // bootstrap.Strategy<DefultStrategy>().
+            //     Option(UpdateOption.Format, "zip").
+            //     Option(UpdateOption.MainApp, "your application name").
+            //     Option(UpdateOption.DownloadTimeOut, 60).
+            //     RemoteAddress(args).
+            //     Launch();
         }
 
         [TestMethod]

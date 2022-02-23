@@ -26,24 +26,30 @@ namespace GeneralUpdate.Core.Bootstrap
         private const string DefaultFormat = "zip";
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
         public delegate void MutiDownloadProgressChangedEventHandler(object sender, MutiDownloadProgressChangedEventArgs e);
+
         public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
 
         public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+
         public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
 
         public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+
         public event MutiDownloadErrorEventHandler MutiDownloadError;
 
         public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+
         public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
         public delegate void ExceptionEventHandler(object sender, ExceptionEventArgs e);
+
         public event ExceptionEventHandler Exception;
 
-        #endregion
+        #endregion Private Members
 
         protected internal AbstractBootstrap()
         {
@@ -95,7 +101,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 manager.MutiDownloadError += OnMutiDownloadError;
                 manager.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
                 manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                Packet.UpdateVersions.ForEach((v) => 
+                Packet.UpdateVersions.ForEach((v) =>
                 {
                     manager.Add(new DownloadTask<UpdateVersion>(manager, v));
                 });
@@ -147,7 +153,7 @@ namespace GeneralUpdate.Core.Bootstrap
             return (TBootstrap)this;
         }
 
-        #endregion
+        #endregion Strategy
 
         #region Config option.
 
@@ -177,14 +183,14 @@ namespace GeneralUpdate.Core.Bootstrap
             return default(T);
         }
 
-        #endregion
+        #endregion Config option.
 
         #region Callback event.
 
         private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
             if (MutiDownloadStatistics != null)
-                MutiDownloadStatistics.Invoke(this,e);
+                MutiDownloadStatistics.Invoke(this, e);
         }
 
         protected void MutiDownloadProgressAction(object sender, MutiDownloadProgressChangedEventArgs e)
@@ -222,7 +228,7 @@ namespace GeneralUpdate.Core.Bootstrap
             try
             {
                 if (MutiAllDownloadCompleted != null)
-                    MutiAllDownloadCompleted.Invoke(this,e);
+                    MutiAllDownloadCompleted.Invoke(this, e);
 
                 ExcuteStrategy();
             }
@@ -231,9 +237,9 @@ namespace GeneralUpdate.Core.Bootstrap
                 throw new Exception("Failed to execute strategy!", ex);
             }
         }
-        
-        #endregion
 
-        #endregion
+        #endregion Callback event.
+
+        #endregion Methods
     }
 }

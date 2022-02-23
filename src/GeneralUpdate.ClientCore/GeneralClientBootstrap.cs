@@ -39,7 +39,7 @@ namespace GeneralUpdate.ClientCore
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message,ex);
+                throw new Exception(ex.Message, ex);
             }
             return await Task.FromResult(this);
         }
@@ -51,7 +51,7 @@ namespace GeneralUpdate.ClientCore
         /// <returns></returns>
         public GeneralClientBootstrap Config(string url)
         {
-            string basePath =  System.Environment.CurrentDirectory;
+            string basePath = System.Environment.CurrentDirectory;
             string mainAppName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
             string clienVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Packet.ClientVersion = clienVersion;
@@ -85,7 +85,7 @@ namespace GeneralUpdate.ClientCore
             return this;
         }
 
-        private void ValidateConfig(ClientParameter clientParameter) 
+        private void ValidateConfig(ClientParameter clientParameter)
         {
             if (clientParameter == null)
             {

@@ -2,7 +2,6 @@
 using GeneralUpdate.Zip.Factory;
 using GeneralUpdate.Zip.G7z;
 using GeneralUpdate.Zip.GZip;
-using System;
 using System.Text;
 
 namespace GeneralUpdate.Zip
@@ -15,12 +14,15 @@ namespace GeneralUpdate.Zip
         private BaseCompress _operation;
 
         public delegate void CompleteEventHandler(object sender, CompleteEventArgs e);
+
         public event CompleteEventHandler Completed;
 
         public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
+
         public event UnZipProgressEventHandler UnZipProgress;
 
         public delegate void CompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e);
+
         public event CompressProgressEventHandler CompressProgress;
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace GeneralUpdate.Zip
                     _operation = new GeneralZip();
                     _operation.Configs(sourcePath, destinationPath, encoding, includeBaseDirectory);
                     break;
+
                 case OperationType.G7z:
                     _operation = new General7z();
                     _operation.Configs(sourcePath, destinationPath, encoding, includeBaseDirectory);
@@ -49,12 +52,12 @@ namespace GeneralUpdate.Zip
 
         private void OnCompleted(object sender, CompleteEventArgs e)
         {
-            if (Completed != null) Completed(sender,e);
+            if (Completed != null) Completed(sender, e);
         }
 
         private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e)
         {
-            if(UnZipProgress != null) UnZipProgress(sender, e);
+            if (UnZipProgress != null) UnZipProgress(sender, e);
         }
 
         private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)

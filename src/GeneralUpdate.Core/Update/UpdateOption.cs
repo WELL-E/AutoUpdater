@@ -7,12 +7,12 @@ namespace GeneralUpdate.Core.Update
 {
     public abstract class UpdateOption : AbstractConstant<UpdateOption>
     {
-        class UpdateOptionPool : ConstantPool
+        private class UpdateOptionPool : ConstantPool
         {
             protected override IConstant NewConstant<T>(int id, string name) => new UpdateOption<T>(id, name);
         }
 
-        static readonly UpdateOptionPool Pool = new UpdateOptionPool();
+        private static readonly UpdateOptionPool Pool = new UpdateOptionPool();
 
         public static UpdateOption<T> ValueOf<T>(string name) => (UpdateOption<T>)Pool.ValueOf<T>(name);
 
@@ -53,9 +53,9 @@ namespace GeneralUpdate.Core.Update
 
     public abstract class ConstantPool
     {
-        readonly Dictionary<string, IConstant> constants = new Dictionary<string, IConstant>();
+        private readonly Dictionary<string, IConstant> constants = new Dictionary<string, IConstant>();
 
-        int nextId = 1;
+        private int nextId = 1;
 
         /// <summary>Shortcut of <c>this.ValueOf(firstNameComponent.Name + "#" + secondNameComponent)</c>.</summary>
         public IConstant ValueOf<T>(Type firstNameComponent, string secondNameComponent)
@@ -119,7 +119,7 @@ namespace GeneralUpdate.Core.Update
         }
 
         // Be careful that this dose not check whether the argument is null or empty.
-        IConstant NewInstance0<T>(string name)
+        private IConstant NewInstance0<T>(string name)
         {
             lock (this.constants)
             {
@@ -130,7 +130,7 @@ namespace GeneralUpdate.Core.Update
             }
         }
 
-        static void CheckNotNullAndNotEmpty(string name) => Contract.Requires(!string.IsNullOrEmpty(name));
+        private static void CheckNotNullAndNotEmpty(string name) => Contract.Requires(!string.IsNullOrEmpty(name));
 
         protected abstract IConstant NewConstant<T>(int id, string name);
 
@@ -166,9 +166,9 @@ namespace GeneralUpdate.Core.Update
 
     public abstract class AbstractConstant : IConstant
     {
-        static long nextUniquifier;
+        private static long nextUniquifier;
 
-        long volatileUniquifier;
+        private long volatileUniquifier;
 
         protected AbstractConstant(int id, string name)
         {
@@ -180,7 +180,7 @@ namespace GeneralUpdate.Core.Update
 
         public string Name { get; }
 
-        public sealed override string ToString() => this.Name;
+        public override sealed string ToString() => this.Name;
 
         protected long Uniquifier
         {
@@ -211,9 +211,9 @@ namespace GeneralUpdate.Core.Update
         {
         }
 
-        public sealed override int GetHashCode() => base.GetHashCode();
+        public override sealed int GetHashCode() => base.GetHashCode();
 
-        public sealed override bool Equals(object obj) => base.Equals(obj);
+        public override sealed bool Equals(object obj) => base.Equals(obj);
 
         public bool Equals(T other) => ReferenceEquals(this, other);
 

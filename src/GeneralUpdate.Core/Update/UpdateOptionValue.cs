@@ -3,6 +3,7 @@
     public abstract class UpdateOptionValue
     {
         public abstract UpdateOption Option { get; }
+
         public abstract bool Set(IUpdateConfiguration config);
 
         public abstract object GetValue();
@@ -11,7 +12,7 @@
     public sealed class UpdateOptionValue<T> : UpdateOptionValue
     {
         public override UpdateOption Option { get; }
-        readonly T value;
+        private readonly T value;
 
         public UpdateOptionValue(UpdateOption<T> option, T value)
         {

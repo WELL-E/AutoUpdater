@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeneralUpdate.ClientCore.Models
+﻿namespace GeneralUpdate.ClientCore.Models
 {
     public class UpdateConfig
     {

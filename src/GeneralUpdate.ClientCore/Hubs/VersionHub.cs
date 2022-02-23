@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore.Hubs
@@ -19,7 +17,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         private VersionHub _instance;
         private readonly object _lock = new object();
 
-        public VersionHub Instance 
+        public VersionHub Instance
         {
             get
             {
@@ -34,15 +32,16 @@ namespace GeneralUpdate.ClientCore.Hubs
                     }
                 }
                 return _instance;
-            } 
+            }
         }
 
-        private VersionHub() { }
+        private VersionHub()
+        { }
 
         /// <summary>
         /// Subscribe to the latest version.
         /// </summary>
-        public void Subscribe(string url,Action<Exception> onException) 
+        public void Subscribe(string url, Action<Exception> onException)
         {
             if (string.IsNullOrWhiteSpace(url)) throw new Exception("url not set !");
 
@@ -71,7 +70,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Receives the message.
         /// </summary>
         /// <param name="message"></param>
-        private void OnReceiveMessageHandler(string message) 
+        private void OnReceiveMessageHandler(string message)
         {
             //TODO:接收到新版本推送处理
             //1.解析base64加密字符串
@@ -114,7 +113,6 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -147,7 +145,6 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
             catch (Exception ex)
             {
-
             }
         }
 

@@ -25,7 +25,7 @@ namespace GeneralUpdate.Core.Download
 
         public bool IsCompleted { get; private set; }
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
@@ -35,7 +35,7 @@ namespace GeneralUpdate.Core.Download
             _version = version;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Methods
 
@@ -86,7 +86,7 @@ namespace GeneralUpdate.Core.Download
             await awaiter;
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -194,6 +194,6 @@ namespace GeneralUpdate.Core.Download
             return result;
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

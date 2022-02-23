@@ -1,5 +1,4 @@
-﻿
-using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Common.Models;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
@@ -18,7 +17,7 @@ namespace GeneralUpdate.Core.Strategys
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
         protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
 
-        public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction, 
+        public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
             Action<object, ExceptionEventArgs> exceptionEventAction)
         {
             Packet = (UpdatePacket)file;
@@ -59,7 +58,7 @@ namespace GeneralUpdate.Core.Strategys
                     }
                 }
                 var isDone = CheckAllIsUnZip(updateVersions);
-                if (isDone) 
+                if (isDone)
                 {
                     UpdateFiles();
                     StartApp(Packet.AppName);
@@ -67,7 +66,7 @@ namespace GeneralUpdate.Core.Strategys
                 else
                 {
                     Error(new Exception($"Failed to decompress the compressed package!"));
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -75,13 +74,13 @@ namespace GeneralUpdate.Core.Strategys
             }
         }
 
-        private void Error(Exception ex) 
+        private void Error(Exception ex)
         {
             if (ExceptionEventAction != null)
                 ExceptionEventAction(this, new ExceptionEventArgs(ex));
         }
 
-        protected bool CheckAllIsUnZip(List<UpdateVersion> versions) 
+        protected bool CheckAllIsUnZip(List<UpdateVersion> versions)
         {
             foreach (var version in versions)
             {
@@ -126,11 +125,11 @@ namespace GeneralUpdate.Core.Strategys
             try
             {
                 GeneralZip gZip = new GeneralZip();
-                gZip.UnZipProgress += (sender,e) => 
+                gZip.UnZipProgress += (sender, e) =>
                 {
-                    var version = new UpdateVersion(versionInfo.MD5, 
-                        versionInfo.PubTime, 
-                        versionInfo.Version, 
+                    var version = new UpdateVersion(versionInfo.MD5,
+                        versionInfo.PubTime,
+                        versionInfo.Version,
                         null,
                         versionInfo.Name);
                     var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
@@ -166,8 +165,8 @@ namespace GeneralUpdate.Core.Strategys
                 //FileUtil.DirectoryCopy(
                 //    UpdatePacket.TempPath,
                 //    UpdatePacket.InstallPath,
-                //    true, 
-                //    true, 
+                //    true,
+                //    true,
                 //    o => UpdatePacket.Name = o);
 
                 if (File.Exists(Packet.TempPath))
@@ -178,9 +177,9 @@ namespace GeneralUpdate.Core.Strategys
                 var dir = Packet.TempPath.ExcludeName(StringOption.File);
                 if (Directory.Exists(dir))
                 {
-                    Directory.Delete(dir,true);
+                    Directory.Delete(dir, true);
                 }
-                
+
                 FileUtil.Update32Or64Libs(Packet.InstallPath);
 
                 return true;

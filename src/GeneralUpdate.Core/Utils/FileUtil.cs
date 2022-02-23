@@ -11,7 +11,7 @@ namespace GeneralUpdate.Core.Utils
 {
     internal static class FileUtil
     {
-        public static bool CreateFloder(string path) 
+        public static bool CreateFloder(string path)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace GeneralUpdate.Core.Utils
             return true;
         }
 
-        public static bool CopyFiles(List<string> pathList,string targetPath) 
+        public static bool CopyFiles(List<string> pathList, string targetPath)
         {
             foreach (var path in pathList)
             {
@@ -44,7 +44,7 @@ namespace GeneralUpdate.Core.Utils
             return true;
         }
 
-        public static bool CopyFile(string filePath, string targetPath) 
+        public static bool CopyFile(string filePath, string targetPath)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace GeneralUpdate.Core.Utils
             return true;
         }
 
-        public static bool DeleteFile(string path) 
+        public static bool DeleteFile(string path)
         {
             try
             {
@@ -264,11 +264,11 @@ namespace GeneralUpdate.Core.Utils
             }
         }
 
-        internal static T ReadConfig<T>(string path) 
+        internal static T ReadConfig<T>(string path)
         {
             try
             {
-                if (File.Exists(path)) 
+                if (File.Exists(path))
                 {
                     using (StreamReader streamReader = File.OpenText(path))
                     {

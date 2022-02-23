@@ -56,6 +56,5 @@ namespace GeneralUpdate.Core.Models
         /// Version information that needs to be updated.
         /// </summary>
         public List<UpdateVersion> UpdateVersions { get; set; }
-
     }
 }

@@ -3,7 +3,7 @@
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
 // <summary>
-//     This class checks to make sure that only one instance of 
+//     This class checks to make sure that only one instance of
 //     this application is running at a time.
 // </summary>
 //-----------------------------------------------------------------------
@@ -13,17 +13,17 @@ namespace GeneralUpdate.Core.Utils
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
+    using System.Runtime.InteropServices;
     using System.Runtime.Remoting;
     using System.Runtime.Remoting.Channels;
     using System.Runtime.Remoting.Channels.Ipc;
     using System.Runtime.Serialization.Formatters;
+    using System.Security;
     using System.Threading;
     using System.Windows;
     using System.Windows.Threading;
-    using System.Security;
-    using System.Runtime.InteropServices;
-    using System.ComponentModel;
 
     internal enum WM
     {
@@ -106,7 +106,6 @@ namespace GeneralUpdate.Core.Utils
         XBUTTONDBLCLK = 0x020D,
         MOUSEHWHEEL = 0x020E,
 
-
         CAPTURECHANGED = 0x0215,
 
         ENTERSIZEMOVE = 0x0231,
@@ -130,15 +129,18 @@ namespace GeneralUpdate.Core.Utils
         DWMWINDOWMAXIMIZEDCHANGE = 0x0321,
 
         #region Windows 7
+
         DWMSENDICONICTHUMBNAIL = 0x0323,
         DWMSENDICONICLIVEPREVIEWBITMAP = 0x0326,
-        #endregion
+
+        #endregion Windows 7
 
         USER = 0x0400,
 
         // This is the hard-coded message value used by WinForms for Shell_NotifyIcon.
         // It's relatively safe to reuse.
         TRAYMOUSEMESSAGE = 0x800, //WM_USER + 1024
+
         APP = 0x8000,
     }
 
@@ -153,10 +155,8 @@ namespace GeneralUpdate.Core.Utils
         [DllImport("shell32.dll", EntryPoint = "CommandLineToArgvW", CharSet = CharSet.Unicode)]
         private static extern IntPtr _CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string cmdLine, out int numArgs);
 
-
         [DllImport("kernel32.dll", EntryPoint = "LocalFree", SetLastError = true)]
         private static extern IntPtr _LocalFree(IntPtr hMem);
-
 
         public static string[] CommandLineToArgvW(string cmdLine)
         {
@@ -182,13 +182,11 @@ namespace GeneralUpdate.Core.Utils
             }
             finally
             {
-
                 IntPtr p = _LocalFree(argv);
                 // Otherwise LocalFree failed.
                 // Assert.AreEqual(IntPtr.Zero, p);
             }
         }
-
     }
 
     public interface ISingleInstanceApp
@@ -197,7 +195,7 @@ namespace GeneralUpdate.Core.Utils
     }
 
     /// <summary>
-    /// This class checks to make sure that only one instance of 
+    /// This class checks to make sure that only one instance of
     /// this application is running at a time.
     /// </summary>
     /// <remarks>
@@ -247,7 +245,7 @@ namespace GeneralUpdate.Core.Utils
         /// </summary>
         private static IList<string> commandLineArgs;
 
-        #endregion
+        #endregion Private Fields
 
         #region Public Properties
 
@@ -259,12 +257,12 @@ namespace GeneralUpdate.Core.Utils
             get { return commandLineArgs; }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
         /// <summary>
-        /// Checks if the instance of the application attempting to start is the first instance. 
+        /// Checks if the instance of the application attempting to start is the first instance.
         /// If not, activates the first instance.
         /// </summary>
         /// <returns>True if this is the first instance of the application.</returns>
@@ -277,7 +275,7 @@ namespace GeneralUpdate.Core.Utils
 
             string channelName = String.Concat(applicationIdentifier, Delimiter, ChannelNameSuffix);
 
-            // Create mutex based on unique application Id to check if this is the first instance of the application. 
+            // Create mutex based on unique application Id to check if this is the first instance of the application.
             bool firstInstance;
             singleInstanceMutex = new Mutex(true, applicationIdentifier, out firstInstance);
             if (firstInstance)
@@ -310,7 +308,7 @@ namespace GeneralUpdate.Core.Utils
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -330,9 +328,9 @@ namespace GeneralUpdate.Core.Utils
             {
                 // The application was clickonce deployed
                 // Clickonce deployed apps cannot recieve traditional commandline arguments
-                // As a workaround commandline arguments can be written to a shared location before 
-                // the app is launched and the app can obtain its commandline arguments from the 
-                // shared location               
+                // As a workaround commandline arguments can be written to a shared location before
+                // the app is launched and the app can obtain its commandline arguments from the
+                // shared location
                 string appFolderPath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), uniqueApplicationName);
 
@@ -388,8 +386,8 @@ namespace GeneralUpdate.Core.Utils
         }
 
         /// <summary>
-        /// Creates a client channel and obtains a reference to the remoting service exposed by the server - 
-        /// in this case, the remoting service exposed by the first instance. Calls a function of the remoting service 
+        /// Creates a client channel and obtains a reference to the remoting service exposed by the server -
+        /// in this case, the remoting service exposed by the first instance. Calls a function of the remoting service
         /// class to pass on command line arguments from the second instance to the first and cause it to activate itself.
         /// </summary>
         /// <param name="channelName">Application's IPC channel name.</param>
@@ -451,7 +449,7 @@ namespace GeneralUpdate.Core.Utils
             ((TApplication)Application.Current).SignalExternalCommandLineArgs(args);
         }
 
-        #endregion
+        #endregion Private Methods
 
         #region Private Classes
 
@@ -486,6 +484,6 @@ namespace GeneralUpdate.Core.Utils
             }
         }
 
-        #endregion
+        #endregion Private Classes
     }
 }

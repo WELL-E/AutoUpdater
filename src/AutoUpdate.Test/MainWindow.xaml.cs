@@ -1,12 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace AutoUpdate.Test
 {
@@ -23,10 +15,9 @@ namespace AutoUpdate.Test
         //#region GeneralUpdate Core
 
         //private ClientParameter clientParameter;
-       
+
         //private void Button_Click(object sender, RoutedEventArgs e)
         //{
-            
         //}
 
         //private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
@@ -71,7 +62,7 @@ namespace AutoUpdate.Test
 
         //#region Process launch
 
-        //private string InitBase64String(string jsonString) 
+        //private string InitBase64String(string jsonString)
         //{
         //    var bytes = Encoding.Default.GetBytes(jsonString);
         //    var base64str = Convert.ToBase64String(bytes);
@@ -188,7 +179,7 @@ namespace AutoUpdate.Test
         //    Debug.WriteLine($"IsCompleted { e.IsCompleted }.");
         //}
 
-        //private OperationType GetOperationType() 
+        //private OperationType GetOperationType()
         //{
         //    OperationType operationType = 0;
         //    var item =  CmbxZipFormat.SelectedItem as ComboBoxItem;

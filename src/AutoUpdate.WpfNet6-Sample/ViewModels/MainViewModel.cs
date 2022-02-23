@@ -1,23 +1,20 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core;
+﻿using GeneralUpdate.Core;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using MvvmHelpers;
-using Newtonsoft.Json;
 using System;
-using System.Text;
-using System.Windows;
 
 namespace AutoUpdate.WpfNet6_Sample.ViewModels
 {
     internal class MainViewModel : BaseViewModel
     {
         private string _tips1, _tips2, _tips3, _tips4, _tips5, _tips6;
-        private double _progressVal, _progressMin,_progressMax;
+        private double _progressVal, _progressMin, _progressMax;
 
-        public MainViewModel() { }
+        public MainViewModel()
+        { }
 
-        public MainViewModel(string args) 
+        public MainViewModel(string args)
         {
             ProgressMin = 0;
             var bootStrap = new GeneralUpdateBootstrap();
@@ -29,7 +26,7 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
             bootStrap.Exception += OnException;
             bootStrap.Strategy<DefaultStrategy>().
             Option(UpdateOption.DownloadTimeOut, 60).
-            Option(UpdateOption.Format,"zip").
+            Option(UpdateOption.Format, "zip").
             RemoteAddressBase64(args);
             bootStrap.LaunchAsync();
         }
@@ -55,20 +52,25 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
             {
                 case ProgressType.Check:
                     break;
+
                 case ProgressType.Donwload:
                     ProgressVal = e.BytesReceived;
                     if (ProgressMax != e.TotalBytesToReceive)
                     {
                         ProgressMax = e.TotalBytesToReceive;
                     }
-                    Tips2 = $" { Math.Round(e.ProgressValue * 100,2) }% ， Receivedbyte：{ e.BytesReceived }M ，Totalbyte：{ e.TotalBytesToReceive }M";
+                    Tips2 = $" { Math.Round(e.ProgressValue * 100, 2) }% ， Receivedbyte：{ e.BytesReceived }M ，Totalbyte：{ e.TotalBytesToReceive }M";
                     break;
+
                 case ProgressType.Updatefile:
                     break;
+
                 case ProgressType.Done:
                     break;
+
                 case ProgressType.Fail:
                     break;
+
                 default:
                     break;
             }
@@ -96,7 +98,6 @@ namespace AutoUpdate.WpfNet6_Sample.ViewModels
 
         private void OnMutiDownloadError(object sender, GeneralUpdate.Core.Update.MutiDownloadErrorEventArgs e)
         {
-            
             //Tips5 = $"{ e.Version.Name },{ e.Exception.Message }.";
         }
 

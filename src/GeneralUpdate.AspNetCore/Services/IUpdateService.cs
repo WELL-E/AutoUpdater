@@ -16,7 +16,7 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="isForce">Whether to force all versions to be updated.</param>
         /// <param name="getUrlsAction"></param>
         /// <returns>Json object.</returns>
-        Task<string> UpdateValidateTaskAsync(int clientType, string clientVersion, string serverLastVersion, bool isForce, Func<int,string, Task<List<UpdateVersionDTO>>> getUrlsAction);
+        Task<string> UpdateValidateTaskAsync(int clientType, string clientVersion, string serverLastVersion, bool isForce, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction);
 
         /// <summary>
         /// All version content that needs to be updated according to the current client.
@@ -25,6 +25,6 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="clientVersion">Current version of the client</param>
         /// <param name="getUrlsAction">The latest version of the server.</param>
         /// <returns>Json object.</returns>
-        Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion,Func<int,string, Task<List<UpdateVersionDTO>>> getUrlsAction);
+        Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction);
     }
 }

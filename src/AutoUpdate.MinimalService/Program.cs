@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IUpdateService, GeneralUpdateService>();
 var app = builder.Build();
 
-app.MapGet("/versions/{clientType}/{clientVersion}", async (int clientType, string clientVersion,IUpdateService updateService) =>
+app.MapGet("/versions/{clientType}/{clientVersion}", async (int clientType, string clientVersion, IUpdateService updateService) =>
 {
     return await updateService.UpdateVersionsTaskAsync(clientType, clientVersion, UpdateVersions);
 });

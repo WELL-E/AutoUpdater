@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Common.CustomAwaiter
+﻿namespace GeneralUpdate.Common.CustomAwaiter
 {
     public interface IAwaitable<out TAwaiter> where TAwaiter : IAwaiter
     {

@@ -4,23 +4,28 @@ using System.ComponentModel;
 
 namespace GeneralUpdate.Core.Update
 {
-    public enum ProgressType {
+    public enum ProgressType
+    {
         /// <summary>
         /// Check for updates
         /// </summary>
         Check,
+
         /// <summary>
         /// Download the update package
         /// </summary>
         Donwload,
+
         /// <summary>
         /// 更新文件
         /// </summary>
         Updatefile,
+
         /// <summary>
         /// update completed
         /// </summary>
         Done,
+
         /// <summary>
         /// Update failed
         /// </summary>
@@ -46,7 +51,7 @@ namespace GeneralUpdate.Core.Update
         }
     }
 
-    public class ExceptionEventArgs : EventArgs 
+    public class ExceptionEventArgs : EventArgs
     {
         public Exception Exception { get; set; }
 
@@ -77,7 +82,7 @@ namespace GeneralUpdate.Core.Update
 
         public double ProgressValue { get; set; }
 
-        public MutiDownloadProgressChangedEventArgs(object version, ProgressType type,string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
+        public MutiDownloadProgressChangedEventArgs(object version, ProgressType type, string message, long received = 0, long toReceive = 0, float progressPercentage = 0, object userState = null)
             : base(received, toReceive, progressPercentage, userState)
         {
             ProgressValue = progressPercentage;
@@ -123,5 +128,5 @@ namespace GeneralUpdate.Core.Update
         }
     }
 
-    #endregion
+    #endregion Muti
 }

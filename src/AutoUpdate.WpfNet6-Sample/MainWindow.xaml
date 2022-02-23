@@ -26,17 +26,17 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1" Text="Download statistics:" FontSize="14" FontWeight="Bold" Margin="5">
-                <Run Text="{Binding Tips1}"/>
+                <Run Text="{Binding Tips1}" />
             </TextBlock>
-            <TextBlock Grid.Row="1" Text="Download progress:" Grid.Column="1" Margin="5" FontSize="14" FontWeight="Bold" >
+            <TextBlock Grid.Row="1" Text="Download progress:" Grid.Column="1" Margin="5" FontSize="14" FontWeight="Bold">
                 <Run Text="{Binding Tips2}"></Run>
             </TextBlock>
             <TextBlock Grid.Row="2"  Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold" Margin="5">
                 <Run Text="{Binding Tips3}"></Run>
             </TextBlock>
-            <TextBlock Grid.Row="3" Text="{Binding Tips4}" Grid.Column="1" Margin="5"/>
-            <TextBlock Grid.Row="4" Text="{Binding Tips5}" Grid.Column="1" Margin="5"/>
-            <TextBlock Grid.Row="5" Text="{Binding Tips6}" Grid.Column="1" Margin="5"/>
+            <TextBlock Grid.Row="3" Text="{Binding Tips4}" Grid.Column="1" Margin="5" />
+            <TextBlock Grid.Row="4" Text="{Binding Tips5}" Grid.Column="1" Margin="5" />
+            <TextBlock Grid.Row="5" Text="{Binding Tips6}" Grid.Column="1" Margin="5" />
         </Grid>
         <Image Grid.Row="1" Source="/Resource/bot.jpg" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30" />
         <Image Grid.Row="1" Source="/Resource/GU.jpg" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="160,0,0,30" />

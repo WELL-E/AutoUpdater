@@ -17,6 +17,6 @@ namespace GeneralUpdate.Core.Strategys
         /// Create a policy.
         /// </summary>
         /// <param name="file">Abstraction for updating package information.</param>
-        void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> eventAction,Action<object, ExceptionEventArgs> errorEventAction);
+        void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> eventAction, Action<object, ExceptionEventArgs> errorEventAction);
     }
 }
