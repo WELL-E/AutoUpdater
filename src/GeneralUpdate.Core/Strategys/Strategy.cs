@@ -2,6 +2,8 @@
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
+using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Factory;
 using GeneralUpdate.Zip.GZip;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace GeneralUpdate.Core.Strategys
         protected UpdatePacket Packet { get; set; }
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
         protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
+        private OperationType _operationType;
 
         public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
             Action<object, ExceptionEventArgs> exceptionEventAction)
@@ -124,20 +127,19 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
-                GeneralZip gZip = new GeneralZip();
-                gZip.UnZipProgress += (sender, e) =>
+                bool isComplated = false;
+                var generalZipFactory = new GeneralZipFactory();
+                generalZipFactory.UnZipProgress += (sender, e) =>
                 {
-                    var version = new UpdateVersion(versionInfo.MD5,
-                        versionInfo.PubTime,
-                        versionInfo.Version,
-                        null,
-                        versionInfo.Name);
+                    if (ProgressEventAction == null) return;
+                    var version = new UpdateVersion(versionInfo.MD5, versionInfo.PubTime, versionInfo.Version, null, versionInfo.Name);
                     var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
-
-                    if (ProgressEventAction != null) ProgressEventAction(this, eventArgs);
+                    ProgressEventAction(this, eventArgs);
                 };
-                bool isUnZip = gZip.UnZip(zipfilepath, unzippath);
-                return isUnZip;
+                generalZipFactory.Completed += (sender, e) => { isComplated = true; };
+                generalZipFactory.CreatefOperate(_operationType, zipfilepath, unzippath).
+                    UnZip();
+                return isComplated;
             }
             catch (Exception ex)
             {
