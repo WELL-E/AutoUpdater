@@ -23,7 +23,7 @@ namespace GeneralUpdate.Core.Download
 
         private IList<ITask<UpdateVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<UpdateVersion>>()); }
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
@@ -41,7 +41,7 @@ namespace GeneralUpdate.Core.Download
             _failedVersions = new List<ValueTuple<object, string>>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Properties
 
@@ -50,6 +50,7 @@ namespace GeneralUpdate.Core.Download
         /// object: is 'UpdateVersion' , string: is error infomation.
         /// </summary>
         public IList<(object, string)> FailedVersions { get => _failedVersions; }
+
         public string Path { get => _path; }
 
         //zip format
@@ -58,21 +59,26 @@ namespace GeneralUpdate.Core.Download
         public int TimeOut { get => _timeOut; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
 
         public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
+
         public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
 
         public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+
         public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
 
         public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+
         public event MutiDownloadErrorEventHandler MutiDownloadError;
 
         public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+
         public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -149,10 +155,6 @@ namespace GeneralUpdate.Core.Download
             if (task != null && !DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
         }
 
-        #endregion
-
-        #region Private Methods
-
-        #endregion
+        #endregion Public Methods
     }
 }

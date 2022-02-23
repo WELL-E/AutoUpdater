@@ -20,6 +20,7 @@ namespace GeneralUpdate.Core.Strategys
             throw new NotImplementedException();
         }
 
-        protected virtual bool StartApp(string appName) { throw new NotImplementedException(); }
+        protected virtual bool StartApp(string appName)
+        { throw new NotImplementedException(); }
     }
 }

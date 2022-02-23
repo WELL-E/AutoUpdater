@@ -20,7 +20,7 @@ namespace GeneralUpdate.Core
         /// </summary>
         /// <param name="clientParameter">ClientParameter object to base64 string.</param>
         /// <returns></returns>
-        public GeneralUpdateBootstrap RemoteAddressBase64(string clientParameter) 
+        public GeneralUpdateBootstrap RemoteAddressBase64(string clientParameter)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace GeneralUpdate.Core
             return this;
         }
 
-        private void InitPacket() 
+        private void InitPacket()
         {
             Packet.ClientVersion = ClientParameter.ClientVersion;
             Packet.LastVersion = ClientParameter.LastVersion;
@@ -48,9 +48,9 @@ namespace GeneralUpdate.Core
             Packet.UpdateVersions = ClientParameter.UpdateVersions;
         }
 
-        private void ValidateRemoteAddress(ClientParameter clientParameter) 
+        private void ValidateRemoteAddress(ClientParameter clientParameter)
         {
-            if (clientParameter == null) 
+            if (clientParameter == null)
             {
                 throw new NullReferenceException("Client parameter not set.");
             }

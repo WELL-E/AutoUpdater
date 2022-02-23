@@ -18,8 +18,8 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="isForce">Do you need to force an update.</param>
         /// <param name="getUrlsAction">Each version update (Query the latest version information in the database according to the client version number).</param>
         /// <returns></returns>
-        public async Task<string> UpdateValidateTaskAsync(int clientType,string clientVersion, string serverLastVersion, 
-            bool isForce, Func<int,string, Task<List<UpdateVersionDTO>>> getUrlsAction)
+        public async Task<string> UpdateValidateTaskAsync(int clientType, string clientVersion, string serverLastVersion,
+            bool isForce, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
         {
             if (getUrlsAction == null)
             {
@@ -42,7 +42,7 @@ namespace GeneralUpdate.AspNetCore.Services
                     respDTO.Body = new UpdateValidateDTO();
                     var body = respDTO.Body;
                     body.ClientType = clientType;
-                    body.UpdateVersions = await getUrlsAction(clientType,clientVersion);
+                    body.UpdateVersions = await getUrlsAction(clientType, clientVersion);
                     body.IsForcibly = isForce;
                     respDTO.Code = 200;
                     respDTO.Message = RespMessage.RequestSucceeded;
@@ -66,7 +66,7 @@ namespace GeneralUpdate.AspNetCore.Services
         /// </summary>
         /// <param name="getUrlsAction">Each version update (Query the latest version information in the database according to the client version number).</param>
         /// <returns></returns>
-        public async Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion,Func<int,string,Task<List<UpdateVersionDTO>>> getUrlsAction) 
+        public async Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
         {
             if (getUrlsAction == null) throw new ArgumentNullException(@"'getUrlsAction' cannot be null!");
 
@@ -85,7 +85,7 @@ namespace GeneralUpdate.AspNetCore.Services
             return JsonConvert.SerializeObject(respDTO);
         }
 
-        private void ParameterVerification(int clientType,string clientVersion, string serverLastVersion)
+        private void ParameterVerification(int clientType, string clientVersion, string serverLastVersion)
         {
             if (clientType == 0)
             {
@@ -108,10 +108,10 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="newPath">The folder path of the latest version.</param>
         /// <param name="targetPath">Production differential package the path.</param>
         /// <returns></returns>
-        public Task DifferentialPackage(string oldPath,string newPath,string targetPath) 
+        public Task DifferentialPackage(string oldPath, string newPath, string targetPath)
         {
             /*
-             * TODO: 
+             * TODO:
              *    1.初始化好生成的路径
              *    2.通过树形结构管理新旧版本
              *    3.遍历树形结构根据文件的MD5码和具体的文件版本信息进行比对

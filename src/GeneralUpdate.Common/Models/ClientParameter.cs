@@ -60,12 +60,12 @@ namespace GeneralUpdate.Common.Models
     [Serializable]
     public class UpdateVersion
     {
-        public UpdateVersion(string md5, long pubTime,string version,string url,string name) 
+        public UpdateVersion(string md5, long pubTime, string version, string url, string name)
         {
             MD5 = md5;
-            PubTime= pubTime;
-            Version= version;
-            Url =  url;
+            PubTime = pubTime;
+            Version = version;
+            Url = url;
             Name = name;
         }
 

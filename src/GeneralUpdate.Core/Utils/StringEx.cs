@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeneralUpdate.Core.Utils
+﻿namespace GeneralUpdate.Core.Utils
 {
-    public enum StringOption 
+    public enum StringOption
     {
         Url = 0,
         File
@@ -23,6 +17,7 @@ namespace GeneralUpdate.Core.Utils
                 case StringOption.Url:
                     pos = str.LastIndexOf('/');
                     break;
+
                 case StringOption.File:
                     pos = str.LastIndexOf('\\');
                     break;
@@ -40,11 +35,12 @@ namespace GeneralUpdate.Core.Utils
                 case StringOption.Url:
                     pos = str.LastIndexOf('/');
                     break;
+
                 case StringOption.File:
                     pos = str.LastIndexOf('\\');
                     break;
             }
-            resultName = str.Substring(0,pos);
+            resultName = str.Substring(0, pos);
             return resultName;
         }
     }

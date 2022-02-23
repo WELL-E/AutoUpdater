@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Zip.Factory
+﻿namespace GeneralUpdate.Zip.Factory
 {
     public enum OperationType
     {

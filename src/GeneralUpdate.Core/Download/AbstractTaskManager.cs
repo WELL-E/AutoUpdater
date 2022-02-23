@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GeneralUpdate.Core.Download
+﻿namespace GeneralUpdate.Core.Download
 {
     /// <summary>
     /// Abstract task manager class.

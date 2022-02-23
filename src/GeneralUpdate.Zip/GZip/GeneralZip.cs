@@ -18,11 +18,11 @@ namespace GeneralUpdate.Zip.GZip
     /// </summary>
     public class GeneralZip : BaseCompress
     {
-        private string  _destinationPath;
+        private string _destinationPath;
         private bool _includeBaseDirectory;
 
         /// <summary>
-        /// Creates a zip archive containing the files and subdirectories of the specified directory. 
+        /// Creates a zip archive containing the files and subdirectories of the specified directory.
         /// </summary>
         /// <param name="sourceDirectoryName">The path of the file directory to be compressed and archived, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory. </param>
         /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory. </param>
@@ -55,7 +55,7 @@ namespace GeneralUpdate.Zip.GZip
                                         if (toZipedFileName != null && (zipArchiveEntry.FullName.StartsWith(toZipedFileName) || toZipedFileName.StartsWith(zipArchiveEntry.FullName)))
                                         {
                                             i++;
-                                            OnCompressProgressEventHandler(this, new BaseCompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName , Name = zipArchiveEntry.Name });
+                                            OnCompressProgressEventHandler(this, new BaseCompressProgressEventArgs { Size = zipArchiveEntry.Length, Count = count, Index = i, Path = zipArchiveEntry.FullName, Name = zipArchiveEntry.Name });
                                             toDelArchives.Add(zipArchiveEntry);
                                         }
                                     }
@@ -106,7 +106,7 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// Creates a zip archive containing the files and directories of the specified directory. 
+        /// Creates a zip archive containing the files and directories of the specified directory.
         /// </summary>
         /// <param name="sourceDirectoryName">The path of the file directory to be compressed and archived, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
         /// <param name="destinationArchiveFileName">The archive path of the compressed package to be generated, which can be a relative path or an absolute path. A relative path is a path relative to the current working directory.</param>
@@ -162,14 +162,14 @@ namespace GeneralUpdate.Zip.GZip
             var successed = true;
             try
             {
-                if (Directory.Exists(baseDirectory)) 
+                if (Directory.Exists(baseDirectory))
                 {
                     foreach (var directory in Directory.GetFileSystemEntries(baseDirectory))
                         if (File.Exists(directory))
-                            File.Delete(directory); 
+                            File.Delete(directory);
                         else
                             successed = DeleteFolder(directory);
-                    Directory.Delete(baseDirectory);   
+                    Directory.Delete(baseDirectory);
                 }
             }
             catch
@@ -180,7 +180,7 @@ namespace GeneralUpdate.Zip.GZip
         }
 
         /// <summary>
-        /// Recursively get the set of all files in the specified directory on the disk, the return type is: dictionary [file name, relative file name to be compressed] 
+        /// Recursively get the set of all files in the specified directory on the disk, the return type is: dictionary [file name, relative file name to be compressed]
         /// </summary>
         /// <param name="strBaseDir"></param>
         /// <param name="includeBaseDirectory"></param>
@@ -195,7 +195,7 @@ namespace GeneralUpdate.Zip.GZip
             if (includeBaseDirectory)
                 namePrefix += directoryInfo.Name + "\\";
             foreach (var directory in directories)
-                resultDictionary = resultDictionary.Concat(GetAllDirList(directory.FullName, true, namePrefix)).ToDictionary(k => k.Key, k => k.Value); 
+                resultDictionary = resultDictionary.Concat(GetAllDirList(directory.FullName, true, namePrefix)).ToDictionary(k => k.Key, k => k.Value);
             foreach (var fileInfo in fileInfos)
                 if (!resultDictionary.ContainsKey(fileInfo.FullName))
                     resultDictionary.Add(fileInfo.FullName, namePrefix + fileInfo.Name);
@@ -249,7 +249,7 @@ namespace GeneralUpdate.Zip.GZip
             {
                 isComplete = false;
             }
-            finally 
+            finally
             {
                 OnCompletedEventHandler(this, new CompleteEventArgs(isComplete));
             }
@@ -287,7 +287,7 @@ namespace GeneralUpdate.Zip.GZip
 
         public override bool CreatZip()
         {
-            return CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal,_includeBaseDirectory);
+            return CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal, _includeBaseDirectory);
         }
 
         public override bool UnZip()
@@ -299,7 +299,7 @@ namespace GeneralUpdate.Zip.GZip
         {
             SOURSE_PATH = sourcePath;
             COMPRESS_NAME = $"{ Path.GetFileNameWithoutExtension(sourcePath) }.zip";
-            _destinationPath = string.IsNullOrWhiteSpace(destinationPath) ?  SOLUTION_BASE_PATH : destinationPath;
+            _destinationPath = string.IsNullOrWhiteSpace(destinationPath) ? SOLUTION_BASE_PATH : destinationPath;
             _includeBaseDirectory = includeBaseDirectory;
             Verifypath(sourcePath, destinationPath);
         }

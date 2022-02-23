@@ -1,8 +1,6 @@
 ﻿using GeneralUpdate.Zip.Events;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace GeneralUpdate.Zip.Factory
@@ -10,12 +8,15 @@ namespace GeneralUpdate.Zip.Factory
     public abstract class BaseCompress : IDisposable, IOperation
     {
         public delegate void CompleteEventHandler(object sender, CompleteEventArgs e);
+
         public event CompleteEventHandler Completed;
 
         public delegate void UnZipProgressEventHandler(object sender, BaseUnZipProgressEventArgs e);
+
         public event UnZipProgressEventHandler UnZipProgress;
 
         public delegate void CompressProgressEventHandler(object sender, BaseCompressProgressEventArgs e);
+
         public event CompressProgressEventHandler CompressProgress;
 
         public void OnCompletedEventHandler(object sender, CompleteEventArgs e)
@@ -37,13 +38,12 @@ namespace GeneralUpdate.Zip.Factory
         protected string SOURSE_PATH { get; set; }
         protected string COMPRESS_NAME { get; set; }
 
-
-        public BaseCompress() 
+        public BaseCompress()
         {
             SOLUTION_BASE_PATH = AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public void Verifypath(string soursePath , string destinationPath) 
+        public void Verifypath(string soursePath, string destinationPath)
         {
             if (string.IsNullOrWhiteSpace(soursePath) || string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentNullException("'Sourse path' or 'Destination path' Is null or empty.");
 

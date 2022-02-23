@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace AutoApdate.ConsoleApp
 {
-    class Program
+    internal class Program
     {
         /// <summary>
         /// Quick start
         /// 本程序中引用的第三方组件均来自nuget包并遵循MIT开源协议 https://spdx.org/licenses/MIT.html
         /// </summary>
         /// <param name="args"></param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Task.Run(async() => {
+            Task.Run(async () =>
+            {
                 var resultBase64 = args[0];
                 var bootstrap = new GeneralUpdateBootstrap();
                 bootstrap.Exception += OnException;
@@ -56,15 +57,19 @@ namespace AutoApdate.ConsoleApp
                 case ProgressType.Check:
                     Console.WriteLine($"{ e.Message }");
                     break;
+
                 case ProgressType.Donwload:
                     Console.WriteLine($"{ version.Name },{ e.ProgressValue },{ e.ProgressPercentage },{ e.TotalBytesToReceive }");
                     break;
+
                 case ProgressType.Updatefile:
                     Console.WriteLine($"{ e.Message }");
                     break;
+
                 case ProgressType.Done:
                     Console.WriteLine($"{ e.Message }");
                     break;
+
                 case ProgressType.Fail:
                     Console.WriteLine($"{ e.Message }");
                     break;

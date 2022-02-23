@@ -63,9 +63,9 @@ namespace GeneralUpdate.ClientCore.Strategys
                     }
                     else
                     {
-                        if(ExceptionEventAction != null)
-                           ExceptionEventAction(this,
-                            new ExceptionEventArgs(new System.Exception($"{ respDTO.Code }{ respDTO.Message }")));
+                        if (ExceptionEventAction != null)
+                            ExceptionEventAction(this,
+                             new ExceptionEventArgs(new System.Exception($"{ respDTO.Code }{ respDTO.Message }")));
                     }
                 });
                 return true;

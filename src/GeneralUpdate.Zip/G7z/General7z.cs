@@ -1,13 +1,9 @@
 ﻿using GeneralUpdate.Zip.Events;
 using GeneralUpdate.Zip.Factory;
 using SharpCompress.Archives;
-using SharpCompress.Archives.SevenZip;
 using SharpCompress.Common;
-using SharpCompress.IO;
 using SharpCompress.Readers;
-using SharpCompress.Writers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +18,7 @@ namespace GeneralUpdate.Zip.G7z
     /// </summary>
     public class General7z : BaseCompress
     {
-        private string  _destinationPath;
+        private string _destinationPath;
         private Encoding _encoding;
         private int _unZipCount = 0;
         private int _unzipTotalCount = 0;
@@ -81,16 +77,16 @@ namespace GeneralUpdate.Zip.G7z
             {
                 return false;
             }
-            finally 
+            finally
             {
-                OnCompletedEventHandler(this,new CompleteEventArgs(isComplete));
+                OnCompletedEventHandler(this, new CompleteEventArgs(isComplete));
             }
             return isComplete;
         }
 
         private void OnFilePartExtractionBegin(object sender, FilePartExtractionBeginEventArgs e)
         {
-            OnUnZipProgressEventHandler(sender,new BaseUnZipProgressEventArgs() { Size = e.Size, Name = e.Name , Index = _unZipCount , Count = _unzipTotalCount , Path = Path.Combine(_destinationPath,e.Name) });
+            OnUnZipProgressEventHandler(sender, new BaseUnZipProgressEventArgs() { Size = e.Size, Name = e.Name, Index = _unZipCount, Count = _unzipTotalCount, Path = Path.Combine(_destinationPath, e.Name) });
         }
 
         public override void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false)

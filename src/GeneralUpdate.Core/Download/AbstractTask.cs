@@ -18,14 +18,16 @@ namespace GeneralUpdate.Core.Download
         private long _totalBytes;
         private int _timeOut;
 
-        #endregion
+        #endregion Private Members
 
         #region Public Properties
 
         public delegate void DownloadProgressChangedEventHandlerEx(object sender, DownloadProgressChangedEventArgsEx e);
+
         public event DownloadProgressChangedEventHandlerEx DownloadProgressChangedEx;
 
         public delegate void AsyncCompletedEventHandlerEx(object sender, AsyncCompletedEventArgs e);
+
         public event AsyncCompletedEventHandlerEx DownloadFileCompletedEx;
 
         protected Timer SpeedTimer { get; set; }
@@ -69,7 +71,7 @@ namespace GeneralUpdate.Core.Download
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -176,7 +178,7 @@ namespace GeneralUpdate.Core.Download
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -257,7 +259,7 @@ namespace GeneralUpdate.Core.Download
             }
         }
 
-        #endregion
+        #endregion Private Methods
 
         private class DownloadFileRangeState
         {
@@ -276,7 +278,7 @@ namespace GeneralUpdate.Core.Download
             private object _userState;
             private object _sender;
 
-            #endregion
+            #endregion Private Members
 
             #region Constructors
 
@@ -288,7 +290,7 @@ namespace GeneralUpdate.Core.Download
                 _sender = sender;
             }
 
-            #endregion
+            #endregion Constructors
 
             #region Public Properties
 
@@ -304,7 +306,7 @@ namespace GeneralUpdate.Core.Download
             public object UserState { get => _userState; }
             public object Sender { get => _sender; }
 
-            #endregion
+            #endregion Public Properties
 
             #region Public Methods
 
@@ -330,7 +332,7 @@ namespace GeneralUpdate.Core.Download
                     _onCompleted()(Sender, new AsyncCompletedEventArgs(_exception, isCompleted, _userState));
             }
 
-            #endregion
+            #endregion Public Methods
         }
     }
 }

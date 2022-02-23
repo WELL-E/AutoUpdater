@@ -2,7 +2,7 @@
 {
     public class UpdateVersionDTO
     {
-        public UpdateVersionDTO(string md5 ,long pubTime, string version, string url , string name)
+        public UpdateVersionDTO(string md5, long pubTime, string version, string url, string name)
         {
             MD5 = md5;
             PubTime = pubTime;

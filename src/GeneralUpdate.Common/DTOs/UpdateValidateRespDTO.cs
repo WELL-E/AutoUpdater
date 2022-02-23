@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GeneralUpdate.Common.DTOs
 {
@@ -7,7 +6,7 @@ namespace GeneralUpdate.Common.DTOs
     {
     }
 
-    public class UpdateValidateDTO 
+    public class UpdateValidateDTO
     {
         /// <summary>
         /// Is forcibly update.
