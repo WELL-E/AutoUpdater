@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.Core", "Gener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralUpdate.Single", "GeneralUpdate.Single\GeneralUpdate.Single.csproj", "{57300FDD-58E9-489E-BF2E-C69A87938845}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{1ED3A471-EA2A-425D-8BE0-C5E404B29810}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.Zip", "GeneralUpdate.Zip\GeneralUpdate.Zip.csproj", "{D94882E1-55A7-4787-B049-265F52DC576E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.AspNetCore", "GeneralUpdate.AspNetCore\GeneralUpdate.AspNetCore.csproj", "{7D529953-3846-485F-AC71-3EEACB9161EC}"
@@ -47,10 +45,6 @@ Global
 		{57300FDD-58E9-489E-BF2E-C69A87938845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57300FDD-58E9-489E-BF2E-C69A87938845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57300FDD-58E9-489E-BF2E-C69A87938845}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1ED3A471-EA2A-425D-8BE0-C5E404B29810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1ED3A471-EA2A-425D-8BE0-C5E404B29810}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1ED3A471-EA2A-425D-8BE0-C5E404B29810}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1ED3A471-EA2A-425D-8BE0-C5E404B29810}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D94882E1-55A7-4787-B049-265F52DC576E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D94882E1-55A7-4787-B049-265F52DC576E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D94882E1-55A7-4787-B049-265F52DC576E}.Release|Any CPU.ActiveCfg = Release|Any CPU
