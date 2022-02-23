@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Common.CustomAwaiter;
-using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -321,7 +320,7 @@ namespace GeneralUpdate.Core.Download
                 if (_respone != null) _respone.Close();
                 if (_request != null) _request.Abort();
 
-                //if (_exception != null) throw new Exception(_exception.Message);
+                if (_exception != null) throw new Exception(_exception.Message);
             }
 
             public void Done(bool isCompleted)

@@ -2,8 +2,8 @@
 using GeneralUpdate.Core;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
-using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace AutoApdate.ConsoleApp
 {
@@ -16,27 +16,30 @@ namespace AutoApdate.ConsoleApp
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            var resultBase64 = args[0];
-            var bootstrap = new GeneralUpdateBootstrap();
-            bootstrap.Exception += OnException;
-            bootstrap.MutiDownloadError += OnMutiDownloadError;
-            bootstrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
-            bootstrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
-            bootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-            bootstrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-            bootstrap.Strategy<DefaultStrategy>().
-                //下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
-                Option(UpdateOption.DownloadTimeOut, 60).
-                Option(UpdateOption.Format, "zip").
-                RemoteAddressBase64(resultBase64).
-                LaunchAsync();
-
+            Task.Run(async() => {
+                var resultBase64 = args[0];
+                var bootstrap = new GeneralUpdateBootstrap();
+                bootstrap.Exception += OnException;
+                bootstrap.MutiDownloadError += OnMutiDownloadError;
+                bootstrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                bootstrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                bootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                bootstrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                bootstrap.Strategy<DefaultStrategy>().
+                    //下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+                    Option(UpdateOption.DownloadTimeOut, 60).
+                    Option(UpdateOption.Format, "zip").
+                    RemoteAddressBase64(resultBase64);
+                await bootstrap.LaunchAsync();
+            });
             Console.Read();
         }
 
         private static void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
         {
-            Console.WriteLine($"{ e.Remaining },{ e.Speed },{ e.Version.Name }.");
+            var version = e.Version as UpdateVersion;
+            if (version == null) return;
+            Console.WriteLine($"{ e.Remaining },{ e.Speed },{ version.Name }.");
         }
 
         private static void OnException(object sender, ExceptionEventArgs e)
@@ -46,13 +49,15 @@ namespace AutoApdate.ConsoleApp
 
         private static void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
         {
+            var version = e.Version as UpdateVersion;
+            if (version == null) return;
             switch (e.Type)
             {
                 case ProgressType.Check:
                     Console.WriteLine($"{ e.Message }");
                     break;
                 case ProgressType.Donwload:
-                    Console.WriteLine($"{ e.Version.Name },{ e.ProgressValue },{ e.ProgressPercentage },{ e.TotalBytesToReceive }");
+                    Console.WriteLine($"{ version.Name },{ e.ProgressValue },{ e.ProgressPercentage },{ e.TotalBytesToReceive }");
                     break;
                 case ProgressType.Updatefile:
                     Console.WriteLine($"{ e.Message }");
@@ -68,12 +73,16 @@ namespace AutoApdate.ConsoleApp
 
         private static void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
         {
-            Console.WriteLine($"{ e.Version.Name } ,{ e.Exception.Message }");
+            var version = e.Version as UpdateVersion;
+            if (version == null) return;
+            Console.WriteLine($"{ version.Name } ,{ e.Exception.Message }");
         }
 
         private static void OnMutiDownloadCompleted(object sender, MutiDownloadCompletedEventArgs e)
         {
-            Console.WriteLine($"{ e.Version.Name },{ e.Version.Version },{ e.Version.Url }.");
+            var version = e.Version as UpdateVersion;
+            if (version == null) return;
+            Console.WriteLine($"{ version.Name },{ version.Version },{ version.Url }.");
         }
 
         private static void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)

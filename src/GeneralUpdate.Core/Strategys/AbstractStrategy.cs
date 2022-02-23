@@ -1,7 +1,5 @@
 ﻿using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
 using System;
-using System.IO;
 
 namespace GeneralUpdate.Core.Strategys
 {

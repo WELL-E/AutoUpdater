@@ -1,8 +1,8 @@
-﻿using GeneralUpdate.ClientCore.DTOs;
-using GeneralUpdate.ClientCore.Models;
-using GeneralUpdate.ClientCore.Update;
-using GeneralUpdate.ClientCore.Utils;
+﻿using GeneralUpdate.Common.DTOs;
+using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Strategys;
+using GeneralUpdate.Core.Update;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;

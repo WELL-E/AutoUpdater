@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeneralUpdate.ClientCore\GeneralUpdate.ClientCore.csproj" />
-    <ProjectReference Include="..\GeneralUpdate.Common\GeneralUpdate.Common.csproj" />
     <ProjectReference Include="..\GeneralUpdate.Core\GeneralUpdate.Core.csproj" />
     <ProjectReference Include="..\GeneralUpdate.Zip\GeneralUpdate.Zip.csproj" />
   </ItemGroup>

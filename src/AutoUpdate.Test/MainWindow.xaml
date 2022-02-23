@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TabControl>
-            <!--ZIP-->
+        <!--<TabControl>
+            --><!--ZIP--><!--
             <TabItem Header="Zip Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -38,7 +38,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!--GUpdate.Core-->
+            --><!--GUpdate.Core--><!--
             <TabItem Header="GUpdate.Core Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -50,7 +50,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!--GUpdate.Client-->
+            --><!--GUpdate.Client--><!--
             <TabItem Header="GUpdate.Client Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!--MD5-->
+            --><!--MD5--><!--
             <TabItem Header="File MD5">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -82,7 +82,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!--Process launch-->
+            --><!--Process launch--><!--
             <TabItem Header="Process launch">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -113,6 +113,6 @@
                     </Grid>
                 </Grid>
             </TabItem>
-        </TabControl>
+        </TabControl>-->
     </Grid>
 </Window>

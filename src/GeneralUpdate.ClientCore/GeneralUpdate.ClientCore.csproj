@@ -10,9 +10,64 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
+    <Compile Remove="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
+    <Compile Remove="ZipFactory\Events\CompleteEventArgs.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="GeneralUpdate.ClientCore.1.1.1.nupkg" />
     <None Remove="GeneralUpdate.ClientCore.nuspec" />
     <None Remove="nuget.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\IAwaitable.cs" Link="CustomAwaiter\IAwaitable.cs" />
+    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\IAwaiter.cs" Link="CustomAwaiter\IAwaiter.cs" />
+    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\ICriticalAwaiter.cs" Link="CustomAwaiter\ICriticalAwaiter.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateValidateReqDTO.cs" Link="DTOs\UpdateValidateReqDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionDTO.cs" Link="DTOs\UpdateVersionDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsReqDTO.cs" Link="DTOs\UpdateVersionsReqDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Utils\ConvertUtil.cs" Link="Utils\ConvertUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Utils\DataValidateUtil.cs" Link="Utils\DataValidateUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Utils\HttpUtil.cs" Link="Utils\HttpUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Utils\SerializeUtil.cs" Link="Utils\SerializeUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Bootstrap\AbstractBootstrap.cs" Link="Bootstrap\AbstractBootstrap.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\AbstractTask.cs" Link="Download\AbstractTask.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\AbstractTaskManager.cs" Link="Download\AbstractTaskManager.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\DownloadManager.cs" Link="Download\DownloadManager.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\DownloadTask.cs" Link="Download\DownloadTask.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\ITask.cs" Link="Download\ITask.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Download\ITaskManger.cs" Link="Download\ITaskManger.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Models\FileBase.cs" Link="Models\FileBase.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Models\UpdatePacket.cs" Link="Models\UpdatePacket.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Strategys\AbstractStrategy.cs" Link="Strategys\AbstractStrategy.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Strategys\IStrategy.cs" Link="Strategys\IStrategy.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Strategys\Strategy.cs" Link="Strategys\Strategy.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Update\IFile.cs" Link="Update\IFile.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Update\UpdateEventArgs.cs" Link="Update\UpdateEventArgs.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\StatisticsUtil.cs" Link="Utils\StatisticsUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\StringEx.cs" Link="Utils\StringEx.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompressProgressEventArgs.cs" Link="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Events\BaseUnZipProgressEventArgs.cs" Link="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Events\CompleteEventArgs.cs" Link="ZipFactory\Events\CompleteEventArgs.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Factory\BaseCompress.cs" Link="ZipFactory\Factory\BaseCompress.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Factory\IFactory.cs" Link="ZipFactory\Factory\IFactory.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Factory\IOperation.cs" Link="ZipFactory\Factory\IOperation.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Factory\OperationType.cs" Link="ZipFactory\Factory\OperationType.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\G7z\General7z.cs" Link="ZipFactory\G7z\General7z.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\GeneralZipFactory.cs" Link="ZipFactory\GeneralZipFactory.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\GZip\GeneralZip.cs" Link="ZipFactory\GZip\GeneralZip.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +75,18 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="SharpCompress" Version="0.30.1" />
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Bootstrap\" />
+    <Folder Include="CustomAwaiter\" />
+    <Folder Include="Download\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Update\" />
+    <Folder Include="ZipFactory\Events\" />
+    <Folder Include="ZipFactory\Factory\" />
+    <Folder Include="ZipFactory\G7z\" />
+    <Folder Include="ZipFactory\GZip\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Common.Models;
+﻿
+using GeneralUpdate.Common.Models;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
@@ -80,7 +81,7 @@ namespace GeneralUpdate.Core.Strategys
                 ExceptionEventAction(this, new ExceptionEventArgs(ex));
         }
 
-        protected bool CheckAllIsUnZip(List<Common.Models.UpdateVersion> versions) 
+        protected bool CheckAllIsUnZip(List<UpdateVersion> versions) 
         {
             foreach (var version in versions)
             {
@@ -120,7 +121,7 @@ namespace GeneralUpdate.Core.Strategys
         /// <param name="unzippath"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        protected bool UnZip(Common.Models.UpdateVersion versionInfo, string zipfilepath, string unzippath)
+        protected bool UnZip(UpdateVersion versionInfo, string zipfilepath, string unzippath)
         {
             try
             {

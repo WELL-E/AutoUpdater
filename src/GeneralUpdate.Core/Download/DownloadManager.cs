@@ -33,7 +33,7 @@ namespace GeneralUpdate.Core.Download
         /// <param name="path"></param>
         /// <param name="format"></param>
         /// <param name="timeOut"></param>
-        internal DownloadManager(string path, string format, int timeOut)
+        public DownloadManager(string path, string format, int timeOut)
         {
             _path = path;
             _format = format;
@@ -49,13 +49,13 @@ namespace GeneralUpdate.Core.Download
         /// Record download exception information for all versions.
         /// object: is 'UpdateVersion' , string: is error infomation.
         /// </summary>
-        internal IList<(object, string)> FailedVersions { get => _failedVersions; }
-        internal string Path { get => _path; }
+        public IList<(object, string)> FailedVersions { get => _failedVersions; }
+        public string Path { get => _path; }
 
         //zip format
-        internal string Format { get => _format; }
+        public string Format { get => _format; }
 
-        internal int TimeOut { get => _timeOut; }
+        public int TimeOut { get => _timeOut; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
         public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
@@ -82,22 +82,37 @@ namespace GeneralUpdate.Core.Download
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="AmbiguousMatchException"></exception>
-        public async Task AsyncLaunch()
+        public void LaunchTaskAsync()
         {
             try
             {
+                List<Task> downloadTasks = new List<Task>();
                 foreach (var task in DownloadTaskPool)
                 {
-                    var downloadTask = task as DownloadTask<UpdateVersion>;
-                    await downloadTask.Launch();
+                    var downloadTask = (task as DownloadTask<UpdateVersion>);
+                    downloadTasks.Add(downloadTask.AsTask(downloadTask.Launch()));
                 }
+                Task.WaitAll(downloadTasks.ToArray());
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
+            }
+            catch (ObjectDisposedException ex)
+            {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ObjectDisposedException'.", ex);
+            }
+            catch (AggregateException ex)
+            {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AggregateException'.", ex);
             }
             catch (ArgumentNullException ex)
             {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ArgumentNullException'.", ex);
             }
             catch (AmbiguousMatchException ex)
             {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new AmbiguousMatchException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AmbiguousMatchException'.", ex);
             }
         }
@@ -121,7 +136,7 @@ namespace GeneralUpdate.Core.Download
         {
             if (MutiDownloadError != null) this.MutiDownloadError(sender, e);
 
-            _failedVersions.Add((e.Version,e.Exception.Message));
+            _failedVersions.Add((e.Version, e.Exception.Message));
         }
 
         public override void Remove(ITask<UpdateVersion> task)

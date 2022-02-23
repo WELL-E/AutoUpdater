@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -102,9 +101,9 @@ namespace GeneralUpdate.Core.Update
     {
         public bool IsAllDownloadCompleted { get; set; }
 
-        public IList<ValueTuple<UpdateVersion, string>> FailedVersions { get; set; }
+        public IList<ValueTuple<object, string>> FailedVersions { get; set; }
 
-        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<UpdateVersion, string>> failedVersions)
+        public MutiAllDownloadCompletedEventArgs(bool isAllDownloadCompleted, IList<ValueTuple<object, string>> failedVersions)
         {
             IsAllDownloadCompleted = isAllDownloadCompleted;
             FailedVersions = failedVersions;

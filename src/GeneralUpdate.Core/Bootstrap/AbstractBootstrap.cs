@@ -8,7 +8,6 @@ using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
@@ -100,7 +99,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 {
                     manager.Add(new DownloadTask<UpdateVersion>(manager, v));
                 });
-                await manager.AsyncLaunch();
+                manager.LaunchTaskAsync();
             }
             catch (Exception ex)
             {

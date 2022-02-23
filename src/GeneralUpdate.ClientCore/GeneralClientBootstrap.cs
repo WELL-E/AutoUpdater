@@ -1,8 +1,8 @@
-using GeneralUpdate.ClientCore.Bootstrap;
-using GeneralUpdate.ClientCore.DTOs;
-using GeneralUpdate.ClientCore.Models;
-using GeneralUpdate.ClientCore.Strategys;
-using GeneralUpdate.ClientCore.Utils;
+using GeneralUpdate.Common.DTOs;
+using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
+using GeneralUpdate.Core.Bootstrap;
+using GeneralUpdate.Core.Strategys;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace GeneralUpdate.ClientCore
         {
         }
 
-        public override async Task<GeneralClientBootstrap> LaunchTaskAsync()
+        public override async Task<GeneralClientBootstrap> LaunchAsync()
         {
             try
             {
@@ -25,7 +25,7 @@ namespace GeneralUpdate.ClientCore
                     Packet.IsUpdate = body.IsForcibly;
                     if (body.IsForcibly)
                     {
-                        await base.LaunchTaskAsync();
+                        await base.LaunchAsync();
                     }
                     else
                     {

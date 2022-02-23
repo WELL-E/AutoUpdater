@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Download
 {
@@ -28,7 +29,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Constructors
 
-        public DownloadTask(DownloadManager manger,T version)
+        public DownloadTask(DownloadManager manger, T version)
         {
             _manager = manger;
             _version = version;
@@ -43,18 +44,17 @@ namespace GeneralUpdate.Core.Download
             try
             {
                 var url = GetPropertyValue<string>(_version, "Url");
-                var path = GetPropertyValue<string>(_version, "Path");
                 var name = GetPropertyValue<string>(_version, "Name");
                 InitTimeOut(_manager.TimeOut);
                 InitStatisticsEvent();
                 InitProgressEvent();
                 InitCompletedEvent();
-                var installPath = $"{ _manager.Path }\\{ name }{_manager.Format}";
+                var installPath = $"{ _manager.Path }{ name }{_manager.Format}";
                 DownloadFileRange(url, installPath, null);
             }
             catch (Exception ex)
             {
-                throw new Exception("'Launch' The method executes abnormally !", ex);
+                throw _exception = new Exception("'Launch' The method executes abnormally !", ex);
             }
             return this;
         }
@@ -81,11 +81,16 @@ namespace GeneralUpdate.Core.Download
             return this;
         }
 
+        public async Task AsTask(DownloadTask<T> awaiter)
+        {
+            await awaiter;
+        }
+
         #endregion
 
         #region Private Methods
 
-        private void InitStatisticsEvent() 
+        private void InitStatisticsEvent()
         {
             if (SpeedTimer != null) return;
 
@@ -114,7 +119,7 @@ namespace GeneralUpdate.Core.Download
             }, null, 0, 1000);
         }
 
-        private void InitProgressEvent() 
+        private void InitProgressEvent()
         {
             DownloadProgressChangedEx += new DownloadProgressChangedEventHandlerEx((sender, e) =>
             {
@@ -140,7 +145,7 @@ namespace GeneralUpdate.Core.Download
             });
         }
 
-        private void InitCompletedEvent() 
+        private void InitCompletedEvent()
         {
             DownloadFileCompletedEx += new AsyncCompletedEventHandlerEx((sender, e) =>
             {
@@ -159,16 +164,17 @@ namespace GeneralUpdate.Core.Download
                 }
                 catch (Exception exception)
                 {
+                    _manager.FailedVersions.Add(new ValueTuple<object, string> { });
                     _manager.OnMutiDownloadError(this, new MutiDownloadErrorEventArgs(exception, _version));
                 }
-                finally 
+                finally
                 {
                     IsCompleted = true;
                 }
             });
         }
 
-        private R GetPropertyValue<R>(T entity,string propertyName) 
+        private R GetPropertyValue<R>(T entity, string propertyName)
         {
             R result = default(R);
             Type entityType = typeof(T);
@@ -179,11 +185,11 @@ namespace GeneralUpdate.Core.Download
             }
             catch (ArgumentNullException ex)
             {
-                throw new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
+                throw _exception = new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
             }
-            catch (AmbiguousMatchException ex) 
+            catch (AmbiguousMatchException ex)
             {
-                throw new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
+                throw _exception = new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             return result;
         }
