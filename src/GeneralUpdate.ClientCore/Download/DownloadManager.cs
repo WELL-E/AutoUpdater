@@ -82,17 +82,28 @@ namespace GeneralUpdate.ClientCore.Download
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="AmbiguousMatchException"></exception>
-        public async Task LaunchAsync()
+        public void LaunchTaskAsync()
         {
             try
             {
-                //TODO:添加并行操作
+                List<Task> downloadTasks = new List<Task>();
                 foreach (var task in DownloadTaskPool)
                 {
-                    var downloadTask = task as DownloadTask<UpdateVersion>;
-                    await downloadTask.Launch();
+                    var downloadTask = (task as DownloadTask<UpdateVersion>);
+                    downloadTasks.Add(downloadTask.AsTask(downloadTask.Launch()));
                 }
-                MutiAllDownloadCompleted(this,new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
+                Task.WaitAll(downloadTasks.ToArray());
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
+            }
+            catch (ObjectDisposedException ex)
+            {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ObjectDisposedException'.", ex);
+            }
+            catch (AggregateException ex) 
+            {
+                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AggregateException'.", ex);
             }
             catch (ArgumentNullException ex)
             {
