@@ -1,6 +1,8 @@
 # GeneralUpdate #
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
+![](https://github.com/<OWNER>/<REPOSITORY>/workflows/<WORKFLOW_NAME>/badge.svg?color=blue)
+
 
 ![](imgs/GeneralUpdate_h.png)
 
