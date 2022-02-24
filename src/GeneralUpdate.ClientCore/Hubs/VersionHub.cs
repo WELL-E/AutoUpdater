@@ -8,6 +8,8 @@ namespace GeneralUpdate.ClientCore.Hubs
 {
     public sealed class VersionHub
     {
+        #region Private Members
+
         private const string ClientNameflag = "GeneralUpdate.Client";
         private const string ReceiveMessageflag = "ReceiveMessage";
         private const string SendMessageflag = "SendMessage";
@@ -21,6 +23,16 @@ namespace GeneralUpdate.ClientCore.Hubs
         private Action<UpdateVersion> _receiveMessageCallback;
         private Action<string> _onlineMessageCallback;
         private Action<string> _reconnectedCallback;
+
+        #endregion
+
+        #region Constructors
+
+        private VersionHub() { }
+
+        #endregion
+
+        #region Public Properties
 
         public static VersionHub Instance
         {
@@ -40,12 +52,14 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
         }
 
-        private VersionHub(){ }
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Subscribe to the latest version.
         /// </summary>
-        /// <param name="url">remote server address , E.g : https://127.0.0.1:8080</param>
+        /// <param name="url">remote server address , E.g : https://127.0.0.1:8080/versionhub .</param>
         /// <param name="receiveMessageCallback">Receive server push callback function, The caller needs to implement the update process.</param>
         /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
         /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
@@ -75,85 +89,6 @@ namespace GeneralUpdate.ClientCore.Hubs
             catch (Exception ex)
             {
                 throw new Exception($"'VersionHub' Subscribe error :  { ex.Message }", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Receives the message.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnReceiveMessage(string message)
-        {
-            if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
-
-            try
-            {
-                var version =  SerializeUtil.Deserialize<UpdateVersion>(message);
-                if(version == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
-                _receiveMessageCallback.Invoke(version);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' Receive message error :  { ex.Message }", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Online and offline notification.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnOnlineMessage(string message)
-        {
-            try
-            {
-                if (_onlineMessageCallback != null) _onlineMessageCallback.Invoke(message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' Online message error :  { ex.Message }", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Reconnection notice.
-        /// </summary>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        private Task OnReconnected(string arg)
-        {
-            try
-            {
-                if (_reconnectedCallback != null) _reconnectedCallback.Invoke(arg);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' On reconnected error :  { ex.Message }", ex.InnerException);
-            }
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Shut down.
-        /// </summary>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        private async Task OnClosed(Exception arg)
-        {
-            try
-            {
-                if(arg != null) throw new Exception($"'VersionHub' On closed internal exception :  { arg.Message }", arg.InnerException);
-
-                if (_connection == null) return;
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await _connection.StartAsync();
-            }
-            catch (ArgumentOutOfRangeException ex) 
-            {
-                throw new ArgumentOutOfRangeException(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' On closed error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -207,8 +142,93 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
             catch (Exception ex)
             {
-                throw new Exception($"'VersionHub' SignOut error :  { ex.Message }",ex.InnerException);
+                throw new Exception($"'VersionHub' SignOut error :  { ex.Message }", ex.InnerException);
             }
         }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Receives the message.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnReceiveMessage(string message)
+        {
+            if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
+
+            try
+            {
+                var version = SerializeUtil.Deserialize<UpdateVersion>(message);
+                if (version == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
+                _receiveMessageCallback.Invoke(version);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' Receive message error :  { ex.Message }", ex.InnerException);
+            }
+        }
+
+        /// <summary>
+        /// Online and offline notification.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnOnlineMessage(string message)
+        {
+            try
+            {
+                if (_onlineMessageCallback != null) _onlineMessageCallback.Invoke(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' Online message error :  { ex.Message }", ex.InnerException);
+            }
+        }
+
+        /// <summary>
+        /// Reconnection notice.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task OnReconnected(string arg)
+        {
+            try
+            {
+                if (_reconnectedCallback != null) _reconnectedCallback.Invoke(arg);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' On reconnected error :  { ex.Message }", ex.InnerException);
+            }
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Shut down.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private async Task OnClosed(Exception arg)
+        {
+            try
+            {
+                if (arg != null) throw new Exception($"'VersionHub' On closed internal exception :  { arg.Message }", arg.InnerException);
+
+                if (_connection == null) return;
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await _connection.StartAsync();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new ArgumentOutOfRangeException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' On closed error :  { ex.Message }", ex.InnerException);
+            }
+        }
+
+        #endregion
     }
 }
