@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore.Hubs
 {
-    public class VersionHub
+    public sealed class VersionHub
     {
         private const string ClientNameflag = "GeneralUpdate.Client";
         private const string ReceiveMessageflag = "ReceiveMessage";
@@ -13,11 +15,14 @@ namespace GeneralUpdate.ClientCore.Hubs
         private const string Loginflag = "Login";
         private const string SignOutflag = "SignOut";
 
-        private HubConnection connection = null;
-        private VersionHub _instance;
-        private readonly object _lock = new object();
+        private HubConnection _connection = null;
+        private static VersionHub _instance;
+        private static readonly object _lock = new object();
+        private Action<UpdateVersion> _receiveMessageCallback;
+        private Action<string> _onlineMessageCallback;
+        private Action<string> _reconnectedCallback;
 
-        public VersionHub Instance
+        public static VersionHub Instance
         {
             get
             {
@@ -35,34 +40,36 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
         }
 
-        private VersionHub()
-        { }
+        private VersionHub(){ }
 
         /// <summary>
         /// Subscribe to the latest version.
         /// </summary>
-        public void Subscribe(string url, Action<Exception> onException)
+        public void Subscribe(string url, Action<UpdateVersion> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
-            if (string.IsNullOrWhiteSpace(url)) throw new Exception("url not set !");
+            if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
 
             try
             {
-                if (connection == null)
+                _receiveMessageCallback = receiveMessageCallback;
+                _onlineMessageCallback = onlineMessageCallback;
+                _reconnectedCallback = reconnectedCallback;
+                if (_connection == null)
                 {
-                    connection = new HubConnectionBuilder()
+                    _connection = new HubConnectionBuilder()
                             .WithUrl(url)
                             .WithAutomaticReconnect(new RandomRetryPolicy())
                             .Build();
-                    connection.On<string>(ReceiveMessageflag, OnReceiveMessageHandler);
-                    connection.On<string>(Onlineflag, OnOnlineMessageHandler);
-                    connection.Reconnected += OnReconnected;
-                    connection.Closed += OnClosed;
+                    _connection.On<string>(ReceiveMessageflag, OnReceiveMessage);
+                    _connection.On<string>(Onlineflag, OnOnlineMessage);
+                    _connection.Reconnected += OnReconnected;
+                    _connection.Closed += OnClosed;
                 }
-                connection.StartAsync();
+                _connection.StartAsync();
             }
             catch (Exception ex)
             {
-                onException(ex);
+                throw new Exception($"'VersionHub' Subscribe error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -70,23 +77,36 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Receives the message.
         /// </summary>
         /// <param name="message"></param>
-        private void OnReceiveMessageHandler(string message)
+        private void OnReceiveMessage(string message)
         {
-            //TODO:接收到新版本推送处理
-            //1.解析base64加密字符串
-            //2.json解析为版本对象
-            //3.http请求最新版本信息
-            //4.下载、更新
-            //5.暴露出更新完成通知、更新过程事件通知
+            if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
+
+            try
+            {
+                var version =  SerializeUtil.Deserialize<UpdateVersion>(message);
+                if(version == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
+                _receiveMessageCallback.Invoke(version);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' Receive message error :  { ex.Message }", ex.InnerException);
+            }
         }
 
         /// <summary>
         /// Online and offline notification.
         /// </summary>
         /// <param name="message"></param>
-        private void OnOnlineMessageHandler(string message)
+        private void OnOnlineMessage(string message)
         {
-            //TODO:暴露出离线、上线通知
+            try
+            {
+                if (_onlineMessageCallback != null) _onlineMessageCallback.Invoke(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' Online message error :  { ex.Message }", ex.InnerException);
+            }
         }
 
         /// <summary>
@@ -96,6 +116,14 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// <returns></returns>
         private Task OnReconnected(string arg)
         {
+            try
+            {
+                if (_reconnectedCallback != null) _reconnectedCallback.Invoke(arg);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' On reconnected error :  { ex.Message }", ex.InnerException);
+            }
             return Task.CompletedTask;
         }
 
@@ -108,11 +136,19 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
+                if(arg != null) throw new Exception($"'VersionHub' On closed internal exception :  { arg.Message }", arg.InnerException);
+
+                if (_connection == null) return;
                 await Task.Delay(new Random().Next(0, 5) * 1000);
-                await connection.StartAsync();
+                await _connection.StartAsync();
             }
-            catch (Exception)
+            catch (ArgumentOutOfRangeException ex) 
             {
+                throw new ArgumentOutOfRangeException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"'VersionHub' On closed error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -126,10 +162,12 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(SendMessageflag, user, msg);
+                if (_connection == null) return;
+                await _connection.InvokeAsync(SendMessageflag, user, msg);
             }
             catch (Exception ex)
             {
+                throw new Exception($"'VersionHub' Send error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -141,10 +179,12 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(Loginflag, ClientNameflag);
+                if (_connection == null) return;
+                await _connection.InvokeAsync(Loginflag, ClientNameflag);
             }
             catch (Exception ex)
             {
+                throw new Exception($"'VersionHub' Login error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -156,11 +196,13 @@ namespace GeneralUpdate.ClientCore.Hubs
         {
             try
             {
-                await connection.InvokeAsync(SignOutflag, ClientNameflag);
-                await connection.StopAsync();
+                if (_connection == null) return;
+                await _connection.InvokeAsync(SignOutflag, ClientNameflag);
+                await _connection.StopAsync();
             }
             catch (Exception ex)
             {
+                throw new Exception($"'VersionHub' SignOut error :  { ex.Message }",ex.InnerException);
             }
         }
     }
