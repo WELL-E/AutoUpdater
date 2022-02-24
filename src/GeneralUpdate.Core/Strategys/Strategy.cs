@@ -26,6 +26,7 @@ namespace GeneralUpdate.Core.Strategys
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
+            _operationType = Packet.Format.Equals("ZIP") ? OperationType.GZip : OperationType.G7z;
         }
 
         public override void Excute()
