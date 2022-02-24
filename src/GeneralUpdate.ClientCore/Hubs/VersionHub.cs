@@ -45,6 +45,11 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// <summary>
         /// Subscribe to the latest version.
         /// </summary>
+        /// <param name="url">remote server address , E.g : https://127.0.0.1:8080</param>
+        /// <param name="receiveMessageCallback">Receive server push callback function, The caller needs to implement the update process.</param>
+        /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
+        /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
+        /// <exception cref="Exception"></exception>
         public void Subscribe(string url, Action<UpdateVersion> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
             if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
