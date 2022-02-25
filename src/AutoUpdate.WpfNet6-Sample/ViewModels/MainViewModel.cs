@@ -3,6 +3,7 @@ using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using MvvmHelpers;
 using System;
+using System.Threading.Tasks;
 
 namespace AutoUpdate.Core.ViewModels
 {
@@ -11,24 +12,24 @@ namespace AutoUpdate.Core.ViewModels
         private string _tips1, _tips2, _tips3, _tips4, _tips5, _tips6;
         private double _progressVal, _progressMin, _progressMax;
 
-        public MainViewModel()
-        { }
-
         public MainViewModel(string args)
         {
             ProgressMin = 0;
-            var bootStrap = new GeneralUpdateBootstrap();
-            bootStrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
-            bootStrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
-            bootStrap.MutiDownloadError += OnMutiDownloadError;
-            bootStrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
-            bootStrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
-            bootStrap.Exception += OnException;
-            bootStrap.Strategy<DefaultStrategy>().
-            Option(UpdateOption.DownloadTimeOut, 60).
-            Option(UpdateOption.Format, "zip").
-            RemoteAddressBase64(args);
-            bootStrap.LaunchAsync();
+            Task.Run(async() => 
+            {
+                var bootStrap = new GeneralUpdateBootstrap();
+                bootStrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
+                bootStrap.MutiDownloadCompleted += OnMutiDownloadCompleted;
+                bootStrap.MutiDownloadError += OnMutiDownloadError;
+                bootStrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
+                bootStrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
+                bootStrap.Exception += OnException;
+                bootStrap.Strategy<DefaultStrategy>().
+                Option(UpdateOption.DownloadTimeOut, 60).
+                Option(UpdateOption.CompressFormat, "zip").
+                RemoteAddressBase64(args);
+                await bootStrap.LaunchAsync();
+            });
         }
 
         public string Tips1 { get => _tips1; set => SetProperty(ref _tips1, value); }

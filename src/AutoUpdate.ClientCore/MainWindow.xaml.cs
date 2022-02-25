@@ -15,6 +15,8 @@ namespace AutoUpdate.ClientCore
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string baseUrl = @"http://127.0.0.1:5001";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,17 +46,17 @@ namespace AutoUpdate.ClientCore
                 //主程序客户端exe名称
                 clientParameter.MainAppName = "AutoUpdate.Test";
                 //本机的客户端程序应用地址
-                clientParameter.InstallPath = @"D:\update_test";
+                clientParameter.InstallPath = @"D:\Updatetest_hub\Run_app";
                 //更新公告网页
-                clientParameter.UpdateLogUrl = "https://www.baidu.com/";
+                //clientParameter.UpdateLogUrl = "https://www.baidu.com/";
                 //更新组件请求验证更新的服务端地址
-                clientParameter.ValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.ValidateUrl = $"{baseUrl}/validate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
                 //更新组件更新包下载地址
-                clientParameter.UpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
                 //主程序客户端请求验证更新的服务端地址
-                clientParameter.MainValidateUrl = $"https://127.0.0.1:5001/api/update/getUpdateValidate/{ mianType }/{ mainVersion }";
+                clientParameter.MainValidateUrl = $"{baseUrl}/validate/{ mianType }/{ mainVersion }";
                 //主程序客户端更新包下载地址
-                clientParameter.MainUpdateUrl = $"https://127.0.0.1:5001/api/update/getUpdateVersions/{ mianType }/{ mainVersion }";
+                clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ mianType }/{ mainVersion }";
 
                var  generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
@@ -71,7 +73,9 @@ namespace AutoUpdate.ClientCore
                 generalClientBootstrap.Exception += OnException;
                 //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
                 generalClientBootstrap.Config(clientParameter).
-                    Strategy<ClientStrategy>();
+                Option(UpdateOption.CompressEncoding,System.Text.Encoding.UTF8).
+                Option(UpdateOption.CompressFormat,"zip").
+                Strategy<ClientStrategy>();
                 await generalClientBootstrap.LaunchAsync();
             });
         }

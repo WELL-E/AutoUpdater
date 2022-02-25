@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Text;
 using System.Threading;
 
 namespace GeneralUpdate.Core.Update
@@ -17,17 +18,22 @@ namespace GeneralUpdate.Core.Update
         public static UpdateOption<T> ValueOf<T>(string name) => (UpdateOption<T>)Pool.ValueOf<T>(name);
 
         /// <summary>
-        /// 更新包的文件格式
+        /// Update the file format of the package.
         /// </summary>
-        public static readonly UpdateOption<string> Format = ValueOf<string>("FORMAT");
+        public static readonly UpdateOption<string> CompressFormat = ValueOf<string>("COMPRESSFORMAT");
 
         /// <summary>
-        /// 主程序名称
+        /// Compress encoding.
+        /// </summary>
+        public static readonly UpdateOption<Encoding> CompressEncoding = ValueOf<Encoding>("COMPRESSENCODING");
+
+        /// <summary>
+        /// Main program name.
         /// </summary>
         public static readonly UpdateOption<string> MainApp = ValueOf<string>("MAINAPP");
 
         /// <summary>
-        /// 下载超时时间（单位：秒）,如果不指定则默认超时时间为30秒。
+        /// Timeout period (unit: second). If this parameter is not specified, the default timeout period is 30 seconds.
         /// </summary>
         public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
 

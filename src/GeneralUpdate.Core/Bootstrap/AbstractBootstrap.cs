@@ -9,6 +9,7 @@ using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Bootstrap
@@ -90,12 +91,13 @@ namespace GeneralUpdate.Core.Bootstrap
 
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
 
-                var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
-                Packet.Format = $".{pacektFormat}";
+                var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
+                Packet.CompressFormat = $".{pacektFormat}";
+                Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
 
-                var manager = new DownloadManager(Packet.TempPath, Packet.Format, GetOption(UpdateOption.DownloadTimeOut));
+                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, GetOption(UpdateOption.DownloadTimeOut));
                 manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
                 manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
                 manager.MutiDownloadError += OnMutiDownloadError;

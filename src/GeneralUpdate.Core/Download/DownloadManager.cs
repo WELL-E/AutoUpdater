@@ -11,7 +11,7 @@ namespace GeneralUpdate.Core.Download
     /// download task manager.
     /// </summary>
     /// <typeparam name="T">update version infomation.</typeparam>
-    public sealed class DownloadManager : AbstractTaskManager<UpdateVersion>
+    public sealed class DownloadManager<TVersion> : AbstractTaskManager<TVersion>
     {
         #region Private Members
 
@@ -19,9 +19,9 @@ namespace GeneralUpdate.Core.Download
         private string _format;
         private int _timeOut;
         private IList<(object, string)> _failedVersions;
-        private IList<ITask<UpdateVersion>> _downloadTaskPool;
+        private IList<ITask<TVersion>> _downloadTaskPool;
 
-        private IList<ITask<UpdateVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<UpdateVersion>>()); }
+        private IList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<TVersion>>()); }
 
         #endregion Private Members
 
@@ -92,11 +92,11 @@ namespace GeneralUpdate.Core.Download
         {
             try
             {
-                List<Task> downloadTasks = new List<Task>();
+                var downloadTasks = new List<Task>();
                 foreach (var task in DownloadTaskPool)
                 {
                     var downloadTask = (task as DownloadTask<UpdateVersion>);
-                    downloadTasks.Add(downloadTask.AsTask(downloadTask.Launch()));
+                    downloadTasks.Add(downloadTask.Launch());
                 }
                 Task.WaitAll(downloadTasks.ToArray());
                 MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
@@ -145,12 +145,12 @@ namespace GeneralUpdate.Core.Download
             _failedVersions.Add((e.Version, e.Exception.Message));
         }
 
-        public override void Remove(ITask<UpdateVersion> task)
+        public override void Remove(ITask<TVersion> task)
         {
             if (task != null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
         }
 
-        public override void Add(ITask<UpdateVersion> task)
+        public override void Add(ITask<TVersion> task)
         {
             if (task != null && !DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
         }

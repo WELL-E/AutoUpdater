@@ -26,7 +26,7 @@ namespace GeneralUpdate.Core.Strategys
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
-            _operationType = Packet.Format.Equals("ZIP") ? OperationType.GZip : OperationType.G7z;
+            _operationType = Packet.CompressFormat.Equals("ZIP") ? OperationType.GZip : OperationType.G7z;
         }
 
         public override void Excute()
@@ -37,7 +37,7 @@ namespace GeneralUpdate.Core.Strategys
                 updateVersions = updateVersions.OrderBy(x => x.PubTime).ToList();
                 foreach (var version in updateVersions)
                 {
-                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
+                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.CompressFormat }";
                     var isVerify = VerifyFileMd5(zipFilePath, version.MD5);
                     if (!isVerify)
                     {
@@ -138,7 +138,7 @@ namespace GeneralUpdate.Core.Strategys
                     ProgressEventAction(this, eventArgs);
                 };
                 generalZipFactory.Completed += (sender, e) => { isComplated = true; };
-                generalZipFactory.CreatefOperate(_operationType, zipfilepath, unzippath).
+                generalZipFactory.CreatefOperate(_operationType, zipfilepath, unzippath,false,Packet.CompressEncoding).
                     UnZip();
                 return isComplated;
             }

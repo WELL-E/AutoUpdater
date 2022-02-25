@@ -1,5 +1,6 @@
 ﻿using GeneralUpdate.Common.Models;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GeneralUpdate.Core.Models
 {
@@ -40,7 +41,7 @@ namespace GeneralUpdate.Core.Models
         /// <summary>
         /// Update package file format(Defult format is Zip).
         /// </summary>
-        public string Format { get; set; }
+        public string CompressFormat { get; set; }
 
         /// <summary>
         /// Whether to force update.
@@ -56,5 +57,7 @@ namespace GeneralUpdate.Core.Models
         /// Version information that needs to be updated.
         /// </summary>
         public List<UpdateVersion> UpdateVersions { get; set; }
+
+        public Encoding CompressEncoding { get; set; }
     }
 }

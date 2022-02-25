@@ -12,16 +12,16 @@ namespace GeneralUpdate.Core.Download
     /// <summary>
     /// Download task class.
     /// </summary>
-    /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    public sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
+    /// <typeparam name="TVersion">'T' is the version information that needs to be downloaded.</typeparam>
+    public sealed class DownloadTask<TVersion> : AbstractTask<TVersion>, IAwaiter<DownloadTask<TVersion>> where TVersion : class
     {
         #region Private Members
 
         private Exception _exception;
-        private DownloadManager _manager;
+        private DownloadManager<TVersion> _manager;
         private const int DEFAULT_DELTA = 1048576;//1024*1024
 
-        public T _version { get; private set; }
+        public TVersion _version { get; private set; }
 
         public bool IsCompleted { get; private set; }
 
@@ -29,7 +29,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Constructors
 
-        public DownloadTask(DownloadManager manger, T version)
+        public DownloadTask(DownloadManager<TVersion> manger, TVersion version)
         {
             _manager = manger;
             _version = version;
@@ -39,7 +39,7 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
-        public DownloadTask<T> Launch()
+        public async Task Launch()
         {
             try
             {
@@ -51,15 +51,15 @@ namespace GeneralUpdate.Core.Download
                 InitCompletedEvent();
                 var installPath = $"{ _manager.Path }{ name }{_manager.Format}";
                 DownloadFileRange(url, installPath, null);
+                await this;
             }
             catch (Exception ex)
             {
                 throw _exception = new Exception("'Launch' The method executes abnormally !", ex);
             }
-            return this;
         }
 
-        public DownloadTask<T> GetResult()
+        public DownloadTask<TVersion> GetResult()
         {
             if (_exception != null)
             {
@@ -76,12 +76,12 @@ namespace GeneralUpdate.Core.Download
             }
         }
 
-        public DownloadTask<T> GetAwaiter()
+        public DownloadTask<TVersion> GetAwaiter()
         {
             return this;
         }
 
-        public async Task AsTask(DownloadTask<T> awaiter)
+        public async Task AsTask(DownloadTask<TVersion> awaiter)
         {
             await awaiter;
         }
@@ -174,10 +174,10 @@ namespace GeneralUpdate.Core.Download
             });
         }
 
-        private R GetPropertyValue<R>(T entity, string propertyName)
+        private R GetPropertyValue<R>(TVersion entity, string propertyName)
         {
             R result = default(R);
-            Type entityType = typeof(T);
+            Type entityType = typeof(TVersion);
             try
             {
                 PropertyInfo info = entityType.GetProperty(propertyName);
