@@ -4,7 +4,7 @@ using GeneralUpdate.Core.Update;
 using MvvmHelpers;
 using System;
 
-namespace AutoUpdate.WpfNet6_Sample.ViewModels
+namespace AutoUpdate.Core.ViewModels
 {
     internal class MainViewModel : BaseViewModel
     {

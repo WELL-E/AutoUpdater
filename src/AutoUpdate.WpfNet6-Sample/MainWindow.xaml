@@ -1,4 +1,4 @@
-﻿<Window x:Class="AutoUpdate.WpfNet6_Sample.MainWindow"
+﻿<Window x:Class="AutoUpdate.Core.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

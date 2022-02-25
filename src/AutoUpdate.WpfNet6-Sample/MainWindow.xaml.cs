@@ -1,7 +1,7 @@
-﻿using AutoUpdate.WpfNet6_Sample.ViewModels;
+﻿using AutoUpdate.Core.ViewModels;
 using System.Windows;
 
-namespace AutoUpdate.WpfNet6_Sample
+namespace AutoUpdate.Core
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
