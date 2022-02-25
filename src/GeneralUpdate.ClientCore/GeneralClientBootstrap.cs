@@ -4,12 +4,15 @@ using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Bootstrap;
 using GeneralUpdate.Core.Strategys;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore
 {
     public class GeneralClientBootstrap : AbstractBootstrap<GeneralClientBootstrap, IStrategy>
     {
+        private const int ClientType = 1, MianType = 2;
+
         public GeneralClientBootstrap() : base()
         {
         }
@@ -52,19 +55,23 @@ namespace GeneralUpdate.ClientCore
         public GeneralClientBootstrap Config(string url)
         {
             string basePath = System.Environment.CurrentDirectory;
-            string mainAppName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-            string clienVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Packet.ClientVersion = clienVersion;
-            Packet.ClientType = 1;
-            Packet.ValidateUrl = url;
-            Packet.UpdateUrl = url;
-            Packet.MainValidateUrl = url;
-            Packet.MainUpdateUrl = url;
-            Packet.AppName = "GeneralUpdate";
-            Packet.MainAppName = mainAppName;
             Packet.InstallPath = basePath;
-            Packet.UpdateLogUrl = null;
             Packet.IsUpdate = true;
+            
+            //update app.
+            Packet.AppName = "AutoUpdate.Core";
+            string clienVersion = GetFileVersion(Path.Combine(basePath, Packet.AppName));
+            Packet.ClientVersion = clienVersion;
+            Packet.ClientType = ClientType;
+            Packet.ValidateUrl = $"{url}/validate/{ Packet.ClientType }/{ clienVersion }";
+            Packet.UpdateUrl = $"{url}/versions/{ Packet.ClientType }/{ clienVersion }";
+            
+            //main app.
+            string mainAppName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            string mainVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Packet.MainValidateUrl = $"{url}/validate/{ MianType }/{ mainVersion }";
+            Packet.MainUpdateUrl = $"{url}/versions/{ MianType }/{ mainVersion }";
+            Packet.MainAppName = mainAppName;
             return this;
         }
 
@@ -123,6 +130,27 @@ namespace GeneralUpdate.ClientCore
             if (string.IsNullOrEmpty(clientParameter.AppName))
             {
                 throw new NullReferenceException("Main app name not set.");
+            }
+        }
+
+        private string GetFileVersion(string filePath) 
+        {
+            try
+            {
+                var fileInfo = new FileInfo(filePath);
+                if (fileInfo != null && fileInfo.Exists)
+                {
+                    //"文件版本=" + info.FileVersion
+                    //"产品版本=" + info.ProductVersion
+                    //通常版本号显示为「主版本号.次版本号.生成号.专用部件号」 "系统显示文件版本：" + info.ProductMajorPart + '.' + info.ProductMinorPart + '.' + info.ProductBuildPart + '.' + info.ProductPrivatePart
+                    var info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
+                    return info.FileVersion;
+                }
+                throw new Exception($"Failed to obtain file '{ filePath }' version. Procedure.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to obtain file '{ filePath }' version. Procedure. Eorr message : { ex.Message } .", ex.InnerException);
             }
         }
     }
