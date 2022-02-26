@@ -1,7 +1,7 @@
 ﻿using GeneralUpdate.Common.CustomAwaiter;
 using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -13,7 +13,7 @@ namespace GeneralUpdate.Core.Download
     /// Download task class.
     /// </summary>
     /// <typeparam name="TVersion">'T' is the version information that needs to be downloaded.</typeparam>
-    public sealed class DownloadTask<TVersion> : AbstractTask<TVersion>, IAwaiter<DownloadTask<TVersion>> 
+    public sealed class DownloadTask<TVersion> : AbstractTask<TVersion>, IAwaiter<DownloadTask<TVersion>>
         where TVersion : class
     {
         #region Private Members
@@ -39,7 +39,7 @@ namespace GeneralUpdate.Core.Download
 
         public bool IsCompleted { get; private set; }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -99,8 +99,8 @@ namespace GeneralUpdate.Core.Download
                     var interval = DateTime.Now - StartTime;
 
                     var downLoadSpeed = interval.Seconds < 1
-                        ? StatisticsUtil.ToUnit(ReceivedBytes - BeforBytes)
-                        : StatisticsUtil.ToUnit(ReceivedBytes - BeforBytes / interval.Seconds);
+                        ? ToUnit(ReceivedBytes - BeforBytes)
+                        : ToUnit(ReceivedBytes - BeforBytes / interval.Seconds);
 
                     var size = (TotalBytes - ReceivedBytes) / DEFAULT_DELTA;
                     var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
@@ -188,6 +188,28 @@ namespace GeneralUpdate.Core.Download
                 throw _exception = new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
             }
             return result;
+        }
+
+        private string ToUnit(long byteSize)
+        {
+            string str;
+            var tempSize = Convert.ToSingle(byteSize);
+            if (tempSize / 1024 > 1)
+            {
+                if ((tempSize / 1024) / 1024 > 1)
+                {
+                    str = $"{((tempSize / 1024) / 1024).ToString("##0.00", CultureInfo.InvariantCulture)}MB/S";
+                }
+                else
+                {
+                    str = $"{(tempSize / 1024).ToString("##0.00", CultureInfo.InvariantCulture)}KB/S";
+                }
+            }
+            else
+            {
+                str = $"{tempSize.ToString(CultureInfo.InvariantCulture)}B/S";
+            }
+            return str;
         }
 
         #endregion Private Methods

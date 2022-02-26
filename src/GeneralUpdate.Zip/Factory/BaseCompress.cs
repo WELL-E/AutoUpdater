@@ -7,7 +7,19 @@ namespace GeneralUpdate.Zip.Factory
 {
     public abstract class BaseCompress : IDisposable, IOperation
     {
-        public delegate void CompleteEventHandler(object sender, CompleteEventArgs e);
+        #region Constructors
+
+        public BaseCompress() => SOLUTION_BASE_PATH = AppDomain.CurrentDomain.BaseDirectory;
+
+        #endregion Constructors
+
+        #region Public Properties
+
+        protected string SOLUTION_BASE_PATH { get; set; }
+        protected string SOURSE_PATH { get; set; }
+        protected string COMPRESS_NAME { get; set; }
+
+        public delegate void CompleteEventHandler(object sender, BaseCompleteEventArgs e);
 
         public event CompleteEventHandler Completed;
 
@@ -19,7 +31,11 @@ namespace GeneralUpdate.Zip.Factory
 
         public event CompressProgressEventHandler CompressProgress;
 
-        public void OnCompletedEventHandler(object sender, CompleteEventArgs e)
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void OnCompletedEventHandler(object sender, BaseCompleteEventArgs e)
         {
             if (Completed != null) Completed(sender, e);
         }
@@ -34,19 +50,9 @@ namespace GeneralUpdate.Zip.Factory
             if (UnZipProgress != null) UnZipProgress(sender, e);
         }
 
-        protected string SOLUTION_BASE_PATH { get; set; }
-        protected string SOURSE_PATH { get; set; }
-        protected string COMPRESS_NAME { get; set; }
-
-        public BaseCompress()
-        {
-            SOLUTION_BASE_PATH = AppDomain.CurrentDomain.BaseDirectory;
-        }
-
         public void Verifypath(string soursePath, string destinationPath)
         {
             if (string.IsNullOrWhiteSpace(soursePath) || string.IsNullOrWhiteSpace(destinationPath)) throw new ArgumentNullException("'Sourse path' or 'Destination path' Is null or empty.");
-
             if (!Directory.Exists(destinationPath)) throw new Exception("The destination directory does not exist !");
         }
 
@@ -61,5 +67,7 @@ namespace GeneralUpdate.Zip.Factory
         public abstract bool CreatZip();
 
         public abstract bool UnZip();
+
+        #endregion Public Methods
     }
 }

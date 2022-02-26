@@ -22,7 +22,7 @@ namespace GeneralUpdate.Core.Strategys
 
         private OperationType _operationType;
 
-        #endregion
+        #endregion Private Members
 
         #region Public Methods
 
@@ -55,7 +55,7 @@ namespace GeneralUpdate.Core.Strategys
                     if (UnZip(version, zipFilePath, Packet.InstallPath))
                     {
                         version.IsUnZip = true;
-                        var versionArgs = new UpdateVersion(version.MD5, version.PubTime, version.Version, null,  version.Name);
+                        var versionArgs = new UpdateVersion(version.MD5, version.PubTime, version.Version, null, version.Name);
                         var message = version.IsUnZip ? "update completed." : "Update failed!";
                         var type = version.IsUnZip ? ProgressType.Done : ProgressType.Fail;
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
@@ -94,11 +94,12 @@ namespace GeneralUpdate.Core.Strategys
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
-        private void Error(Exception ex) { if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex)); }
+        private void Error(Exception ex)
+        { if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex)); }
 
         protected void CheckAllIsUnZip(List<UpdateVersion> versions)
         {
@@ -135,7 +136,7 @@ namespace GeneralUpdate.Core.Strategys
             }
             catch (Exception ex)
             {
-                if (ExceptionEventAction != null)  ExceptionEventAction(this, new ExceptionEventArgs(ex));
+                if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex));
                 return false;
             }
         }
@@ -152,8 +153,8 @@ namespace GeneralUpdate.Core.Strategys
             try
             {
                 if (File.Exists(Packet.TempPath)) File.Delete(Packet.TempPath);
-                var dir = Packet.TempPath.ExcludeName(StringOption.File);
-                if (Directory.Exists(dir)) Directory.Delete(dir, true);
+                var dirPath = Path.GetDirectoryName(Packet.TempPath);
+                if (Directory.Exists(dirPath)) Directory.Delete(dirPath, true);
                 return true;
             }
             catch (Exception ex)
@@ -163,6 +164,7 @@ namespace GeneralUpdate.Core.Strategys
                 return false;
             }
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

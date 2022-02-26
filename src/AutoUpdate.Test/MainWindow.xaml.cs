@@ -38,7 +38,6 @@ namespace AutoUpdate.Test
             }
         }
 
-        #endregion
-
+        #endregion Process launch
     }
 }

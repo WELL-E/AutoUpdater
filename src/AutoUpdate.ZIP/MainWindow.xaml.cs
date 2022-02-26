@@ -63,7 +63,7 @@ namespace AutoUpdate.ZIP
             }
         }
 
-        private void OnCompleted(object sender, CompleteEventArgs e)
+        private void OnCompleted(object sender, BaseCompleteEventArgs e)
         {
             Debug.WriteLine($"IsCompleted { e.IsCompleted }.");
         }
@@ -77,6 +77,7 @@ namespace AutoUpdate.ZIP
                 case "ZIP":
                     operationType = OperationType.GZip;
                     break;
+
                 case "7z":
                     operationType = OperationType.G7z;
                     break;
@@ -84,10 +85,12 @@ namespace AutoUpdate.ZIP
             return operationType;
         }
 
-        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) { Debug.WriteLine($"CompressProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)
+        { Debug.WriteLine($"CompressProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
 
-        private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e) { Debug.WriteLine($"UnZipProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
+        private void OnUnZipProgress(object sender, BaseUnZipProgressEventArgs e)
+        { Debug.WriteLine($"UnZipProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }
 
-        #endregion
+        #endregion GeneralUpdate Zip
     }
 }

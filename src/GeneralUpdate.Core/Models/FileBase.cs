@@ -3,21 +3,8 @@ using System;
 
 namespace GeneralUpdate.Core.Models
 {
-    public enum FileStatus
-    {
-        None = -1,
-
-        //本地已有文件
-        Old = 0,
-
-        //新增文件
-        New = 1
-    }
-
     public class FileBase : IFile
     {
-        public FileStatus Status { get; set; }
-
         /// <summary>
         /// 文件名
         /// </summary>

@@ -79,7 +79,7 @@ namespace GeneralUpdate.Zip.G7z
             }
             finally
             {
-                OnCompletedEventHandler(this, new CompleteEventArgs(isComplete));
+                OnCompletedEventHandler(this, new BaseCompleteEventArgs(isComplete));
             }
             return isComplete;
         }

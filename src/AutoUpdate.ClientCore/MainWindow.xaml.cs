@@ -5,7 +5,6 @@ using GeneralUpdate.Core.Update;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using ExceptionEventArgs = GeneralUpdate.Core.Update.ExceptionEventArgs;
 
 namespace AutoUpdate.ClientCore
@@ -21,7 +20,6 @@ namespace AutoUpdate.ClientCore
         {
             InitializeComponent();
         }
-
 
         #region GeneralUpdate Core
 
@@ -58,7 +56,7 @@ namespace AutoUpdate.ClientCore
                 //主程序客户端更新包下载地址
                 clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ mianType }/{ mainVersion }";
 
-               var  generalClientBootstrap = new GeneralClientBootstrap();
+                var generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
                 generalClientBootstrap.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
                 //单个或多个更新包下载速度、剩余下载事件、当前下载版本信息通知事件
@@ -72,11 +70,12 @@ namespace AutoUpdate.ClientCore
                 //整个更新过程出现的任何问题都会通过这个事件通知
                 generalClientBootstrap.Exception += OnException;
                 //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
-                generalClientBootstrap.Config(clientParameter).
-                Option(UpdateOption.CompressEncoding,System.Text.Encoding.UTF8).
-                Option(UpdateOption.CompressFormat,"zip").
+                //generalClientBootstrap.Config(clientParameter).
+                generalClientBootstrap.Config(baseUrl).
+                Option(UpdateOption.CompressEncoding, System.Text.Encoding.UTF8).
+                Option(UpdateOption.CompressFormat, "zip").
                 Strategy<ClientStrategy>();
-                await generalClientBootstrap.LaunchAsync();
+                await generalClientBootstrap.LaunchTaskAsync();
             });
         }
 
@@ -118,6 +117,6 @@ namespace AutoUpdate.ClientCore
             //Debug.WriteLine($"{ e.Version.Name } error!");
         }
 
-        #endregion
+        #endregion GeneralUpdate Core
     }
 }

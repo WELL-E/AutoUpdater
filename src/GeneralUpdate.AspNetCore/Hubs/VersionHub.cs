@@ -1,35 +1,67 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using GeneralUpdate.Common.Utils;
+using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.AspNetCore.Hubs
 {
+    public enum HubStatus 
+    {
+        Connected = 1,
+        Disconnected = 2
+    }
+
     public class VersionHub : Hub
     {
-        //TODO:需继续完善
+        #region Private Members
+
         private const string ReceiveMessageflag = "ReceiveMessage";
         private const string ClientNameflag = "GeneralUpdate.Client";
         private const string Groupflag = "Groupflag";
 
+        public delegate void ConnectionStatus(HubStatus hubStatus, string message);
+        public event ConnectionStatus OnConnectionStatus;
+
+        #endregion
+
+        #region Public Properties
+
+        public VersionHub() { }
+
+        #endregion
+
+        #region Public Methods
+
         public override Task OnConnectedAsync()
         {
+            OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            OnConnectionStatus(HubStatus.Disconnected,"The Version hub is disconnected !");
             return base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(string user, string message)
+        /// <summary>
+        /// Push the latest version information.
+        /// </summary>
+        /// <typeparam name="TParameter">E.g : Client parameter.</typeparam>
+        /// <param name="user"></param>
+        /// <param name="message">version information.</param>
+        /// <returns> Empty task.</returns>
+        /// <exception cref="ArgumentNullException">Null parameter anomaly.</exception>
+        /// <exception cref="Exception">SignalR component related exception.</exception>
+        public async Task SendMessage<TParameter>(string user, string message) where TParameter : class
         {
-            if(string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(message)) 
+            if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(message))
                 throw new ArgumentNullException($"'VersionHub' The required parameter send message cannot be null !");
 
             try
             {
-                await Clients.All.SendAsync(ReceiveMessageflag, user, message);
+                var clientParameter = SerializeUtil.Deserialize<TParameter>(message);
+                await Clients.All.SendAsync(ReceiveMessageflag, user, clientParameter);
             }
             catch (Exception ex)
             {
@@ -42,9 +74,9 @@ namespace GeneralUpdate.AspNetCore.Hubs
         /// </summary>
         /// <param name="connectionId">client connectionId.</param>
         /// <returns></returns>
-        public async Task Remove(string connectionId) 
+        public async Task Remove(string connectionId)
         {
-            if(string.IsNullOrWhiteSpace(connectionId)) 
+            if (string.IsNullOrWhiteSpace(connectionId))
                 throw new ArgumentNullException($"'VersionHub' The required parameter remove cannot be null !");
 
             try
@@ -57,6 +89,12 @@ namespace GeneralUpdate.AspNetCore.Hubs
             }
         }
 
+        /// <summary>
+        /// Login User Group.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Login(string name)
         {
             try
@@ -70,6 +108,12 @@ namespace GeneralUpdate.AspNetCore.Hubs
             }
         }
 
+        /// <summary>
+        /// Exiting a User Group.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task SignOut(string name)
         {
             try
@@ -78,8 +122,13 @@ namespace GeneralUpdate.AspNetCore.Hubs
             }
             catch (Exception ex)
             {
-                throw new Exception($"'VersionHub' Sign out error :  { ex.Message }", ex.InnerException);
+                throw new Exception($"'VersionHub' Sign out error :  { ex.Message } .", ex.InnerException);
             }
         }
+
+        #endregion
+
+        #region Private Methods
+        #endregion
     }
 }

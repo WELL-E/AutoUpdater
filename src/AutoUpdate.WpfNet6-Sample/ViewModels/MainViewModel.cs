@@ -15,7 +15,7 @@ namespace AutoUpdate.Core.ViewModels
         public MainViewModel(string args)
         {
             ProgressMin = 0;
-            Task.Run(async() => 
+            Task.Run(async () =>
             {
                 var bootStrap = new GeneralUpdateBootstrap();
                 bootStrap.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
@@ -28,7 +28,7 @@ namespace AutoUpdate.Core.ViewModels
                 Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.CompressFormat, "zip").
                 RemoteAddressBase64(args);
-                await bootStrap.LaunchAsync();
+                await bootStrap.LaunchTaskAsync();
             });
         }
 

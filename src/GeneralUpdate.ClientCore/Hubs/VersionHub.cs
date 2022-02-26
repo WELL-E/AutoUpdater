@@ -20,17 +20,18 @@ namespace GeneralUpdate.ClientCore.Hubs
         private HubConnection _connection = null;
         private static VersionHub _instance;
         private static readonly object _lock = new object();
-        private Action<UpdateVersion> _receiveMessageCallback;
+        private Action<ClientParameter> _receiveMessageCallback;
         private Action<string> _onlineMessageCallback;
         private Action<string> _reconnectedCallback;
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
-        private VersionHub() { }
+        private VersionHub()
+        { }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Properties
 
@@ -52,7 +53,7 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -64,7 +65,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
         /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
         /// <exception cref="Exception"></exception>
-        public void Subscribe(string url, Action<UpdateVersion> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
+        public void Subscribe(string url, Action<ClientParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
             if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
 
@@ -146,7 +147,7 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -157,12 +158,11 @@ namespace GeneralUpdate.ClientCore.Hubs
         private void OnReceiveMessage(string message)
         {
             if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
-
             try
             {
-                var version = SerializeUtil.Deserialize<UpdateVersion>(message);
-                if (version == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
-                _receiveMessageCallback.Invoke(version);
+                var clientParameter = SerializeUtil.Deserialize<ClientParameter>(message);
+                if (clientParameter == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
+                _receiveMessageCallback.Invoke(clientParameter);
             }
             catch (Exception ex)
             {
@@ -229,6 +229,6 @@ namespace GeneralUpdate.ClientCore.Hubs
             }
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

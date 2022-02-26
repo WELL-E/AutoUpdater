@@ -4,7 +4,9 @@ using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Bootstrap;
 using GeneralUpdate.Core.Strategys;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore
@@ -17,19 +19,19 @@ namespace GeneralUpdate.ClientCore
         {
         }
 
-        public override async Task<GeneralClientBootstrap> LaunchAsync()
+        public override async Task<GeneralClientBootstrap> LaunchTaskAsync()
         {
             try
             {
                 var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.ValidateUrl);
-                if(respDTO == null || respDTO.Code != 200) throw new Exception($"{ respDTO.Code },{ respDTO.Message }.");
+                if (respDTO == null || respDTO.Code != 200) throw new Exception($"{ respDTO.Code },{ respDTO.Message }.");
                 if (respDTO.Code == 200)
                 {
                     var body = respDTO.Body;
                     Packet.IsUpdate = body.IsForcibly;
                     if (body.IsForcibly)
                     {
-                        await base.LaunchAsync();
+                        await base.LaunchTaskAsync();
                     }
                     else
                     {
@@ -47,29 +49,37 @@ namespace GeneralUpdate.ClientCore
         /// <summary>
         /// Configure server address .
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="url">Remote server address.</param>
+        /// <param name="appName">The updater name does not need to contain an extension.</param>
         /// <returns></returns>
-        public GeneralClientBootstrap Config(string url)
+        /// <exception cref="Exception">Parameter initialization is abnormal.</exception>
+        public GeneralClientBootstrap Config(string url, string appName = "AutoUpdate.Core")
         {
-            string basePath = System.Environment.CurrentDirectory;
-            Packet.InstallPath = basePath;
-            Packet.IsUpdate = true;
-            
-            //update app.
-            Packet.AppName = "AutoUpdate.Core";
-            string clienVersion = GetFileVersion(Path.Combine(basePath, Packet.AppName));
-            Packet.ClientVersion = clienVersion;
-            Packet.ClientType = ClientType;
-            Packet.ValidateUrl = $"{url}/validate/{ Packet.ClientType }/{ clienVersion }";
-            Packet.UpdateUrl = $"{url}/versions/{ Packet.ClientType }/{ clienVersion }";
-            
-            //main app.
-            string mainAppName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-            string mainVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Packet.MainValidateUrl = $"{url}/validate/{ MianType }/{ mainVersion }";
-            Packet.MainUpdateUrl = $"{url}/versions/{ MianType }/{ mainVersion }";
-            Packet.MainAppName = mainAppName;
-            return this;
+            if (string.IsNullOrEmpty(url)) throw new Exception("Url cannot be empty !");
+            try
+            {
+                string basePath = Environment.CurrentDirectory;
+                Packet.InstallPath = basePath;
+                Packet.IsUpdate = true;
+                //update app.
+                Packet.AppName = appName;
+                string clienVersion = GetFileVersion(Path.Combine(basePath, Packet.AppName + ".exe"));
+                Packet.ClientVersion = clienVersion;
+                Packet.ClientType = ClientType;
+                Packet.ValidateUrl = $"{url}/validate/{ Packet.ClientType }/{ clienVersion }";
+                Packet.UpdateUrl = $"{url}/versions/{ Packet.ClientType }/{ clienVersion }";
+                //main app.
+                string mainAppName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName);
+                string mainVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                Packet.MainValidateUrl = $"{url}/validate/{ MianType }/{ mainVersion }";
+                Packet.MainUpdateUrl = $"{url}/versions/{ MianType }/{ mainVersion }";
+                Packet.MainAppName = mainAppName;
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Initial configuration parameters are abnormal . {  ex.Message }", ex.InnerException);
+            }
         }
 
         public GeneralClientBootstrap Config(ClientParameter clientParameter)
@@ -91,20 +101,11 @@ namespace GeneralUpdate.ClientCore
 
         private void ValidateConfig(ClientParameter clientParameter)
         {
-            if (clientParameter == null)
-            {
-                throw new NullReferenceException("Client parameter not set.");
-            }
+            if (clientParameter == null) throw new NullReferenceException("Client parameter not set.");
 
-            if (string.IsNullOrEmpty(clientParameter.ClientVersion))
-            {
-                throw new NullReferenceException("Client version not set.");
-            }
+            if (string.IsNullOrEmpty(clientParameter.ClientVersion)) throw new NullReferenceException("Client version not set.");
 
-            if (string.IsNullOrEmpty(clientParameter.InstallPath))
-            {
-                throw new NullReferenceException("Install path not set.");
-            }
+            if (string.IsNullOrEmpty(clientParameter.InstallPath)) throw new NullReferenceException("Install path not set.");
 
             if (string.IsNullOrEmpty(clientParameter.UpdateUrl))
             {
@@ -124,25 +125,15 @@ namespace GeneralUpdate.ClientCore
                 throw new Exception("Illegal url address.");
             }
 
-            if (string.IsNullOrEmpty(clientParameter.AppName))
-            {
-                throw new NullReferenceException("Main app name not set.");
-            }
+            if (string.IsNullOrEmpty(clientParameter.AppName)) throw new NullReferenceException("Main app name not set.");
         }
 
-        private string GetFileVersion(string filePath) 
+        private string GetFileVersion(string filePath)
         {
             try
             {
                 var fileInfo = new FileInfo(filePath);
-                if (fileInfo != null && fileInfo.Exists)
-                {
-                    //"文件版本=" + info.FileVersion
-                    //"产品版本=" + info.ProductVersion
-                    //通常版本号显示为「主版本号.次版本号.生成号.专用部件号」 "系统显示文件版本：" + info.ProductMajorPart + '.' + info.ProductMinorPart + '.' + info.ProductBuildPart + '.' + info.ProductPrivatePart
-                    var info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
-                    return info.FileVersion;
-                }
+                if (fileInfo != null && fileInfo.Exists) return FileVersionInfo.GetVersionInfo(filePath).FileVersion;
                 throw new Exception($"Failed to obtain file '{ filePath }' version. Procedure.");
             }
             catch (Exception ex)

@@ -251,7 +251,7 @@ namespace GeneralUpdate.Zip.GZip
             }
             finally
             {
-                OnCompletedEventHandler(this, new CompleteEventArgs(isComplete));
+                OnCompletedEventHandler(this, new BaseCompleteEventArgs(isComplete));
             }
             return isComplete;
         }

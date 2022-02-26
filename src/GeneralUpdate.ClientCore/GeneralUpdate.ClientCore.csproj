@@ -56,11 +56,9 @@
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
     <Compile Include="..\GeneralUpdate.Core\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Core\Utils\StatisticsUtil.cs" Link="Utils\StatisticsUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Core\Utils\StringEx.cs" Link="Utils\StringEx.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompleteEventArgs.cs" Link="ZipFactory\Events\BaseCompleteEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompressProgressEventArgs.cs" Link="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseUnZipProgressEventArgs.cs" Link="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
-    <Compile Include="..\GeneralUpdate.Zip\Events\CompleteEventArgs.cs" Link="ZipFactory\Events\CompleteEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\BaseCompress.cs" Link="ZipFactory\Factory\BaseCompress.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IFactory.cs" Link="ZipFactory\Factory\IFactory.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IOperation.cs" Link="ZipFactory\Factory\IOperation.cs" />

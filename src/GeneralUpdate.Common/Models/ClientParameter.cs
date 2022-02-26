@@ -84,6 +84,9 @@ namespace GeneralUpdate.Common.Models
         /// </summary>
         public string MD5 { get; set; }
 
+        /// <summary>
+        /// The version number.
+        /// </summary>
         public string Version { get; set; }
 
         public string Url { get; set; }

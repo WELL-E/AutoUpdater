@@ -54,7 +54,6 @@ namespace GeneralUpdate.Core.Download
 
         public string Path { get => _path; }
 
-        //zip format
         public string Format { get => _format; }
 
         public int TimeOut { get => _timeOut; }

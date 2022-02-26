@@ -52,10 +52,13 @@ namespace GeneralUpdate.Core.Bootstrap
 
         #endregion Private Members
 
-        protected internal AbstractBootstrap()
-        {
-            this.options = new ConcurrentDictionary<UpdateOption, UpdateOptionValue>();
-        }
+        #region Constructors
+
+        protected internal AbstractBootstrap() => this.options = new ConcurrentDictionary<UpdateOption, UpdateOptionValue>();
+
+        #endregion Constructors
+
+        #region Public Properties
 
         public UpdatePacket Packet
         {
@@ -63,19 +66,20 @@ namespace GeneralUpdate.Core.Bootstrap
             set { _packet = value; }
         }
 
+        #endregion Public Properties
+
         #region Methods
 
         /// <summary>
         /// Launch udpate.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<TBootstrap> LaunchAsync()
+        public virtual async Task<TBootstrap> LaunchTaskAsync()
         {
             try
             {
                 MutiDownloadProgressChanged.Invoke(this,
                     new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
-
                 var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(Packet.UpdateUrl);
                 if (updateResp.Code == 200)
                 {
@@ -88,25 +92,19 @@ namespace GeneralUpdate.Core.Bootstrap
                     MutiDownloadProgressChanged.Invoke(this,
                         new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
                 }
-
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
-
                 var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
                 Packet.CompressFormat = $".{pacektFormat}";
                 Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-
                 var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, GetOption(UpdateOption.DownloadTimeOut));
                 manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
                 manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
                 manager.MutiDownloadError += OnMutiDownloadError;
                 manager.MutiDownloadProgressChanged += OnMutiDownloadProgressChanged;
                 manager.MutiDownloadStatistics += OnMutiDownloadStatistics;
-                Packet.UpdateVersions.ForEach((v) =>
-                {
-                    manager.Add(new DownloadTask<UpdateVersion>(manager, v));
-                });
+                Packet.UpdateVersions.ForEach((v) => manager.Add(new DownloadTask<UpdateVersion>(manager, v)));
                 manager.LaunchTaskAsync();
             }
             catch (Exception ex)
@@ -139,10 +137,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         public virtual TBootstrap Validate()
         {
-            if (this.strategyFactory == null)
-            {
-                throw new InvalidOperationException("Strategy or strategy factory not set.");
-            }
+            if (this.strategyFactory == null) throw new InvalidOperationException("Strategy or strategy factory not set.");
             return (TBootstrap)this;
         }
 
@@ -176,12 +171,8 @@ namespace GeneralUpdate.Core.Bootstrap
         public virtual T GetOption<T>(UpdateOption<T> option)
         {
             if (options == null || options.Count == 0) return default(T);
-
             var val = options[option];
-            if (val != null)
-            {
-                return (T)val.GetValue();
-            }
+            if (val != null) return (T)val.GetValue();
             return default(T);
         }
 
@@ -231,7 +222,6 @@ namespace GeneralUpdate.Core.Bootstrap
             {
                 if (MutiAllDownloadCompleted != null)
                     MutiAllDownloadCompleted.Invoke(this, e);
-
                 ExcuteStrategy();
             }
             catch (Exception ex)

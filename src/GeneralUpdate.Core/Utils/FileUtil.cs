@@ -36,10 +36,7 @@ namespace GeneralUpdate.Core.Utils
             foreach (var path in pathList)
             {
                 bool isDone = CopyFile(path, targetPath);
-                if (!isDone)
-                {
-                    return false;
-                }
+                if (!isDone) return false;
             }
             return true;
         }
@@ -61,10 +58,7 @@ namespace GeneralUpdate.Core.Utils
         {
             try
             {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
+                if (File.Exists(path)) File.Delete(path);
             }
             catch (Exception)
             {
@@ -94,7 +88,7 @@ namespace GeneralUpdate.Core.Utils
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
         }
 
@@ -118,7 +112,6 @@ namespace GeneralUpdate.Core.Utils
         public static bool VerifyFileMd5(string fileName, string md5)
         {
             var packetMD5 = GetFileMD5(fileName);
-
             if (!md5.ToUpper().Equals(packetMD5.ToUpper()))
             {
                 Directory.Delete(fileName, true); ;
