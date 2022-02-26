@@ -22,6 +22,7 @@ namespace GeneralUpdate.ClientCore
             try
             {
                 var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.ValidateUrl);
+                if(respDTO == null || respDTO.Code != 200) throw new Exception($"{ respDTO.Code },{ respDTO.Message }.");
                 if (respDTO.Code == 200)
                 {
                     var body = respDTO.Body;
@@ -34,10 +35,6 @@ namespace GeneralUpdate.ClientCore
                     {
                         base.ExcuteStrategy();
                     }
-                }
-                else
-                {
-                    throw new Exception($"{ respDTO.Code },{ respDTO.Message }.");
                 }
             }
             catch (Exception ex)

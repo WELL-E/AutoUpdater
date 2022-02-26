@@ -14,13 +14,20 @@ namespace GeneralUpdate.Core.Strategys
 {
     public class DefaultStrategy : AbstractStrategy
     {
+        #region Private Members
+
         protected UpdatePacket Packet { get; set; }
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
         protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
+
         private OperationType _operationType;
 
+        #endregion
+
+        #region Public Methods
+
         public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
-            Action<object, ExceptionEventArgs> exceptionEventAction)
+    Action<object, ExceptionEventArgs> exceptionEventAction)
         {
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
@@ -40,7 +47,7 @@ namespace GeneralUpdate.Core.Strategys
                     var isVerify = VerifyFileMd5(zipFilePath, version.MD5);
                     if (!isVerify)
                     {
-                        var eventArgs = new MutiDownloadProgressChangedEventArgs(null, ProgressType.Fail, "Verify MD5 error!");
+                        var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Fail, "Verify MD5 error!");
                         ProgressEventAction(this, eventArgs);
                         continue;
                     }
@@ -48,51 +55,21 @@ namespace GeneralUpdate.Core.Strategys
                     if (UnZip(version, zipFilePath, Packet.InstallPath))
                     {
                         version.IsUnZip = true;
-                        var versionArgs = new UpdateVersion(version.MD5,
-                            version.PubTime,
-                            version.Version,
-                            null,
-                            version.Name);
-
+                        var versionArgs = new UpdateVersion(version.MD5, version.PubTime, version.Version, null,  version.Name);
                         var message = version.IsUnZip ? "update completed." : "Update failed!";
                         var type = version.IsUnZip ? ProgressType.Done : ProgressType.Fail;
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
                         ProgressEventAction(this, eventArgs);
                     }
                 }
-                var isDone = CheckAllIsUnZip(updateVersions);
-                if (isDone)
-                {
-                    UpdateFiles();
-                    StartApp(Packet.AppName);
-                }
-                else
-                {
-                    Error(new Exception($"Failed to decompress the compressed package!"));
-                }
+                CheckAllIsUnZip(updateVersions);
+                Dirty();
+                StartApp(Packet.AppName);
             }
             catch (Exception ex)
             {
                 Error(ex);
             }
-        }
-
-        private void Error(Exception ex)
-        {
-            if (ExceptionEventAction != null)
-                ExceptionEventAction(this, new ExceptionEventArgs(ex));
-        }
-
-        protected bool CheckAllIsUnZip(List<UpdateVersion> versions)
-        {
-            foreach (var version in versions)
-            {
-                if (!version.IsUnZip)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         protected override bool StartApp(string appName)
@@ -106,13 +83,28 @@ namespace GeneralUpdate.Core.Strategys
                 Process.Start($"{Packet.InstallPath}\\{appName}.exe");
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Error(ex);
                 return false;
             }
             finally
             {
                 Process.GetCurrentProcess().Kill();
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void Error(Exception ex) { if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex)); }
+
+        protected void CheckAllIsUnZip(List<UpdateVersion> versions)
+        {
+            foreach (var version in versions)
+            {
+                if (!version.IsUnZip) Error(new Exception($"Failed to decompress the compressed package!"));
             }
         }
 
@@ -136,15 +128,14 @@ namespace GeneralUpdate.Core.Strategys
                     var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Updatefile, "Updatting file...");
                     ProgressEventAction(this, eventArgs);
                 };
-                generalZipFactory.Completed += (sender, e) => { isComplated = true; };
-                generalZipFactory.CreatefOperate(_operationType, zipfilepath, unzippath,false,Packet.CompressEncoding).
+                generalZipFactory.Completed += (sender, e) => isComplated = true;
+                generalZipFactory.CreatefOperate(_operationType, zipfilepath, unzippath, false, Packet.CompressEncoding).
                     UnZip();
                 return isComplated;
             }
             catch (Exception ex)
             {
-                if (ExceptionEventAction != null)
-                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
+                if (ExceptionEventAction != null)  ExceptionEventAction(this, new ExceptionEventArgs(ex));
                 return false;
             }
         }
@@ -152,38 +143,17 @@ namespace GeneralUpdate.Core.Strategys
         protected bool VerifyFileMd5(string fileName, string md5)
         {
             var packetMD5 = FileUtil.GetFileMD5(fileName);
-
-            if (md5.ToUpper().Equals(packetMD5.ToUpper()))
-            {
-                return true;
-            }
+            if (md5.ToUpper().Equals(packetMD5.ToUpper())) return true;
             return false;
         }
 
-        protected bool UpdateFiles()
+        private bool Dirty()
         {
             try
             {
-                //FileUtil.DirectoryCopy(
-                //    UpdatePacket.TempPath,
-                //    UpdatePacket.InstallPath,
-                //    true,
-                //    true,
-                //    o => UpdatePacket.Name = o);
-
-                if (File.Exists(Packet.TempPath))
-                {
-                    File.Delete(Packet.TempPath);
-                }
-
+                if (File.Exists(Packet.TempPath)) File.Delete(Packet.TempPath);
                 var dir = Packet.TempPath.ExcludeName(StringOption.File);
-                if (Directory.Exists(dir))
-                {
-                    Directory.Delete(dir, true);
-                }
-
-                FileUtil.Update32Or64Libs(Packet.InstallPath);
-
+                if (Directory.Exists(dir)) Directory.Delete(dir, true);
                 return true;
             }
             catch (Exception ex)
@@ -193,5 +163,6 @@ namespace GeneralUpdate.Core.Strategys
                 return false;
             }
         }
+        #endregion
     }
 }

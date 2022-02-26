@@ -2,6 +2,7 @@
 using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -19,9 +20,9 @@ namespace GeneralUpdate.Core.Download
         private string _format;
         private int _timeOut;
         private IList<(object, string)> _failedVersions;
-        private IList<ITask<TVersion>> _downloadTaskPool;
+        private ImmutableList<ITask<TVersion>> _downloadTaskPool;
 
-        private IList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = new List<ITask<TVersion>>()); }
+        private ImmutableList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = ImmutableList<ITask<TVersion>>.Empty); }
 
         #endregion Private Members
 

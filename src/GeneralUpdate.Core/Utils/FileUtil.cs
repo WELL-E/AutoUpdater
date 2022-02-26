@@ -189,29 +189,18 @@ namespace GeneralUpdate.Core.Utils
           bool copySubDirs, bool isOverWrite, Action<string> action)
         {
             var dir = new DirectoryInfo(sourceDirName);
-
-            if (!dir.Exists)
-            {
-                return;
-            }
-
+            if (!dir.Exists) return;
             var dirs = dir.GetDirectories();
             if (!Directory.Exists(destDirName))
             {
                 Directory.CreateDirectory(destDirName);
             }
-
-            var files = dir.GetFiles();
-            foreach (var file in files)
+            foreach (var file in dir.GetFiles())
             {
                 var temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, isOverWrite);
-                if (action != null)
-                {
-                    action.Invoke(file.Name);
-                }
+                if (action != null) action.Invoke(file.Name);
             }
-
             if (copySubDirs)
             {
                 foreach (var subdir in dirs)
@@ -220,7 +209,6 @@ namespace GeneralUpdate.Core.Utils
                     DirectoryCopy(subdir.FullName, temppath, true, isOverWrite, action);
                 }
             }
-
             Directory.Delete(sourceDirName, true);
         }
 
@@ -247,7 +235,6 @@ namespace GeneralUpdate.Core.Utils
             try
             {
                 if (File.Exists(path)) File.Delete(path);
-
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     using (var streamWriter = new StreamWriter(fileStream))
