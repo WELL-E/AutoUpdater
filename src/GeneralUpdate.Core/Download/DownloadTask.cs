@@ -21,10 +21,7 @@ namespace GeneralUpdate.Core.Download
         private Exception _exception;
         private DownloadManager<TVersion> _manager;
         private const int DEFAULT_DELTA = 1048576;//1024*1024
-
-        public TVersion _version { get; private set; }
-
-        public bool IsCompleted { get; private set; }
+        private TVersion _version;
 
         #endregion Private Members
 
@@ -37,6 +34,12 @@ namespace GeneralUpdate.Core.Download
         }
 
         #endregion Constructors
+
+        #region Public Properties
+
+        public bool IsCompleted { get; private set; }
+
+        #endregion
 
         #region Public Methods
 
@@ -62,19 +65,13 @@ namespace GeneralUpdate.Core.Download
 
         public DownloadTask<TVersion> GetResult()
         {
-            if (_exception != null)
-            {
-                ExceptionDispatchInfo.Capture(_exception).Throw();
-            }
+            if (_exception != null) ExceptionDispatchInfo.Capture(_exception).Throw();
             return this;
         }
 
         public void OnCompleted(Action continuation)
         {
-            if (IsCompleted)
-            {
-                continuation?.Invoke();
-            }
+            if (IsCompleted) continuation?.Invoke();
         }
 
         public DownloadTask<TVersion> GetAwaiter()
@@ -157,10 +154,8 @@ namespace GeneralUpdate.Core.Download
                         SpeedTimer.Dispose();
                         SpeedTimer = null;
                     }
-
                     var eventArgs = new MutiDownloadCompletedEventArgs(_version, e.Error, e.Cancelled, e.UserState);
                     _manager.OnMutiAsyncCompleted(this, eventArgs);
-
                     Dispose();
                 }
                 catch (Exception exception)
@@ -175,14 +170,14 @@ namespace GeneralUpdate.Core.Download
             });
         }
 
-        private R GetPropertyValue<R>(TVersion entity, string propertyName)
+        private TResult GetPropertyValue<TResult>(TVersion entity, string propertyName)
         {
-            R result = default(R);
+            TResult result = default(TResult);
             Type entityType = typeof(TVersion);
             try
             {
                 PropertyInfo info = entityType.GetProperty(propertyName);
-                result = (R)info.GetValue(entity);
+                result = (TResult)info.GetValue(entity);
             }
             catch (ArgumentNullException ex)
             {

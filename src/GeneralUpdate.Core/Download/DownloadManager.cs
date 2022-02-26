@@ -22,8 +22,6 @@ namespace GeneralUpdate.Core.Download
         private IList<(object, string)> _failedVersions;
         private ImmutableList<ITask<TVersion>> _downloadTaskPool;
 
-        private ImmutableList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = ImmutableList<ITask<TVersion>>.Empty); }
-
         #endregion Private Members
 
         #region Constructors
@@ -45,6 +43,8 @@ namespace GeneralUpdate.Core.Download
         #endregion Constructors
 
         #region Public Properties
+
+        private ImmutableList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = ImmutableList<ITask<TVersion>>.Empty); }
 
         /// <summary>
         /// Record download exception information for all versions.

@@ -129,13 +129,11 @@ namespace GeneralUpdate.Core.Download
         public void DownloadFileRange(string url, string path, object userState)
         {
             if (_state != null && _state.IsRangeDownload) return;
-
             _state = new DownloadFileRangeState(path, userState, this);
             _state.OnCompleted = () => DownloadFileCompletedEx;
             _state.IsRangeDownload = true;
             long startPos = CheckFile(_state);
             if (startPos == -1) return;
-
             try
             {
                 _state.Request = (HttpWebRequest)GetWebRequest(new Uri(url));
@@ -168,6 +166,7 @@ namespace GeneralUpdate.Core.Download
             catch (Exception e)
             {
                 _state.Exception = e;
+                throw new Exception($"'DownloadFileRange' This function has an internal exception : { e.Message } .", e.InnerException);
             }
             finally
             {
@@ -202,7 +201,6 @@ namespace GeneralUpdate.Core.Download
                 catch (Exception e)
                 {
                     state.Exception = e;
-
                     startPos = -1;
                     state.Close();
                 }
@@ -216,19 +214,15 @@ namespace GeneralUpdate.Core.Download
             byte[] bytes = new byte[1024];
             bool isDownloadCompleted = false;
             var totalBytesReceived = state.Respone.ContentLength + startPos;
-
             int readSize = state.Stream.Read(bytes, 0, 1024);
-
             while (readSize > 0 && state.IsRangeDownload)
             {
                 if (state == null || state.FileStream == null) break;
-
                 lock (state.FileStream)
                 {
                     if (DownloadProgressChangedEx != null)
                         DownloadProgressChangedEx(this, new DownloadProgressChangedEventArgsEx(bytesReceived, totalBytesReceived, ((float)bytesReceived / totalBytesReceived), state.UserState));
-
-                    state.FileStream.Write(bytes, 0, readSize);//Write temp file.
+                    state.FileStream.Write(bytes, 0, readSize);
                     bytesReceived += readSize;
                     if (totalBytesReceived != 0 && bytesReceived >= totalBytesReceived)
                     {
@@ -252,11 +246,7 @@ namespace GeneralUpdate.Core.Download
                     }
                 }
             }
-
-            if (!isDownloadCompleted)
-            {
-                state.Exception = new Exception("Request for early closure");
-            }
+            if (!isDownloadCompleted) state.Exception = new Exception("Request for early closure");
         }
 
         #endregion Private Methods
@@ -321,7 +311,6 @@ namespace GeneralUpdate.Core.Download
                 if (_stream != null) _stream.Close();
                 if (_respone != null) _respone.Close();
                 if (_request != null) _request.Abort();
-
                 if (_exception != null) throw new Exception(_exception.Message);
             }
 
