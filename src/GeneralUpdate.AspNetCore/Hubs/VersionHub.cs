@@ -60,7 +60,7 @@ namespace GeneralUpdate.AspNetCore.Hubs
 
             try
             {
-                var clientParameter = SerializeUtil.Deserialize<TParameter>(message);
+                var clientParameter = SerializeUtil.Serialize(message);
                 await Clients.All.SendAsync(ReceiveMessageflag, user, clientParameter);
             }
             catch (Exception ex)
@@ -89,46 +89,6 @@ namespace GeneralUpdate.AspNetCore.Hubs
             }
         }
 
-        /// <summary>
-        /// Login User Group.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task Login(string name)
-        {
-            try
-            {
-                await Clients.AllExcept(Context.ConnectionId).SendAsync("online", $"{ name }in the group.");
-                await Clients.Group(Groupflag).SendAsync("online", $"{ name }in the group.");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' Login error :  { ex.Message } .", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Exiting a User Group.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task SignOut(string name)
-        {
-            try
-            {
-                await Clients.AllExcept(Context.ConnectionId).SendAsync("online", $"{ name }leave the group .");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' Sign out error :  { ex.Message } .", ex.InnerException);
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
         #endregion
     }
 }

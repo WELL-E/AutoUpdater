@@ -1,12 +1,11 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Common.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore.Hubs
 {
-    public sealed class VersionHub
+    public sealed class VersionHub<TParameter> where TParameter : class
     {
         #region Private Members
 
@@ -18,9 +17,9 @@ namespace GeneralUpdate.ClientCore.Hubs
         private const string SignOutflag = "SignOut";
 
         private HubConnection _connection = null;
-        private static VersionHub _instance;
+        private static VersionHub<TParameter> _instance;
         private static readonly object _lock = new object();
-        private Action<ClientParameter> _receiveMessageCallback;
+        private Action<TParameter> _receiveMessageCallback;
         private Action<string> _onlineMessageCallback;
         private Action<string> _reconnectedCallback;
 
@@ -35,7 +34,7 @@ namespace GeneralUpdate.ClientCore.Hubs
 
         #region Public Properties
 
-        public static VersionHub Instance
+        public static VersionHub<TParameter> Instance
         {
             get
             {
@@ -45,7 +44,7 @@ namespace GeneralUpdate.ClientCore.Hubs
                     {
                         if (_instance == null)
                         {
-                            _instance = new VersionHub();
+                            _instance = new VersionHub<TParameter>();
                         }
                     }
                 }
@@ -65,7 +64,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
         /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
         /// <exception cref="Exception"></exception>
-        public void Subscribe(string url, Action<ClientParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
+        public void Subscribe(string url, Action<TParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
             if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
 
@@ -160,7 +159,7 @@ namespace GeneralUpdate.ClientCore.Hubs
             if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
             try
             {
-                var clientParameter = SerializeUtil.Deserialize<ClientParameter>(message);
+                var clientParameter = SerializeUtil.Deserialize<TParameter>(message);
                 if (clientParameter == null) throw new ArgumentNullException($"'VersionHub' Receiving server push version information deserialization failed , receive content :  { message } .");
                 _receiveMessageCallback.Invoke(clientParameter);
             }

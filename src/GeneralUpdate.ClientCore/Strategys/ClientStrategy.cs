@@ -37,14 +37,19 @@ namespace GeneralUpdate.ClientCore.Strategys
                         {
                             try
                             {
+                                //Request updated information for the main application.
                                 var clientParameter = new ClientParameter();
                                 clientParameter.ClientVersion = Packet.ClientVersion;
                                 clientParameter.LastVersion = Packet.LastVersion;
                                 clientParameter.InstallPath = Packet.InstallPath;
                                 clientParameter.UpdateLogUrl = Packet.UpdateLogUrl;
-                                clientParameter.UpdateUrl = Packet.MainUpdateUrl;
+                                clientParameter.MainValidateUrl = Packet.MainValidateUrl;
+                                clientParameter.MainUpdateUrl = Packet.MainUpdateUrl;
                                 clientParameter.AppName = Packet.MainAppName;
-                                clientParameter.ClientType = 1;
+                                clientParameter.AppType =1;
+                                clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.CompressEncoding);
+                                clientParameter.CompressFormat = Packet.CompressFormat;
+                                clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;
                                 clientParameter.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
                                 var clientParameterBase64 = SerializeUtil.Serialize(clientParameter);
                                 if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))

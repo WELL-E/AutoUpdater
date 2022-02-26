@@ -1,8 +1,12 @@
 ﻿using GeneralUpdate.ClientCore;
+using GeneralUpdate.ClientCore.Hubs;
 using GeneralUpdate.ClientCore.Strategys;
 using GeneralUpdate.Common.Models;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
+using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using ExceptionEventArgs = GeneralUpdate.Core.Update.ExceptionEventArgs;
@@ -14,12 +18,30 @@ namespace AutoUpdate.ClientCore
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string baseUrl = @"http://127.0.0.1:5001";
+        private const string baseUrl = @"http://127.0.0.1:5001" , hubName = "versionhub";
 
         public MainWindow()
         {
             InitializeComponent();
+            InitVersionHub();
         }
+
+        #region VersionHub
+
+        /// <summary>
+        /// Subscription server push version message.
+        /// </summary>
+        private void InitVersionHub() 
+        {
+            VersionHub<string>.Instance.Subscribe($"{ baseUrl }/{ hubName }",new Action<string>(GetMessage));
+        }
+
+        private void GetMessage(string msg) 
+        {
+            //TODO:Execute the update process after decryption.
+        }
+
+        #endregion
 
         #region GeneralUpdate Core
 
@@ -31,30 +53,40 @@ namespace AutoUpdate.ClientCore
             {
                 //主程序信息
                 var mainVersion = "1.1.1";
-                var mianType = 1;
 
                 //该对象用于主程序客户端与更新组件进程之间交互用的对象
                 clientParameter = new ClientParameter();
-                //更新组件的版本号
-                clientParameter.ClientVersion = "1.1.1";
-                //客户端类型：1.主程序客户端 2.更新组件
-                clientParameter.ClientType = 2;
-                //更新程序exe名称
-                clientParameter.AppName = "AutoUpdate.ConsoleApp";
-                //主程序客户端exe名称
-                clientParameter.MainAppName = "AutoUpdate.Test";
+
                 //本机的客户端程序应用地址
                 clientParameter.InstallPath = @"D:\Updatetest_hub\Run_app";
                 //更新公告网页
                 //clientParameter.UpdateLogUrl = "https://www.baidu.com/";
+
+                #region update app.
+
+                //客户端类型：1.主程序客户端 2.更新组件
+                clientParameter.AppType = (int)AppType.UpdateApp;
                 //更新组件请求验证更新的服务端地址
-                clientParameter.ValidateUrl = $"{baseUrl}/validate/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.ValidateUrl = $"{baseUrl}/validate/{ clientParameter.AppType }/{ clientParameter.ClientVersion }";
                 //更新组件更新包下载地址
-                clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.ClientType }/{ clientParameter.ClientVersion }";
+                clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.AppType }/{ clientParameter.ClientVersion }";
+                //更新程序exe名称
+                clientParameter.AppName = "AutoUpdate.Core";
+
+                #endregion
+
+                #region main app.
+
+                //更新组件的版本号
+                clientParameter.ClientVersion = "1.1.1";
+                //主程序客户端exe名称
+                clientParameter.MainAppName = "AutoUpdate.ClientCore";
                 //主程序客户端请求验证更新的服务端地址
-                clientParameter.MainValidateUrl = $"{baseUrl}/validate/{ mianType }/{ mainVersion }";
+                clientParameter.MainValidateUrl = $"{baseUrl}/validate/{ (int)AppType.ClientApp }/{ mainVersion }";
                 //主程序客户端更新包下载地址
-                clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ mianType }/{ mainVersion }";
+                clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
+
+                #endregion
 
                 var generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
@@ -72,7 +104,8 @@ namespace AutoUpdate.ClientCore
                 //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
                 //generalClientBootstrap.Config(clientParameter).
                 generalClientBootstrap.Config(baseUrl).
-                Option(UpdateOption.CompressEncoding, System.Text.Encoding.UTF8).
+                Option(UpdateOption.DownloadTimeOut,60).
+                Option(UpdateOption.CompressEncoding, Encoding.Default).
                 Option(UpdateOption.CompressFormat, "zip").
                 Strategy<ClientStrategy>();
                 await generalClientBootstrap.LaunchTaskAsync();

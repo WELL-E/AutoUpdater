@@ -80,7 +80,8 @@ namespace GeneralUpdate.Core.Bootstrap
             {
                 MutiDownloadProgressChanged.Invoke(this,
                     new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
-                var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(Packet.UpdateUrl);
+                var url = Packet.AppType == 1 ? Packet.MainUpdateUrl : Packet.UpdateUrl;
+                var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(url);
                 if (updateResp.Code == 200)
                 {
                     var body = updateResp.Body;
@@ -96,9 +97,10 @@ namespace GeneralUpdate.Core.Bootstrap
                 var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
                 Packet.CompressFormat = $".{pacektFormat}";
                 Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
+                Packet.DownloadTimeOut = GetOption(UpdateOption.DownloadTimeOut); 
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, GetOption(UpdateOption.DownloadTimeOut));
+                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, Packet.DownloadTimeOut);
                 manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
                 manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
                 manager.MutiDownloadError += OnMutiDownloadError;
@@ -145,7 +147,6 @@ namespace GeneralUpdate.Core.Bootstrap
 
         public TBootstrap StrategyFactory(Func<TStrategy> strategyFactory)
         {
-            Contract.Requires(strategyFactory != null);
             this.strategyFactory = strategyFactory;
             return (TBootstrap)this;
         }

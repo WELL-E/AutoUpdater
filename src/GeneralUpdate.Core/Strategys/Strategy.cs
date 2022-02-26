@@ -32,7 +32,7 @@ namespace GeneralUpdate.Core.Strategys
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
-            _operationType = Packet.CompressFormat.Equals("ZIP") ? OperationType.GZip : OperationType.G7z;
+            _operationType = Packet.CompressFormat.Equals(".zip") ? OperationType.GZip : OperationType.G7z;
         }
 
         public override void Excute()
@@ -49,9 +49,8 @@ namespace GeneralUpdate.Core.Strategys
                     {
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(version, ProgressType.Fail, "Verify MD5 error!");
                         ProgressEventAction(this, eventArgs);
-                        continue;
+                        throw new Exception($"The update package MD5 code is inconsistent ! Version-{ version.Version }  MD5-{ version.MD5 } .");
                     }
-
                     if (UnZip(version, zipFilePath, Packet.InstallPath))
                     {
                         version.IsUnZip = true;
@@ -69,6 +68,7 @@ namespace GeneralUpdate.Core.Strategys
             catch (Exception ex)
             {
                 Error(ex);
+                return;
             }
         }
 
@@ -105,7 +105,7 @@ namespace GeneralUpdate.Core.Strategys
         {
             foreach (var version in versions)
             {
-                if (!version.IsUnZip) Error(new Exception($"Failed to decompress the compressed package!"));
+                if (!version.IsUnZip) throw new Exception($"Failed to decompress the compressed package! Version-{ version.Version }  MD5-{ version.MD5 } .");
             }
         }
 

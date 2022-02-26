@@ -3,6 +3,7 @@ using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using MvvmHelpers;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoUpdate.Core.ViewModels
@@ -25,6 +26,7 @@ namespace AutoUpdate.Core.ViewModels
                 bootStrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
                 bootStrap.Exception += OnException;
                 bootStrap.Strategy<DefaultStrategy>().
+                Option(UpdateOption.CompressEncoding, Encoding.Default).
                 Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.CompressFormat, "zip").
                 RemoteAddressBase64(args);
@@ -44,7 +46,7 @@ namespace AutoUpdate.Core.ViewModels
 
         private void OnMutiDownloadStatistics(object sender, GeneralUpdate.Core.Update.MutiDownloadStatisticsEventArgs e)
         {
-            Tips1 = $" { e.Speed } , { e.Remaining }";
+            Tips1 = $" { e.Speed } , { e.Remaining.ToShortTimeString() }";
         }
 
         private void OnMutiDownloadProgressChanged(object sender, GeneralUpdate.Core.Update.MutiDownloadProgressChangedEventArgs e)

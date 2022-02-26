@@ -20,7 +20,7 @@ async Task<List<UpdateVersionDTO>> UpdateVersions(int clientType, string clientV
 {
     //TODO:Link database query information.Different version information can be returned according to the 'clientType' of request.
     var results = new List<UpdateVersionDTO>();
-    results.Add(new UpdateVersionDTO("ce9ef1257467cca72bce8f6bf0e83a54", 1626711760, "9.1.3.0",
+    results.Add(new UpdateVersionDTO("42e815e326616841f08851c7967dfde2", 1626711760, "9.1.3.0",
     "http://192.168.50.170/Update1.zip",
     "updatepacket1"));
     results.Add(new UpdateVersionDTO("d9a3785f08ed3dd92872bd807ebfb917", 1626711820, "9.1.4.0",
@@ -36,7 +36,7 @@ async Task<List<UpdateVersionDTO>> GetValidateInfos(int clientType, string clien
 {
     //TODO:Link database query information.Different version information can be returned according to the 'clientType' of request.
     var results = new List<UpdateVersionDTO>();
-    results.Add(new UpdateVersionDTO("ce9ef1257467cca72bce8f6bf0e83a54", 1626711760, "9.1.3.0", null, null));
+    results.Add(new UpdateVersionDTO("42e815e326616841f08851c7967dfde2", 1626711760, "9.1.3.0", null, null));
     results.Add(new UpdateVersionDTO("d9a3785f08ed3dd92872bd807ebfb917", 1626711820, "9.1.4.0", null, null));
     results.Add(new UpdateVersionDTO("224da586553d60315c55e689a789b7bd", 1626711880, "9.1.5.0", null, null));
     return await Task.FromResult(results);

@@ -2,19 +2,19 @@ using GeneralUpdate.Common.DTOs;
 using GeneralUpdate.Common.Models;
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Bootstrap;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.ClientCore
 {
     public class GeneralClientBootstrap : AbstractBootstrap<GeneralClientBootstrap, IStrategy>
     {
-        private const int ClientType = 1, MianType = 2;
-
         public GeneralClientBootstrap() : base()
         {
         }
@@ -65,15 +65,19 @@ namespace GeneralUpdate.ClientCore
                 Packet.AppName = appName;
                 string clienVersion = GetFileVersion(Path.Combine(basePath, Packet.AppName + ".exe"));
                 Packet.ClientVersion = clienVersion;
-                Packet.ClientType = ClientType;
-                Packet.ValidateUrl = $"{url}/validate/{ Packet.ClientType }/{ clienVersion }";
-                Packet.UpdateUrl = $"{url}/versions/{ Packet.ClientType }/{ clienVersion }";
+                Packet.AppType = (int)AppType.UpdateApp;
+                Packet.ValidateUrl = $"{url}/validate/{ Packet.AppType }/{ clienVersion }";
+                Packet.UpdateUrl = $"{url}/versions/{ Packet.AppType }/{ clienVersion }";
                 //main app.
                 string mainAppName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName);
                 string mainVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                Packet.MainValidateUrl = $"{url}/validate/{ MianType }/{ mainVersion }";
-                Packet.MainUpdateUrl = $"{url}/versions/{ MianType }/{ mainVersion }";
+                Packet.MainValidateUrl = $"{url}/validate/{ (int)AppType.ClientApp }/{ mainVersion }";
+                Packet.MainUpdateUrl = $"{url}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
                 Packet.MainAppName = mainAppName;
+
+                //Packet.CompressEncoding = Encoding.Default;
+                //Packet.CompressFormat = "zip";
+                //Packet.DownloadTimeOut = 60;
                 return this;
             }
             catch (Exception ex)
@@ -86,7 +90,7 @@ namespace GeneralUpdate.ClientCore
         {
             ValidateConfig(clientParameter);
             Packet.ClientVersion = clientParameter.ClientVersion;
-            Packet.ClientType = clientParameter.ClientType;
+            Packet.AppType = clientParameter.AppType;
             Packet.ValidateUrl = clientParameter.ValidateUrl;
             Packet.UpdateUrl = clientParameter.UpdateUrl;
             Packet.MainValidateUrl = clientParameter.MainValidateUrl;

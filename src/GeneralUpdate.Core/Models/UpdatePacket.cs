@@ -4,6 +4,18 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Models
 {
+    public enum AppType 
+    {
+        /// <summary>
+        /// main program
+        /// </summary>
+        ClientApp = 1,
+        /// <summary>
+        /// upgrade program.
+        /// </summary>
+        UpdateApp = 2,
+    }
+
     public sealed class UpdatePacket : FileBase
     {
         /// <summary>
@@ -19,7 +31,7 @@ namespace GeneralUpdate.Core.Models
         /// <summary>
         /// 1:ClientApp 2:UpdateApp
         /// </summary>
-        public int ClientType { get; set; }
+        public int AppType { get; set; }
 
         /// <summary>
         /// Update check api address.
@@ -59,5 +71,7 @@ namespace GeneralUpdate.Core.Models
         public List<UpdateVersion> UpdateVersions { get; set; }
 
         public Encoding CompressEncoding { get; set; }
+
+        public int DownloadTimeOut { get; set; }
     }
 }

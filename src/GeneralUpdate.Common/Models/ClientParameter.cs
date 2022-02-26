@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GeneralUpdate.Common.Models
 {
@@ -7,9 +8,9 @@ namespace GeneralUpdate.Common.Models
     public class ClientParameter
     {
         /// <summary>
-        /// 1:ClientApp 2:UpdateApp
+        /// 1:MainApp 2:UpdateApp
         /// </summary>
-        public int ClientType { get; set; }
+        public int AppType { get; set; }
 
         /// <summary>
         /// Need to start the name of the app.
@@ -50,6 +51,12 @@ namespace GeneralUpdate.Common.Models
         public string MainUpdateUrl { get; set; }
 
         public string MainValidateUrl { get; set; }
+
+        public int CompressEncoding { get; set; }
+
+        public string CompressFormat { get; set; }
+
+        public int DownloadTimeOut { get; set; }
 
         /// <summary>
         /// One or more version update information.

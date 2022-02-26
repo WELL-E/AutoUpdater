@@ -20,7 +20,8 @@ namespace GeneralUpdate.Core.Download
         private string _format;
         private int _timeOut;
         private IList<(object, string)> _failedVersions;
-        private ImmutableList<ITask<TVersion>> _downloadTaskPool;
+        private ImmutableList<ITask<TVersion>>.Builder _downloadTasksBuilder;
+        private ImmutableList<ITask<TVersion>> _downloadTasks;
 
         #endregion Private Members
 
@@ -38,13 +39,12 @@ namespace GeneralUpdate.Core.Download
             _format = format;
             _timeOut = timeOut;
             _failedVersions = new List<ValueTuple<object, string>>();
+            _downloadTasksBuilder = ImmutableList.Create<ITask<TVersion>>().ToBuilder();
         }
 
         #endregion Constructors
 
         #region Public Properties
-
-        private ImmutableList<ITask<TVersion>> DownloadTaskPool { get => _downloadTaskPool ?? (_downloadTaskPool = ImmutableList<ITask<TVersion>>.Empty); }
 
         /// <summary>
         /// Record download exception information for all versions.
@@ -57,6 +57,7 @@ namespace GeneralUpdate.Core.Download
         public string Format { get => _format; }
 
         public int TimeOut { get => _timeOut; }
+        public ImmutableList<ITask<TVersion>> DownloadTasks { get => _downloadTasks ?? (_downloadTasksBuilder.ToImmutable()); private set => _downloadTasks = value; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
 
@@ -93,9 +94,9 @@ namespace GeneralUpdate.Core.Download
             try
             {
                 var downloadTasks = new List<Task>();
-                foreach (var task in DownloadTaskPool)
+                foreach (var task in DownloadTasks)
                 {
-                    var downloadTask = (task as DownloadTask<UpdateVersion>);
+                    var downloadTask = (task as DownloadTask<TVersion>);
                     downloadTasks.Add(downloadTask.Launch());
                 }
                 Task.WaitAll(downloadTasks.ToArray());
@@ -147,12 +148,12 @@ namespace GeneralUpdate.Core.Download
 
         public override void Remove(ITask<TVersion> task)
         {
-            if (task != null && DownloadTaskPool.Contains(task)) DownloadTaskPool.Remove(task);
+            if (task != null && _downloadTasksBuilder.Contains(task)) _downloadTasksBuilder.Remove(task);
         }
 
         public override void Add(ITask<TVersion> task)
         {
-            if (task != null && !DownloadTaskPool.Contains(task)) DownloadTaskPool.Add(task);
+            if (task != null && !_downloadTasksBuilder.Contains(task)) _downloadTasksBuilder.Add(task);
         }
 
         #endregion Public Methods

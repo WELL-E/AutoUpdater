@@ -14,7 +14,6 @@ namespace GeneralUpdate.Core.Download
     /// </summary>
     /// <typeparam name="TVersion">'T' is the version information that needs to be downloaded.</typeparam>
     public sealed class DownloadTask<TVersion> : AbstractTask<TVersion>, IAwaiter<DownloadTask<TVersion>>
-        where TVersion : class
     {
         #region Private Members
 
