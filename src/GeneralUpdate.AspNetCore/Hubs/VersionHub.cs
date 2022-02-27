@@ -26,34 +26,30 @@ namespace GeneralUpdate.AspNetCore.Hubs
 
         #region Public Properties
 
-        public VersionHub() { }
+        public VersionHub() 
+        {
+        }
 
         #endregion
 
         #region Public Methods
 
-        public override Task OnConnectedAsync()
+        public async override Task OnConnectedAsync()
         {
-            OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
-            return base.OnConnectedAsync();
+            await Groups.AddToGroupAsync(Context.ConnectionId, ClientNameflag);
+            await base.OnConnectedAsync();
+            //await SendMessage(ClientNameflag, "zhangsan");
+            if (OnConnectionStatus != null)   OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public async override Task OnDisconnectedAsync(Exception exception)
         {
-            OnConnectionStatus(HubStatus.Disconnected,"The Version hub is disconnected !");
-            return base.OnDisconnectedAsync(exception);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
+            await base.OnDisconnectedAsync(exception);
+            if (OnConnectionStatus != null) OnConnectionStatus(HubStatus.Disconnected, "The Version hub is disconnected !");
         }
 
-        /// <summary>
-        /// Push the latest version information.
-        /// </summary>
-        /// <typeparam name="TParameter">E.g : Client parameter.</typeparam>
-        /// <param name="user"></param>
-        /// <param name="message">version information.</param>
-        /// <returns> Empty task.</returns>
-        /// <exception cref="ArgumentNullException">Null parameter anomaly.</exception>
-        /// <exception cref="Exception">SignalR component related exception.</exception>
-        public async Task SendMessage<TParameter>(string user, string message) where TParameter : class
+        public async Task SendMessage(string user, string message)
         {
             if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(message))
                 throw new ArgumentNullException($"'VersionHub' The required parameter send message cannot be null !");
@@ -61,7 +57,7 @@ namespace GeneralUpdate.AspNetCore.Hubs
             try
             {
                 var clientParameter = SerializeUtil.Serialize(message);
-                await Clients.All.SendAsync(ReceiveMessageflag, user, clientParameter);
+                await Clients.All.SendAsync(ReceiveMessageflag,user, clientParameter);
             }
             catch (Exception ex)
             {
@@ -87,6 +83,11 @@ namespace GeneralUpdate.AspNetCore.Hubs
             {
                 throw new Exception($"'VersionHub' Remove error :  { ex.Message } .", ex.InnerException);
             }
+        }
+
+        public Task ThrowException()
+        {
+            throw new HubException("This error will be sent to the client!");
         }
 
         #endregion

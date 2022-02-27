@@ -74,10 +74,6 @@ namespace GeneralUpdate.ClientCore
                 Packet.MainValidateUrl = $"{url}/validate/{ (int)AppType.ClientApp }/{ mainVersion }";
                 Packet.MainUpdateUrl = $"{url}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
                 Packet.MainAppName = mainAppName;
-
-                //Packet.CompressEncoding = Encoding.Default;
-                //Packet.CompressFormat = "zip";
-                //Packet.DownloadTimeOut = 60;
                 return this;
             }
             catch (Exception ex)

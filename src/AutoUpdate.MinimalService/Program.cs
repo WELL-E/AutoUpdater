@@ -1,9 +1,29 @@
+using GeneralUpdate.AspNetCore.Hubs;
 using GeneralUpdate.AspNetCore.Services;
 using GeneralUpdate.Common.DTOs;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IUpdateService, GeneralUpdateService>();
+builder.Services.AddSignalR();
 var app = builder.Build();
+
+app.MapHub<VersionHub>("/versionhub");
+
+//app.Use(async (context, next) =>
+//{
+//    var hubContext = context.RequestServices.GetRequiredService<IHubContext<VersionHub>>();
+//    await CommonHubContextMethod((IHubContext)hubContext);
+//    if (next != null)
+//    {
+//        await next.Invoke();
+//    }
+//});
+
+//async Task CommonHubContextMethod(IHubContext context)
+//{
+//    await context.Clients.All.SendAsync("clientMethod","");
+//}
 
 app.MapGet("/versions/{clientType}/{clientVersion}", async (int clientType, string clientVersion, IUpdateService updateService) =>
 {

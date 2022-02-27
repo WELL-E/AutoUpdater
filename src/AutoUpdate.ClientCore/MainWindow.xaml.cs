@@ -39,6 +39,13 @@ namespace AutoUpdate.ClientCore
         private void GetMessage(string msg) 
         {
             //TODO:Execute the update process after decryption.
+            Debug.WriteLine(msg);
+        }
+
+        private async void BtnHubTest_Click(object sender, RoutedEventArgs e)
+        {
+            var message = TxtMessage.Text ?? "hello , word.";
+            await VersionHub<string>.Instance.Send("GeneralUpdate.Client", message);
         }
 
         #endregion

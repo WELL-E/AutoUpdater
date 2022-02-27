@@ -79,7 +79,7 @@ namespace GeneralUpdate.ClientCore.Hubs
                             .WithUrl(url)
                             .WithAutomaticReconnect(new RandomRetryPolicy())
                             .Build();
-                    _connection.On<string>(ReceiveMessageflag, OnReceiveMessage);
+                    _connection.On<string, string>(ReceiveMessageflag, OnReceiveMessage);
                     _connection.On<string>(Onlineflag, OnOnlineMessage);
                     _connection.Reconnected += OnReconnected;
                     _connection.Closed += OnClosed;
@@ -154,7 +154,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Receives the message.
         /// </summary>
         /// <param name="message"></param>
-        private void OnReceiveMessage(string message)
+        private void OnReceiveMessage(string user,string message)
         {
             if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
             try
