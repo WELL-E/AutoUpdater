@@ -16,8 +16,9 @@ namespace GeneralUpdate.AspNetCore.Hubs
         #region Private Members
 
         private const string ReceiveMessageflag = "ReceiveMessage";
-        private const string ClientNameflag = "GeneralUpdate.Client";
-        private const string Groupflag = "Groupflag";
+        private const string SendMessageflag = "SendMessage";
+        private const string Onlineflag = "Online";
+        private const string GroupName = "VersionGroup";
 
         public delegate void ConnectionStatus(HubStatus hubStatus, string message);
         public event ConnectionStatus OnConnectionStatus;
@@ -36,15 +37,15 @@ namespace GeneralUpdate.AspNetCore.Hubs
 
         public async override Task OnConnectedAsync()
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, ClientNameflag);
+            await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
             await base.OnConnectedAsync();
-            //await SendMessage(ClientNameflag, "zhangsan");
+            await SendMessage("TESTNAME","zhuzhen");
             if (OnConnectionStatus != null)   OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
         }
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
             await base.OnDisconnectedAsync(exception);
             if (OnConnectionStatus != null) OnConnectionStatus(HubStatus.Disconnected, "The Version hub is disconnected !");
         }
@@ -57,7 +58,7 @@ namespace GeneralUpdate.AspNetCore.Hubs
             try
             {
                 var clientParameter = SerializeUtil.Serialize(message);
-                await Clients.All.SendAsync(ReceiveMessageflag,user, clientParameter);
+                await Clients.Groups(GroupName).SendAsync(ReceiveMessageflag, user, clientParameter);
             }
             catch (Exception ex)
             {
@@ -77,7 +78,7 @@ namespace GeneralUpdate.AspNetCore.Hubs
 
             try
             {
-                await Groups.RemoveFromGroupAsync(connectionId, Groupflag);
+                await Groups.RemoveFromGroupAsync(connectionId, GroupName);
             }
             catch (Exception ex)
             {

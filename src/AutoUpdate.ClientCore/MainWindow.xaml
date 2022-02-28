@@ -13,7 +13,6 @@
         </Grid.RowDefinitions>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
             <Button x:Name="BtnClientTest" Width="120" Height="30" Content="Enable test update " Click="BtnClientTest_Click"  Margin="5,0,0,0" />
-            <Button x:Name="BtnHubTest" Width="120" Height="30" Content="Version hub test. " Click="BtnHubTest_Click"  Margin="5,0,0,0" />
             <TextBox Width="200" Height="30" Name="TxtMessage"></TextBox>
         </StackPanel>
     </Grid>

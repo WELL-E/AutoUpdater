@@ -33,19 +33,12 @@ namespace AutoUpdate.ClientCore
         /// </summary>
         private void InitVersionHub() 
         {
-            VersionHub<string>.Instance.Subscribe($"{ baseUrl }/{ hubName }",new Action<string>(GetMessage));
+            VersionHub<string>.Instance.Subscribe($"{ baseUrl }/{ hubName }","TESTNAME",new Action<string>(GetMessage));
         }
 
         private void GetMessage(string msg) 
         {
-            //TODO:Execute the update process after decryption.
-            Debug.WriteLine(msg);
-        }
-
-        private async void BtnHubTest_Click(object sender, RoutedEventArgs e)
-        {
-            var message = TxtMessage.Text ?? "hello , word.";
-            await VersionHub<string>.Instance.Send("GeneralUpdate.Client", message);
+            TxtMessage.Text = msg;
         }
 
         #endregion

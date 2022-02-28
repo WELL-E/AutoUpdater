@@ -9,12 +9,9 @@ namespace GeneralUpdate.ClientCore.Hubs
     {
         #region Private Members
 
-        private const string ClientNameflag = "GeneralUpdate.Client";
         private const string ReceiveMessageflag = "ReceiveMessage";
         private const string SendMessageflag = "SendMessage";
         private const string Onlineflag = "Online";
-        private const string Loginflag = "Login";
-        private const string SignOutflag = "SignOut";
 
         private HubConnection _connection = null;
         private static VersionHub<TParameter> _instance;
@@ -22,6 +19,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         private Action<TParameter> _receiveMessageCallback;
         private Action<string> _onlineMessageCallback;
         private Action<string> _reconnectedCallback;
+        private string _name;
 
         #endregion Private Members
 
@@ -60,16 +58,18 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Subscribe to the latest version.
         /// </summary>
         /// <param name="url">remote server address , E.g : https://127.0.0.1:8080/versionhub .</param>
+        /// <param name="name">The name needs to be guaranteed to be unique.</param>
         /// <param name="receiveMessageCallback">Receive server push callback function, The caller needs to implement the update process.</param>
         /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
         /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
-        /// <exception cref="Exception"></exception>
-        public void Subscribe(string url, Action<TParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
+        /// <exception cref="Exception">Subscribe exception.</exception>
+        public void Subscribe(string url,string name, Action<TParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
             if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
 
             try
             {
+                _name = name;
                 _receiveMessageCallback = receiveMessageCallback;
                 _onlineMessageCallback = onlineMessageCallback;
                 _reconnectedCallback = reconnectedCallback;
@@ -93,56 +93,21 @@ namespace GeneralUpdate.ClientCore.Hubs
         }
 
         /// <summary>
-        /// Send message to server.
+        /// Send message to server.[Not recommended for now]
         /// </summary>
         /// <param name="user"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public async Task Send(string user, string msg)
+        public async Task Send(string msg)
         {
             try
             {
                 if (_connection == null) return;
-                await _connection.InvokeAsync(SendMessageflag, user, msg);
+                await _connection.InvokeAsync(SendMessageflag, _name, msg);
             }
             catch (Exception ex)
             {
                 throw new Exception($"'VersionHub' Send error :  { ex.Message }", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Login
-        /// </summary>
-        /// <returns></returns>
-        public async Task Login()
-        {
-            try
-            {
-                if (_connection == null) return;
-                await _connection.InvokeAsync(Loginflag, ClientNameflag);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' Login error :  { ex.Message }", ex.InnerException);
-            }
-        }
-
-        /// <summary>
-        /// Sign out
-        /// </summary>
-        /// <returns></returns>
-        public async Task SignOut()
-        {
-            try
-            {
-                if (_connection == null) return;
-                await _connection.InvokeAsync(SignOutflag, ClientNameflag);
-                await _connection.StopAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"'VersionHub' SignOut error :  { ex.Message }", ex.InnerException);
             }
         }
 
@@ -154,7 +119,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Receives the message.
         /// </summary>
         /// <param name="message"></param>
-        private void OnReceiveMessage(string user,string message)
+        private void OnReceiveMessage(string name,string message)
         {
             if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
             try
@@ -215,7 +180,7 @@ namespace GeneralUpdate.ClientCore.Hubs
                 if (arg != null) throw new Exception($"'VersionHub' On closed internal exception :  { arg.Message }", arg.InnerException);
 
                 if (_connection == null) return;
-                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await Task.Delay(new Random().Next(0, 3) * 1000);
                 await _connection.StartAsync();
             }
             catch (ArgumentOutOfRangeException ex)
