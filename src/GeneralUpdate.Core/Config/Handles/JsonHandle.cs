@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Config.Handles
 {
-    public class JsonHandle<TEntity> : IAwaiter<TEntity> where TEntity : class
+    public class JsonHandle<TEntity> : IHandle<TEntity> , IAwaiter<TEntity> where TEntity : class
     {
         public bool IsCompleted => throw new NotImplementedException();
 
@@ -15,6 +15,16 @@ namespace GeneralUpdate.Core.Config.Handles
         }
 
         public void OnCompleted(Action continuation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TEntity Read(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Write(string path, TEntity entities)
         {
             throw new NotImplementedException();
         }

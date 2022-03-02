@@ -6,7 +6,8 @@ namespace GeneralUpdate.Core.Config.Handles
 {
     public enum HandleEnum
     {
-        INI = 1,
+        NONE = 0,
+        INI,
         JSON,
         XML,
         DB

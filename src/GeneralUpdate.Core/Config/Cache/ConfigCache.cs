@@ -1,17 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text;
+﻿using System.Collections.Immutable;
 
 namespace GeneralUpdate.Core.Config.Cache
 {
     public class ConfigCache<TEntity> : ICache<TEntity> where TEntity : class
     {
-        //TODO: 封装树形结构扫描（机制）复用到增量更新
+        #region Private Members
+
         private ImmutableDictionary<string, TEntity> _cache = null;
         private ImmutableDictionary<string, TEntity>.Builder _cacheBuilder = null;
 
-        public void TryAdd(string key, TEntity entity) 
+        #endregion
+
+        #region Constructors
+
+        public ConfigCache()
+        {
+            _cacheBuilder = ImmutableDictionary.Create<string, TEntity>().ToBuilder();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public ImmutableDictionary<string, TEntity> Cache { get => _cache; private set => _cache = value; }
+
+        #endregion
+
+        #region Public Methods
+
+        public void TryAdd(string key, TEntity entity)
         {
             if (!_cacheBuilder.ContainsKey(key)) _cacheBuilder.Add(key, entity);
         }
@@ -29,5 +46,27 @@ namespace GeneralUpdate.Core.Config.Cache
             if (_cacheBuilder.ContainsKey(key)) isRemove = _cacheBuilder.Remove(key);
             return isRemove;
         }
+
+        public void Build()
+        {
+            if (Cache == null) Cache = _cacheBuilder.ToImmutableDictionary();
+        }
+
+        public void Dispose()
+        {
+            if (Cache != null)
+            {
+                Cache.Clear();
+                Cache = null;
+            }
+
+            if (_cacheBuilder != null)
+            {
+                _cacheBuilder.Clear();
+                _cacheBuilder = null;
+            }
+        }
+
+        #endregion
     }
 }
