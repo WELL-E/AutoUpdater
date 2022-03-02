@@ -17,7 +17,7 @@ namespace GeneralUpdate.Core.Config
 
         private readonly static object _lock = new object();
         private static ConfigFactory _instance = null;
-        private string[] FileTypes = new string[4] { ".db", ".xml", ".ini", ".json" };
+        private List<string> FileTypes = new List<string> { ".db", ".xml", ".ini", ".json" };
         private const string FolderName = "backup";
         private ConfigCache<ConfigEntity> _configCache;
         private string _tempBackupPath;
@@ -67,22 +67,92 @@ namespace GeneralUpdate.Core.Config
 
         #region Public Methods
 
+        /// <summary>
+        /// deploy.
+        /// </summary>
         public void Deploy()
         {
             if (_configCache.Cache == null) return;
 
-            foreach (var cacheItem in _configCache.Cache)
+            try
             {
+                foreach (var cacheItem in _configCache.Cache)
+                {
+                    var value = cacheItem.Value;
+                    if (value == null) continue;
+                    var handle = InitHandle<ConfigEntity>(value.Handle);
+                    handle.Write(value.Path, value);
+                }
 
+                Dispose();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
-        public void Cache(IEnumerable<string> files)
+        /// <summary>
+        /// scan config files.
+        /// </summary>
+        public void Scan()
         {
+            List<string> files = new List<string>();
+            Find(_targetPath,ref files);
+            if (files.Count == 0) return;
+            _files = files;
+            Cache(_files);
+        }
+
+        /// <summary>
+        /// release all resources.
+        /// </summary>
+        /// <exception cref="Exception">dispose exception</exception>
+        public void Dispose()
+        {
+            if (_disposed) return;
+
             try
             {
-                _files = new List<string>(Scan(_targetPath, FileTypes));
-                if (_files != null) Cache(_files);
+                if (Directory.Exists(_tempBackupPath)) Directory.Delete(_tempBackupPath, true);
+
+                if (_configCache != null)
+                {
+                    _configCache.Dispose();
+                    _configCache = null;
+                }
+
+                if (_files != null)
+                {
+                    _files.Clear();
+                    _files = null;
+                }
+
+                if (_instance != null) _instance = null;
+
+                _disposed = true;
+            }
+            catch (Exception ex)
+            {
+                _disposed = false;
+                throw new Exception($"'Dispose' error :{ ex.Message } .", ex.InnerException);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// All resources are cached and backed up.
+        /// </summary>
+        /// <param name="files"></param>
+        /// <exception cref="Exception"></exception>
+        private void Cache(IEnumerable<string> files)
+        {
+            if (_files == null) return;
+            try
+            {
                 foreach (var file in files)
                 {
                     File.Copy(file, _tempBackupPath);
@@ -98,79 +168,93 @@ namespace GeneralUpdate.Core.Config
             }
         }
 
-        public void Dispose()
-        {
-            if (_disposed) return;
-
-            try
-            {
-                if (_configCache != null)
-                {
-                    _configCache.Dispose();
-                    _configCache = null;
-                }
-
-                if (Directory.Exists(_tempBackupPath)) Directory.Delete(_tempBackupPath, true);
-
-                if (_files != null)
-                {
-                    _files.Clear();
-                    _files = null;
-                }
-
-                _disposed = true;
-            }
-            catch (Exception ex)
-            {
-                _disposed = false;
-                throw new Exception($"'Dispose' error :{ ex.Message } .", ex.InnerException);
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private IEnumerable<string> Scan(string path, string[] configFormat)
-        {
-            return null;
-        }
-
+        /// <summary>
+        /// Process file content.
+        /// </summary>
+        /// <param name="file">file path</param>
+        /// <param name="fileMD5">md5</param>
+        /// <returns></returns>
         private ConfigEntity Handle(string file, string fileMD5)
         {
-            IHandle<object> handle = null;
-            var handleEnum = HandleEnum.NONE;
             var entity = new ConfigEntity();
             entity.Path = file;
             entity.MD5 = fileMD5;
-            var fileExtension = Path.GetExtension(file);
-            switch (fileExtension)
-            {
-                case ".db":
-                    handle = new DBHandle<object>();
-                    handleEnum = HandleEnum.DB;
-                    break;
-                case ".ini":
-                    handle = new IniHandle<object>();
-                    handleEnum = HandleEnum.INI;
-                    break;
-                case ".json":
-                    handle = new JsonHandle<object>();
-                    handleEnum = HandleEnum.JSON;
-                    break;
-                case ".xml":
-                    handle = new XmlHandle<object>();
-                    handleEnum = HandleEnum.XML;
-                    break;
-            }
-            entity.Handle = handleEnum;
-            entity.Content = handle.Read(file);
+            entity.Handle = ToEnum(file);
+            entity.Content = InitHandle<ConfigEntity>(entity.Handle).Read(file);
             return entity;
         }
 
-        private bool Verify(IEnumerable<string> files)
+        /// <summary>
+        /// Initialize the corresponding file processing object.
+        /// </summary>
+        /// <typeparam name="TEntity">file entity</typeparam>
+        /// <param name="handleEnum">handle enum</param>
+        /// <returns>handle</returns>
+        private IHandle<TEntity> InitHandle<TEntity>(HandleEnum handleEnum) where TEntity : class
         {
-            return false;
+            IHandle<TEntity> handle = null;
+            switch (handleEnum)
+            {
+                case HandleEnum.DB:
+                    handle = new DBHandle<TEntity>();
+                    break;
+                case HandleEnum.INI:
+                    handle = new IniHandle<TEntity>();
+                    break;
+                case HandleEnum.JSON:
+                    handle = new JsonHandle<TEntity>();
+                    break;
+                case HandleEnum.XML:
+                    handle = new XmlHandle<TEntity>();
+                    break;
+            }
+            return handle;
+        }
+
+        /// <summary>
+        /// Convert enumeration value according to file type.
+        /// </summary>
+        /// <param name="file">file path</param>
+        /// <returns>handle enum</returns>
+        private HandleEnum ToEnum(string file) 
+        {
+            var fileExtension = Path.GetExtension(file);
+            var handleEnum = HandleEnum.NONE;
+            switch (fileExtension)
+            {
+                case ".db":
+                    handleEnum = HandleEnum.DB;
+                    break;
+                case ".ini":
+                    handleEnum = HandleEnum.INI;
+                    break;
+                case ".json":
+                    handleEnum = HandleEnum.JSON;
+                    break;
+                case ".xml":
+                    handleEnum = HandleEnum.XML;
+                    break;
+            }
+            return handleEnum;
+        }
+
+        /// <summary>
+        /// Find matching files recursively.
+        /// </summary>
+        /// <param name="directory">root directory</param>
+        /// <param name="files">result file list</param>
+        private void Find(string rootDirectory,ref List<string> files) 
+        {
+            var rootDirectoryInfo = new DirectoryInfo(rootDirectory);
+            foreach (var file in rootDirectoryInfo.GetFiles())
+            {
+                var fullName = file.FullName;
+                if (FileTypes.Contains(Path.GetExtension(fullName))) files.Add(fullName);
+            }
+            foreach (var dir in rootDirectoryInfo.GetDirectories())
+            {
+                Find(dir.FullName,ref files);
+            }
         }
 
         #endregion

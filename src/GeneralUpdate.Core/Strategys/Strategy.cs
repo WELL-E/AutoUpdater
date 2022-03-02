@@ -1,4 +1,5 @@
 ﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Core.Config;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
@@ -39,6 +40,7 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
+                //if(Packet.AppType == 2) ConfigFactory.Instance.Scan();
                 var updateVersions = Packet.UpdateVersions;
                 updateVersions = updateVersions.OrderBy(x => x.PubTime).ToList();
                 foreach (var version in updateVersions)
@@ -55,7 +57,7 @@ namespace GeneralUpdate.Core.Strategys
                     {
                         version.IsUnZip = true;
                         var versionArgs = new UpdateVersion(version.MD5, version.PubTime, version.Version, null, version.Name);
-                        var message = version.IsUnZip ? "update completed." : "Update failed!";
+                        var message = version.IsUnZip ? "Update completed." : "Update failed!";
                         var type = version.IsUnZip ? ProgressType.Done : ProgressType.Fail;
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
                         ProgressEventAction(this, eventArgs);
@@ -63,6 +65,7 @@ namespace GeneralUpdate.Core.Strategys
                 }
                 CheckAllIsUnZip(updateVersions);
                 Dirty();
+                //if (Packet.AppType == 2) ConfigFactory.Instance.Deploy();
                 StartApp(Packet.AppName);
             }
             catch (Exception ex)
