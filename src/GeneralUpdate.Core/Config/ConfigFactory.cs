@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Config
 {
     /// <summary>
-    /// Update local configuration file.
+    /// Update local configuration file.[Currently only files with a depth of 1 are supported.]
     /// </summary>
     public sealed class ConfigFactory
     {
@@ -70,21 +71,25 @@ namespace GeneralUpdate.Core.Config
         /// <summary>
         /// deploy.
         /// </summary>
-        public void Deploy()
+        public Task Deploy()
         {
-            if (_configCache.Cache == null) return;
-
             try
             {
-                foreach (var cacheItem in _configCache.Cache)
+                if (_configCache.Cache != null) 
                 {
-                    var value = cacheItem.Value;
-                    if (value == null) continue;
-                    var handle = InitHandle<ConfigEntity>(value.Handle);
-                    handle.Write(value.Path, value);
+                    return Task.Run(() =>
+                    {
+                        foreach (var cacheItem in _configCache.Cache)
+                        {
+                            var value = cacheItem.Value;
+                            if (value == null) continue;
+                            var handle = InitHandle<ConfigEntity>(value.Handle);
+                            handle.Write(value.Path, value);
+                        }
+                        Dispose();
+                    });
                 }
-
-                Dispose();
+                return Task.CompletedTask;
             }
             catch (Exception)
             {
@@ -95,13 +100,16 @@ namespace GeneralUpdate.Core.Config
         /// <summary>
         /// scan config files.
         /// </summary>
-        public void Scan()
+        public Task Scan()
         {
-            List<string> files = new List<string>();
-            Find(_targetPath,ref files);
-            if (files.Count == 0) return;
-            _files = files;
-            Cache(_files);
+            return Task.Run(() => 
+            {
+                List<string> files = new List<string>();
+                Find(_targetPath, ref files);
+                if (files.Count == 0) return;
+                _files = files;
+                Cache(_files);
+            });
         }
 
         /// <summary>
@@ -180,7 +188,7 @@ namespace GeneralUpdate.Core.Config
             entity.Path = file;
             entity.MD5 = fileMD5;
             entity.Handle = ToEnum(file);
-            entity.Content = InitHandle<ConfigEntity>(entity.Handle).Read(file);
+            entity.Content = InitHandle<object>(entity.Handle).Read(file);
             return entity;
         }
 
