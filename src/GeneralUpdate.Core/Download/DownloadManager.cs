@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

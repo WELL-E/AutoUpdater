@@ -63,7 +63,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// <param name="onlineMessageCallback">Receive online and offline notification callback function.</param>
         /// <param name="reconnectedCallback">Reconnect notification callback function.</param>
         /// <exception cref="Exception">Subscribe exception.</exception>
-        public void Subscribe(string url,string name, Action<TParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
+        public void Subscribe(string url, string name, Action<TParameter> receiveMessageCallback, Action<string> onlineMessageCallback = null, Action<string> reconnectedCallback = null)
         {
             if (string.IsNullOrWhiteSpace(url) || receiveMessageCallback == null) throw new Exception("Subscription key parameter cannot be null !");
 
@@ -119,7 +119,7 @@ namespace GeneralUpdate.ClientCore.Hubs
         /// Receives the message.
         /// </summary>
         /// <param name="message"></param>
-        private void OnReceiveMessage(string name,string message)
+        private void OnReceiveMessage(string name, string message)
         {
             if (_receiveMessageCallback == null || string.IsNullOrWhiteSpace(message)) return;
             try

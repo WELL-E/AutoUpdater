@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.AspNetCore.Hubs
 {
-    public enum HubStatus 
+    public enum HubStatus
     {
         Connected = 1,
         Disconnected = 2
@@ -21,29 +21,30 @@ namespace GeneralUpdate.AspNetCore.Hubs
         private const string GroupName = "VersionGroup";
 
         public delegate void ConnectionStatus(HubStatus hubStatus, string message);
+
         public event ConnectionStatus OnConnectionStatus;
 
-        #endregion
+        #endregion Private Members
 
         #region Public Properties
 
-        public VersionHub() 
+        public VersionHub()
         {
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
-        public async override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
             await base.OnConnectedAsync();
-            await SendMessage("TESTNAME","zhuzhen");
-            if (OnConnectionStatus != null)   OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
+            await SendMessage("TESTNAME", "zhuzhen");
+            if (OnConnectionStatus != null) OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
         }
 
-        public async override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
             await base.OnDisconnectedAsync(exception);
@@ -91,6 +92,6 @@ namespace GeneralUpdate.AspNetCore.Hubs
             throw new HubException("This error will be sent to the client!");
         }
 
-        #endregion
+        #endregion Public Methods
     }
 }

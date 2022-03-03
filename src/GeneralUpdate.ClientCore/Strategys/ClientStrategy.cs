@@ -46,7 +46,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                                 clientParameter.MainValidateUrl = Packet.MainValidateUrl;
                                 clientParameter.MainUpdateUrl = Packet.MainUpdateUrl;
                                 clientParameter.AppName = Packet.MainAppName;
-                                clientParameter.AppType =1;
+                                clientParameter.AppType = 1;
                                 clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.CompressEncoding);
                                 clientParameter.CompressFormat = Packet.CompressFormat;
                                 clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;

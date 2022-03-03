@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Core.Config.Handles
+﻿namespace GeneralUpdate.Core.Config.Handles
 {
     public interface IHandle<TEntity> where TEntity : class
     {
@@ -12,7 +8,7 @@ namespace GeneralUpdate.Core.Config.Handles
         /// <param name="path">file path</param>
         /// <param name="entities">file content</param>
         /// <returns></returns>
-        bool Write(string path,TEntity entities);
+        bool Write(string path, TEntity entities);
 
         /// <summary>
         /// read file content.

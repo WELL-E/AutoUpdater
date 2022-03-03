@@ -1,8 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core.Config.Handles;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GeneralUpdate.Core.Config.Handles;
 
 namespace GeneralUpdate.Core.Config.Cache
 {

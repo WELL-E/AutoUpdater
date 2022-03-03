@@ -97,7 +97,7 @@ namespace GeneralUpdate.Core.Bootstrap
                 var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
                 Packet.CompressFormat = $".{pacektFormat}";
                 Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
-                Packet.DownloadTimeOut = GetOption(UpdateOption.DownloadTimeOut); 
+                Packet.DownloadTimeOut = GetOption(UpdateOption.DownloadTimeOut);
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
                 var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, Packet.DownloadTimeOut);

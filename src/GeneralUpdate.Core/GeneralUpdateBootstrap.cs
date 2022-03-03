@@ -49,9 +49,9 @@ namespace GeneralUpdate.Core
             Packet.CompressEncoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
             Packet.CompressFormat = ClientParameter.CompressFormat;
             Packet.DownloadTimeOut = ClientParameter.DownloadTimeOut;
-            Packet.MainUpdateUrl= ClientParameter.MainUpdateUrl;
-            Packet.MainValidateUrl= ClientParameter.MainValidateUrl;
-            Packet.AppType= ClientParameter.AppType;
+            Packet.MainUpdateUrl = ClientParameter.MainUpdateUrl;
+            Packet.MainValidateUrl = ClientParameter.MainValidateUrl;
+            Packet.AppType = ClientParameter.AppType;
         }
 
         private void ValidateRemoteAddress(ClientParameter clientParameter)

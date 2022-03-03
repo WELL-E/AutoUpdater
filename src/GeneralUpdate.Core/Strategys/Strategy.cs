@@ -1,5 +1,4 @@
 ﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core.Config;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;

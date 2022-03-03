@@ -4,12 +4,13 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Models
 {
-    public enum AppType 
+    public enum AppType
     {
         /// <summary>
         /// main program
         /// </summary>
         ClientApp = 1,
+
         /// <summary>
         /// upgrade program.
         /// </summary>

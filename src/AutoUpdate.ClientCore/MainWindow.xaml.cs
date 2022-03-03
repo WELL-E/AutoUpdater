@@ -18,7 +18,7 @@ namespace AutoUpdate.ClientCore
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string baseUrl = @"http://127.0.0.1:5001" , hubName = "versionhub";
+        private const string baseUrl = @"http://127.0.0.1:5001", hubName = "versionhub";
 
         public MainWindow()
         {
@@ -31,17 +31,17 @@ namespace AutoUpdate.ClientCore
         /// <summary>
         /// Subscription server push version message.
         /// </summary>
-        private void InitVersionHub() 
+        private void InitVersionHub()
         {
-            VersionHub<string>.Instance.Subscribe($"{ baseUrl }/{ hubName }","TESTNAME",new Action<string>(GetMessage));
+            VersionHub<string>.Instance.Subscribe($"{ baseUrl }/{ hubName }", "TESTNAME", new Action<string>(GetMessage));
         }
 
-        private void GetMessage(string msg) 
+        private void GetMessage(string msg)
         {
             TxtMessage.Text = msg;
         }
 
-        #endregion
+        #endregion VersionHub
 
         #region GeneralUpdate Core
 
@@ -73,7 +73,7 @@ namespace AutoUpdate.ClientCore
                 //更新程序exe名称
                 clientParameter.AppName = "AutoUpdate.Core";
 
-                #endregion
+                #endregion update app.
 
                 #region main app.
 
@@ -86,7 +86,7 @@ namespace AutoUpdate.ClientCore
                 //主程序客户端更新包下载地址
                 clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
 
-                #endregion
+                #endregion main app.
 
                 var generalClientBootstrap = new GeneralClientBootstrap();
                 //单个或多个更新包下载通知事件
@@ -104,7 +104,7 @@ namespace AutoUpdate.ClientCore
                 //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
                 //generalClientBootstrap.Config(clientParameter).
                 generalClientBootstrap.Config(baseUrl).
-                Option(UpdateOption.DownloadTimeOut,60).
+                Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.CompressEncoding, Encoding.Default).
                 Option(UpdateOption.CompressFormat, "zip").
                 Strategy<ClientStrategy>();

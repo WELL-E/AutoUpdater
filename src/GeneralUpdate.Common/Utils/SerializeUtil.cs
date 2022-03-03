@@ -18,7 +18,7 @@ namespace GeneralUpdate.Common.Utils
         public static T Deserialize<T>(string str)
         {
             var obj = default(T);
-            if (string.IsNullOrEmpty(str))   return obj;
+            if (string.IsNullOrEmpty(str)) return obj;
             byte[] bytes = Convert.FromBase64String(str);
             var json = Encoding.Default.GetString(bytes);
             var result = JsonConvert.DeserializeObject<T>(json);

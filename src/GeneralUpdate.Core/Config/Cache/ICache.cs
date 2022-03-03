@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Core.Config.Cache
+﻿namespace GeneralUpdate.Core.Config.Cache
 {
     public interface ICache<TEntity> where TEntity : class
     {
-        void TryAdd(string key,TEntity entity);
+        void TryAdd(string key, TEntity entity);
 
         bool TryRemove(string key);
 

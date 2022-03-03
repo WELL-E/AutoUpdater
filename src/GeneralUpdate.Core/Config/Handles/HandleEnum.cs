@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Core.Config.Handles
+﻿namespace GeneralUpdate.Core.Config.Handles
 {
     public enum HandleEnum
     {

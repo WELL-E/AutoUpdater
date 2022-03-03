@@ -9,7 +9,7 @@ namespace GeneralUpdate.Core.Config.Cache
         private ImmutableDictionary<string, TEntity> _cache = null;
         private ImmutableDictionary<string, TEntity>.Builder _cacheBuilder = null;
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
@@ -18,13 +18,13 @@ namespace GeneralUpdate.Core.Config.Cache
             _cacheBuilder = ImmutableDictionary.Create<string, TEntity>().ToBuilder();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Properties
 
         public ImmutableDictionary<string, TEntity> Cache { get => _cache; private set => _cache = value; }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -67,6 +67,6 @@ namespace GeneralUpdate.Core.Config.Cache
             }
         }
 
-        #endregion
+        #endregion Public Methods
     }
 }
