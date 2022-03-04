@@ -1,11 +1,9 @@
 ﻿using GeneralUpdate.Common.CustomAwaiter;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GeneralUpdate.Core.Config.Handles
 {
-    public class DBHandle<TEntity> : IHandle<TEntity> , IAwaiter<TEntity> where TEntity : class
+    public class DBHandle<TEntity> : IHandle<TEntity>, IAwaiter<TEntity> where TEntity : class
     {
         public bool IsCompleted => throw new NotImplementedException();
 

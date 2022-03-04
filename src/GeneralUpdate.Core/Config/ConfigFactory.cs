@@ -4,7 +4,6 @@ using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Config
@@ -16,7 +15,7 @@ namespace GeneralUpdate.Core.Config
     {
         #region Private Members
 
-        private readonly static object _lock = new object();
+        private static readonly object _lock = new object();
         private static ConfigFactory _instance = null;
         private List<string> FileTypes = new List<string> { ".db", ".xml", ".ini", ".json" };
         private const string FolderName = "backup";
@@ -26,7 +25,7 @@ namespace GeneralUpdate.Core.Config
         private List<string> _files;
         private bool _disposed = false;
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
@@ -42,7 +41,7 @@ namespace GeneralUpdate.Core.Config
             Dispose();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Properties
 
@@ -64,7 +63,7 @@ namespace GeneralUpdate.Core.Config
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -75,7 +74,7 @@ namespace GeneralUpdate.Core.Config
         {
             try
             {
-                if (_configCache.Cache != null) 
+                if (_configCache.Cache != null)
                 {
                     return Task.Run(() =>
                     {
@@ -102,7 +101,7 @@ namespace GeneralUpdate.Core.Config
         /// </summary>
         public Task Scan()
         {
-            return Task.Run(() => 
+            return Task.Run(() =>
             {
                 List<string> files = new List<string>();
                 Find(_targetPath, ref files);
@@ -147,7 +146,7 @@ namespace GeneralUpdate.Core.Config
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -206,12 +205,15 @@ namespace GeneralUpdate.Core.Config
                 case HandleEnum.DB:
                     handle = new DBHandle<TEntity>();
                     break;
+
                 case HandleEnum.INI:
                     handle = new IniHandle<TEntity>();
                     break;
+
                 case HandleEnum.JSON:
                     handle = new JsonHandle<TEntity>();
                     break;
+
                 case HandleEnum.XML:
                     handle = new XmlHandle<TEntity>();
                     break;
@@ -224,7 +226,7 @@ namespace GeneralUpdate.Core.Config
         /// </summary>
         /// <param name="file">file path</param>
         /// <returns>handle enum</returns>
-        private HandleEnum ToEnum(string file) 
+        private HandleEnum ToEnum(string file)
         {
             var fileExtension = Path.GetExtension(file);
             var handleEnum = HandleEnum.NONE;
@@ -233,12 +235,15 @@ namespace GeneralUpdate.Core.Config
                 case ".db":
                     handleEnum = HandleEnum.DB;
                     break;
+
                 case ".ini":
                     handleEnum = HandleEnum.INI;
                     break;
+
                 case ".json":
                     handleEnum = HandleEnum.JSON;
                     break;
+
                 case ".xml":
                     handleEnum = HandleEnum.XML;
                     break;
@@ -251,7 +256,7 @@ namespace GeneralUpdate.Core.Config
         /// </summary>
         /// <param name="directory">root directory</param>
         /// <param name="files">result file list</param>
-        private void Find(string rootDirectory,ref List<string> files) 
+        private void Find(string rootDirectory, ref List<string> files)
         {
             var rootDirectoryInfo = new DirectoryInfo(rootDirectory);
             foreach (var file in rootDirectoryInfo.GetFiles())
@@ -261,10 +266,10 @@ namespace GeneralUpdate.Core.Config
             }
             foreach (var dir in rootDirectoryInfo.GetDirectories())
             {
-                Find(dir.FullName,ref files);
+                Find(dir.FullName, ref files);
             }
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }
