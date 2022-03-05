@@ -59,7 +59,7 @@ namespace GeneralUpdate.Core.Config.Handles
         }
 
         /// <summary>
-        /// iterate over objects and copy values .
+        /// Iterate over objects and copy values .
         /// </summary>
         /// <typeparam name="T">json object .</typeparam>
         /// <param name="source">original configuration file .</param>

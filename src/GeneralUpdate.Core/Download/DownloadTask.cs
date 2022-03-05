@@ -42,6 +42,10 @@ namespace GeneralUpdate.Core.Download
 
         #region Public Methods
 
+        /// <summary>
+        /// Launch the current download task.
+        /// </summary>
+        /// <returns></returns>
         public async Task Launch()
         {
             try

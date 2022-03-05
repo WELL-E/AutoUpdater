@@ -56,6 +56,7 @@ namespace GeneralUpdate.Core.Download
         public string Format { get => _format; }
 
         public int TimeOut { get => _timeOut; }
+
         public ImmutableList<ITask<TVersion>> DownloadTasks { get => _downloadTasks ?? (_downloadTasksBuilder.ToImmutable()); private set => _downloadTasks = value; }
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
