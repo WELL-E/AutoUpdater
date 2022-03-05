@@ -1,5 +1,6 @@
 ﻿using GeneralUpdate.Common.CustomAwaiter;
 using System;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Config.Handles
 {
@@ -17,12 +18,12 @@ namespace GeneralUpdate.Core.Config.Handles
             throw new NotImplementedException();
         }
 
-        public TEntity Read(string path)
+        public Task<TEntity> Read(string path)
         {
             throw new NotImplementedException();
         }
 
-        public bool Write(string path, TEntity entities)
+        public Task<bool> Write(string path, TEntity entities)
         {
             throw new NotImplementedException();
         }

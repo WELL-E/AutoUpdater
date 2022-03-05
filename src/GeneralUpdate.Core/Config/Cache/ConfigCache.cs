@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 
 namespace GeneralUpdate.Core.Config.Cache
 {
@@ -54,16 +55,23 @@ namespace GeneralUpdate.Core.Config.Cache
 
         public void Dispose()
         {
-            if (Cache != null)
+            try
             {
-                Cache.Clear();
-                Cache = null;
-            }
+                if (Cache != null)
+                {
+                    Cache.Clear();
+                    Cache = null;
+                }
 
-            if (_cacheBuilder != null)
+                if (_cacheBuilder != null)
+                {
+                    _cacheBuilder.Clear();
+                    _cacheBuilder = null;
+                }
+            }
+            catch (Exception ex)
             {
-                _cacheBuilder.Clear();
-                _cacheBuilder = null;
+                throw new Exception($"Configuration file cache release failed  : { ex.Message } .",ex.InnerException);
             }
         }
 

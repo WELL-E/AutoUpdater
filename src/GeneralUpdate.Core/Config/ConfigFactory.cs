@@ -10,6 +10,7 @@ namespace GeneralUpdate.Core.Config
 {
     /// <summary>
     /// Update local configuration file.[Currently only files with a depth of 1 are supported.]
+    /// Currently only json files are supported.
     /// </summary>
     public sealed class ConfigFactory
     {
@@ -68,47 +69,47 @@ namespace GeneralUpdate.Core.Config
         #region Public Methods
 
         /// <summary>
-        /// deploy.
+        /// Deploy configuration file.
         /// </summary>
-        public Task Deploy()
+        public async Task Deploy()
         {
             try
             {
                 if (_configCache.Cache != null)
                 {
-                    return Task.Run(() =>
+                    foreach (var cacheItem in _configCache.Cache)
                     {
-                        foreach (var cacheItem in _configCache.Cache)
-                        {
-                            var value = cacheItem.Value;
-                            if (value == null) continue;
-                            var handle = InitHandle<ConfigEntity>(value.Handle);
-                            handle.Write(value.Path, value);
-                        }
-                        Dispose();
-                    });
+                        var value = cacheItem.Value;
+                        if (value == null) continue;
+                        var handle = InitHandle<ConfigEntity>(value.Handle);
+                        await handle.Write(value.Path, value);
+                    }
+                    Dispose();
                 }
-                return Task.CompletedTask;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception($"Deploy config error : { ex.Message } .", ex.InnerException);
             }
         }
 
         /// <summary>
-        /// scan config files.
+        /// Scan configuration files and cache, backup. 
         /// </summary>
-        public Task Scan()
+        public async Task Scan()
         {
-            return Task.Run(() =>
+            try
             {
                 List<string> files = new List<string>();
                 Find(_targetPath, ref files);
                 if (files.Count == 0) return;
                 _files = files;
-                Cache(_files);
-            });
+                await Cache(_files);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Scan config files error : { ex.Message } .",ex.InnerException);
+            }
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace GeneralUpdate.Core.Config
         /// </summary>
         /// <param name="files"></param>
         /// <exception cref="Exception"></exception>
-        private void Cache(IEnumerable<string> files)
+        private async Task Cache(IEnumerable<string> files)
         {
             if (_files == null) return;
             try
@@ -164,7 +165,7 @@ namespace GeneralUpdate.Core.Config
                 {
                     File.Copy(file, _tempBackupPath);
                     var fileMD5 = FileUtil.GetFileMD5(file);
-                    var entity = Handle(file, fileMD5);
+                    var entity = await Handle(file, fileMD5);
                     _configCache.TryAdd(fileMD5, entity);
                 }
                 _configCache.Build();
@@ -181,13 +182,13 @@ namespace GeneralUpdate.Core.Config
         /// <param name="file">file path</param>
         /// <param name="fileMD5">md5</param>
         /// <returns></returns>
-        private ConfigEntity Handle(string file, string fileMD5)
+        private async Task<ConfigEntity> Handle(string file, string fileMD5)
         {
             var entity = new ConfigEntity();
             entity.Path = file;
             entity.MD5 = fileMD5;
             entity.Handle = ToEnum(file);
-            entity.Content = InitHandle<object>(entity.Handle).Read(file);
+            entity.Content = await InitHandle<object>(entity.Handle).Read(file);
             return entity;
         }
 

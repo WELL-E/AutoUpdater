@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Config.Handles
 {
+    /// <summary>
+    /// JSON configuration file processing class .
+    /// </summary>
+    /// <typeparam name="TContent">json configuration file content.</typeparam>
     public class JsonHandle<TContent> : IHandle<TContent>, IAwaiter<JsonHandle<TContent>> where TContent : class
     {
         private bool _isCompleted;
@@ -21,40 +25,65 @@ namespace GeneralUpdate.Core.Config.Handles
             if(continuation != null) continuation.Invoke();
         }
 
-        public TContent Read(string path)
+        /// <summary>
+        /// Read the content of the configuration file according to the path .
+        /// </summary>
+        /// <param name="path">file path.</param>
+        /// <returns>file content.</returns>
+        public Task<TContent> Read(string path)
         {
             var jsonText = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<TContent>(jsonText);
+            return Task.FromResult(JsonConvert.DeserializeObject<TContent>(jsonText));
         }
 
-        public bool Write(string path, TContent content)
+        /// <summary>
+        /// Write the processed content to the configuration file .
+        /// </summary>
+        /// <param name="path">file path.</param>
+        /// <param name="content">file content.</param>
+        /// <returns>is done.</returns>
+        public Task<bool> Write(string path, TContent content)
         {
             try
             {
                 var targetObj = Read(path);
-                CopyValueToTarget(content, targetObj);
+                CopyValue(content, targetObj);
                 File.WriteAllText(path, JsonConvert.SerializeObject(targetObj));
-                return IsCompleted = true;
+                return Task.FromResult(IsCompleted = true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _exception = ex;
             }
-            return false;
+            return Task.FromResult(false);
         }
 
-        private void CopyValueToTarget<T>(T source, T target) where T : class
+        /// <summary>
+        /// iterate over objects and copy values .
+        /// </summary>
+        /// <typeparam name="T">json object .</typeparam>
+        /// <param name="source">original configuration file .</param>
+        /// <param name="target">latest configuration file .</param>
+        private void CopyValue<T>(TContent source, T target) where T : class
         {
-            Type type = source.GetType();
-            var fields = type.GetRuntimeFields().ToList();
-            foreach (var field in fields)
+            try
             {
-                field.SetValue(target, field.GetValue(source));
-            }
+                Type type = source.GetType();
+                var fields = type.GetRuntimeFields().ToList();
+                foreach (var field in fields)
+                {
+                    field.SetValue(target, field.GetValue(source));
+                }
 
-            var properties = type.GetRuntimeProperties().ToList();
-            foreach (var property in properties)
+                var properties = type.GetRuntimeProperties().ToList();
+                foreach (var property in properties)
+                {
+                    property.SetValue(target, property.GetValue(source));
+                }
+            }
+            catch (Exception ex)
             {
-                property.SetValue(target, property.GetValue(source));
+                _exception = ex;
             }
         }
 
