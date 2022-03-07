@@ -9,89 +9,8 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Utils
 {
-    internal static class FileUtil
+    public static class FileUtil
     {
-        public static bool CreateFloder(string path)
-        {
-            try
-            {
-                if (System.IO.Directory.Exists(path))
-                {
-                    DelectDir(path);
-                }
-                else
-                {
-                    System.IO.Directory.CreateDirectory(path);
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public static bool CopyFiles(List<string> pathList, string targetPath)
-        {
-            foreach (var path in pathList)
-            {
-                bool isDone = CopyFile(path, targetPath);
-                if (!isDone) return false;
-            }
-            return true;
-        }
-
-        public static bool CopyFile(string filePath, string targetPath)
-        {
-            try
-            {
-                File.Copy(filePath, targetPath, true);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public static bool DeleteFile(string path)
-        {
-            try
-            {
-                if (File.Exists(path)) File.Delete(path);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public static void DelectDir(string srcPath)
-        {
-            try
-            {
-                DirectoryInfo dir = new DirectoryInfo(srcPath);
-                FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();
-                foreach (FileSystemInfo i in fileinfo)
-                {
-                    if (i is DirectoryInfo)
-                    {
-                        DirectoryInfo subdir = new DirectoryInfo(i.FullName);
-                        subdir.Delete(true);
-                    }
-                    else
-                    {
-                        File.Delete(i.FullName);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
         public static List<FileBase> GetFiles(string packetPath)
         {
             if (!Directory.Exists(packetPath)) return null;
@@ -120,20 +39,6 @@ namespace GeneralUpdate.Core.Utils
             return true;
         }
 
-        public static bool UnPacket(string filePath, string tempPath)
-        {
-            try
-            {
-                System.IO.Compression.ZipFile.ExtractToDirectory(filePath, tempPath);
-                File.Delete(filePath);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         public static void Update32Or64Libs(string currentDir)
         {
             var is64XSystem = Environment.Is64BitOperatingSystem;
@@ -145,19 +50,7 @@ namespace GeneralUpdate.Core.Utils
             Directory.Delete(sourceDir);
         }
 
-        public static JObject ConfigurationBulider(string jsonPath)
-        {
-            using (System.IO.StreamReader file = System.IO.File.OpenText(jsonPath))
-            {
-                using (JsonTextReader reader = new JsonTextReader(file))
-                {
-                    JObject o = (JObject)JToken.ReadFrom(reader);
-                    return o;
-                }
-            }
-        }
-
-        internal static string GetFileMD5(string fileName)
+        public static string GetFileMD5(string fileName)
         {
             try
             {
@@ -178,7 +71,7 @@ namespace GeneralUpdate.Core.Utils
             }
         }
 
-        internal static void DirectoryCopy(string sourceDirName, string destDirName,
+        public static void DirectoryCopy(string sourceDirName, string destDirName,
           bool copySubDirs, bool isOverWrite, Action<string> action)
         {
             var dir = new DirectoryInfo(sourceDirName);
@@ -205,14 +98,14 @@ namespace GeneralUpdate.Core.Utils
             Directory.Delete(sourceDirName, true);
         }
 
-        internal static string GetTempDirectory()
+        public static string GetTempDirectory()
         {
             var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
             return tempDir;
         }
 
-        internal static string GetTempDirectory(string version)
+        public static string GetTempDirectory(string version)
         {
             var path2 = $"generalupdate_{ DateTime.Now.ToString("yyyy-MM-dd") }_{version}";
             var tempDir = Path.Combine(Path.GetTempPath(), path2);
@@ -221,46 +114,6 @@ namespace GeneralUpdate.Core.Utils
                 Directory.CreateDirectory(tempDir);
             }
             return tempDir;
-        }
-
-        internal static bool InitConfig(string path, dynamic obj)
-        {
-            try
-            {
-                if (File.Exists(path)) File.Delete(path);
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    using (var streamWriter = new StreamWriter(fileStream))
-                    {
-                        string json = JsonConvert.SerializeObject(obj);
-                        streamWriter.Write(json);
-                    }
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        internal static T ReadConfig<T>(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    using (StreamReader streamReader = File.OpenText(path))
-                    {
-                        string json = streamReader.ReadToEnd();
-                        return JsonConvert.DeserializeObject<T>(json);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-            }
-            return default(T);
         }
     }
 }
