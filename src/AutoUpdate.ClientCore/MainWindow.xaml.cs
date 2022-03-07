@@ -19,6 +19,8 @@ namespace AutoUpdate.ClientCore
     public partial class MainWindow : Window
     {
         private const string baseUrl = @"http://127.0.0.1:5001", hubName = "versionhub";
+        private const string baseUrl1 = @"http://127.0.0.1:5001";
+        private const string baseUrl2 = @"http://127.0.0.1:5001";
 
         public MainWindow()
         {
