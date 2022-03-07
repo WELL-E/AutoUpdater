@@ -1,7 +1,6 @@
 # GeneralUpdate #
 ![](https://img.shields.io/github/license/WELL-E/AutoUpdater?color=blue)
 ![](https://img.shields.io/github/stars/WELL-E/AutoUpdater?color=blue)
-![](https://img.shields.io/github/stars/WELL-E/AutoUpdater/workflows/dotnet-ci/badge.svg?color=blue)
 
 
 ![](imgs/GeneralUpdate_h.png)
