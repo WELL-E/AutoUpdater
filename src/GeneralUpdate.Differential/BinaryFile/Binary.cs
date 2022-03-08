@@ -11,14 +11,14 @@ namespace GeneralUpdate.Differential.BinaryFile
     /// </summary>
     public class Binary
     {
-        public static List<IBinaryFile> GetBinary(byte[] oldFile, byte[] newFile)
+        public List<IBinaryFile> GetBinary(byte[] oldFile, byte[] newFile)
         {
             var file = new List<IBinaryFile>();
             IBinaryFile binaryFile = null;
 
             for (int i = 0; i < newFile.Length; i++)
             {
-                Console.WriteLine($"{i}/{newFile.Length}");
+                //Console.WriteLine($"{i}/{newFile.Length}");
 
                 (int findIndex, int findLength) = FindBinary(oldFile, newFile, i);
                 if (findIndex < 0)
@@ -28,7 +28,6 @@ namespace GeneralUpdate.Differential.BinaryFile
                     {
                         binaryFile = new NewFile();
                     }
-
                     ((NewFile)binaryFile).Data.Add(newFile[i]);
                 }
                 else
@@ -57,7 +56,7 @@ namespace GeneralUpdate.Differential.BinaryFile
             return file;
         }
 
-        public static List<byte> GetNewFile(byte[] oldFile, List<IBinaryFile> file)
+        public List<byte> GetNewFile(byte[] oldFile, List<IBinaryFile> file)
         {
             var newFile = new List<byte>();
 
@@ -78,12 +77,10 @@ namespace GeneralUpdate.Differential.BinaryFile
             return newFile;
         }
 
-        public static (int findIndex, int findLength) FindBinary(byte[] oldFile, byte[] newFile, int newFileIndex)
+        public (int findIndex, int findLength) FindBinary(byte[] oldFile, byte[] newFile, int newFileIndex)
         {
             var findLength = 8;
-
             var startIndex = 0;
-
             var findIndex = FindBinary(oldFile, newFile, newFileIndex, findLength, startIndex);
 
             if (findIndex < 0)
@@ -125,7 +122,7 @@ namespace GeneralUpdate.Differential.BinaryFile
             }
         }
 
-        public static int FindBinary(byte[] oldFile, byte[] newFile, int newFileIndex, int findLength, int startIndex)
+        public int FindBinary(byte[] oldFile, byte[] newFile, int newFileIndex, int findLength, int startIndex)
         {
             if (newFile.Length <= newFileIndex + findLength)
             {
@@ -137,7 +134,7 @@ namespace GeneralUpdate.Differential.BinaryFile
             return findIndex;
         }
 
-        public static int TryFindNewFile(byte[] newFile, Span<byte> arrayFind, int startIndex)
+        public int TryFindNewFile(byte[] newFile, Span<byte> arrayFind, int startIndex)
         {
             var findLength = arrayFind.Length;
             for (int i = startIndex; i < newFile.Length; i++)
@@ -146,19 +143,16 @@ namespace GeneralUpdate.Differential.BinaryFile
                 {
                     return -1;
                 }
-
                 var source = new Span<byte>(newFile, i, findLength);
-
                 if (Equals(source, arrayFind))
                 {
                     return i;
                 }
             }
-
             return -1;
         }
 
-        public static bool Equals(Span<byte> source, Span<byte> arrayFind)
+        public bool Equals(Span<byte> source, Span<byte> arrayFind)
         {
             for (int i = 0; i < source.Length; i++)
             {
@@ -170,7 +164,7 @@ namespace GeneralUpdate.Differential.BinaryFile
             return true;
         }
 
-        public static List<IBinaryFile> Deserialize(byte[] binary)
+        public List<IBinaryFile> Deserialize(byte[] binary)
         {
             List<IBinaryFile> file = new List<IBinaryFile>();
 
@@ -207,7 +201,7 @@ namespace GeneralUpdate.Differential.BinaryFile
             return file;
         }
 
-        public static byte[] Serialize(List<IBinaryFile> file)
+        public byte[] Serialize(List<IBinaryFile> file)
         {
             var stream = new MemoryStream();
             var binaryWriter = new BinaryWriter(stream);

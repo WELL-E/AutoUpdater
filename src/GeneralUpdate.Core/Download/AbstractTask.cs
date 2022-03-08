@@ -140,7 +140,7 @@ namespace GeneralUpdate.Core.Download
                 _state.Request.ReadWriteTimeout = _timeOut;
                 _state.Request.Timeout = _timeOut;
                 if (startPos > 0) _state.Request.AddRange((int)startPos);
-                _state.Respone = _state.Request.GetResponse();
+                _state.Respone = _state.Request.GetResponse();//TODO: fix the bug
                 _state.Stream = _state.Respone.GetResponseStream();
                 long totalBytesReceived = _state.Respone.ContentLength + startPos;
                 long bytesReceived = startPos;

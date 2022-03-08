@@ -12,9 +12,10 @@ namespace GeneralUpdate.Differential
         {
             return await Task.Run(() => 
             {
-                List<IBinaryFile> file = Binary.GetBinary(oldfileArrary, newfileArray);
-                file = Binary.Deserialize(Binary.Serialize(file));
-                return Binary.Equals(newfileArray, new Span<byte>(Binary.GetNewFile(oldfileArrary, file).ToArray()));
+                Binary binary = new Binary();
+                List<IBinaryFile> file = binary.GetBinary(oldfileArrary, newfileArray);
+                file = binary.Deserialize(binary.Serialize(file));
+                return binary.Equals(newfileArray, new Span<byte>(binary.GetNewFile(oldfileArrary, file).ToArray()));
             });
         }
     }

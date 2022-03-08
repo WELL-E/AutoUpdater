@@ -82,10 +82,7 @@ namespace GeneralUpdate.Core.Download
             return this;
         }
 
-        public async Task AsTask(DownloadTask<TVersion> awaiter)
-        {
-            await awaiter;
-        }
+        public async Task AsTask(DownloadTask<TVersion> awaiter)=> await awaiter;
 
         #endregion Public Methods
 
