@@ -94,7 +94,7 @@ namespace GeneralUpdate.Core.Config
         }
 
         /// <summary>
-        /// Scan configuration files and cache, backup. 
+        /// Scan configuration files and cache, backup.
         /// </summary>
         public async Task Scan()
         {
@@ -108,7 +108,7 @@ namespace GeneralUpdate.Core.Config
             }
             catch (Exception ex)
             {
-                throw new Exception($"Scan config files error : { ex.Message } .",ex.InnerException);
+                throw new Exception($"Scan config files error : { ex.Message } .", ex.InnerException);
             }
         }
 

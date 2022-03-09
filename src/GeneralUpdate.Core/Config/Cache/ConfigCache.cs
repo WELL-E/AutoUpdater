@@ -71,7 +71,7 @@ namespace GeneralUpdate.Core.Config.Cache
             }
             catch (Exception ex)
             {
-                throw new Exception($"Configuration file cache release failed  : { ex.Message } .",ex.InnerException);
+                throw new Exception($"Configuration file cache release failed  : { ex.Message } .", ex.InnerException);
             }
         }
 

@@ -22,7 +22,7 @@ namespace GeneralUpdate.Core.Config.Handles
 
         public void OnCompleted(Action continuation)
         {
-            if(continuation != null) continuation.Invoke();
+            if (continuation != null) continuation.Invoke();
         }
 
         /// <summary>
