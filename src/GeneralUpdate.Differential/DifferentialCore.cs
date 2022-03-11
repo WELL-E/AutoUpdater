@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Differential.BinaryFile;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Differential.BinaryFile;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +37,17 @@ namespace GeneralUpdate.Differential
                 var targetFileBytes = File.ReadAllBytes(item);
                 await Comparebytes(sourceFileBytes, targetFileBytes);
             }
+        }
+
+        public bool IsSameTree(TreeNode p, TreeNode q)
+        {
+            if (p == null && q == null) return true;
+            if (p == null && q != null) return false;
+            if (p != null && q == null) return false;
+            if (p.MD5 != q.MD5)
+                return false;
+            else
+                return IsSameTree(p.RightNode, q.LeftNode) && IsSameTree(p.RightNode, q.LeftNode);
         }
 
         /// <summary>

@@ -8,4 +8,8 @@
     <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralUpdate.Common\GeneralUpdate.Common.csproj" />
+  </ItemGroup>
+
 </Project>
