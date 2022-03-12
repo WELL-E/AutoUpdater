@@ -4,10 +4,11 @@ using System.IO;
 
 namespace GeneralUpdate.Differential.BinaryFile
 {
-    /// <summary>
-    /// https://github.com/lindexi/lindexi_gd/tree/739bb867bd62d9356dc5a3d189e9e1d63daf4a69/LwufxgbaDljqkx
-    /// https://blog.lindexi.com/post/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE%E5%B7%AE%E5%BC%82%E7%AE%97%E6%B3%95-%E7%94%A8%E4%BA%8E%E5%87%8F%E5%B0%8FOTA%E5%86%85%E5%AE%B9.html
-    /// </summary>
+    /// Source address  : https://github.com/lindexi/lindexi_gd/tree/739bb867bd62d9356dc5a3d189e9e1d63daf4a69/LwufxgbaDljqkx
+    ///  https://blog.lindexi.com/post/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE%E5%B7%AE%E5%BC%82%E7%AE%97%E6%B3%95-%E7%94%A8%E4%BA%8E%E5%87%8F%E5%B0%8FOTA%E5%86%85%E5%AE%B9.html
+    /// Author ：lindexi .
+    /// Tribute to the original author .
+    /// Secondary developer : Juster Z
     public class Binary
     {
         public List<IBinaryFile> GetBinary(byte[] oldFile, byte[] newFile)

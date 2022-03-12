@@ -5,7 +5,6 @@ using GeneralUpdate.Core.Download;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;

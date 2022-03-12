@@ -1,6 +1,6 @@
-﻿using GeneralUpdate.Core.Config.Cache;
+﻿using GeneralUpdate.Common.Utils;
+using GeneralUpdate.Core.Config.Cache;
 using GeneralUpdate.Core.Config.Handles;
-using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -101,7 +101,7 @@ namespace GeneralUpdate.Core.Config
             try
             {
                 List<string> files = new List<string>();
-                Find(_targetPath, ref files);
+                TreeUtil.Find(_targetPath, ref files);
                 if (files.Count == 0) return;
                 _files = files;
                 await Cache(_files);
@@ -250,25 +250,6 @@ namespace GeneralUpdate.Core.Config
                     break;
             }
             return handleEnum;
-        }
-
-        /// <summary>
-        /// Find matching files recursively.
-        /// </summary>
-        /// <param name="directory">root directory</param>
-        /// <param name="files">result file list</param>
-        private void Find(string rootDirectory, ref List<string> files)
-        {
-            var rootDirectoryInfo = new DirectoryInfo(rootDirectory);
-            foreach (var file in rootDirectoryInfo.GetFiles())
-            {
-                var fullName = file.FullName;
-                if (FileTypes.Contains(Path.GetExtension(fullName))) files.Add(fullName);
-            }
-            foreach (var dir in rootDirectoryInfo.GetDirectories())
-            {
-                Find(dir.FullName, ref files);
-            }
         }
 
         #endregion Private Methods

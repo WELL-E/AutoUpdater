@@ -1,72 +1,59 @@
 ﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Differential.BinaryFile;
+using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Events;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.Differential
 {
     public class DifferentialCore
     {
-        private async Task<bool> Comparebytes(byte[] oldfileArrary, byte[] newfileArray)
+        private Action<object, BaseCompressProgressEventArgs> _compressProgressCallback;
+
+        private bool Comparebytes(byte[] oldfileArrary, byte[] newfileArray)
         {
-            return await Task.Run(() =>
-            {
-                Binary binary = new Binary();
-                List<IBinaryFile> file = binary.GetBinary(oldfileArrary, newfileArray);
-                file = binary.Deserialize(binary.Serialize(file));
-                return binary.Equals(newfileArray, new Span<byte>(binary.GetNewFile(oldfileArrary, file).ToArray()));
-            });
+            var binary = new Binary();
+            var file = binary.GetBinary(oldfileArrary, newfileArray);
+            file = binary.Deserialize(binary.Serialize(file));
+            return binary.Equals(newfileArray, new Span<byte>(binary.GetNewFile(oldfileArrary, file).ToArray()));
         }
 
         /// <summary>
         /// Generate diff file.
         /// </summary>
-        /// <param name="sourcePath"></param>
-        /// <param name="targetPath"></param>
-        public async Task Generate(string sourcePath,string targetPath)
+        /// <param name="sourcePath">Previous version folder path .</param>
+        /// <param name="targetPath">Recent version folder path.</param>
+        /// <param name="compressProgressCallback">Incremental package generation progress callback function.</param>
+        /// <param name="diffPath">Store discovered incremental update files in a temporary directory .</param>
+        /// <param name="generatePath">Incremental package generation path .</param>
+        /// <param name="type">7z or zip</param>
+        /// <param name="encoding">Incremental packet encoding format .</param>
+        /// <returns></returns>
+        public async Task Generate(string sourcePath,string targetPath, Action<object , BaseCompressProgressEventArgs> compressProgressCallback, string diffPath = null, string generatePath = null, OperationType type = OperationType.GZip, Encoding encoding = null)
         {
-            List<string> sourceFiles = new List<string>();
-            List<string> targetFiles = new List<string>();
-            Find(sourcePath, ref sourceFiles);
-            Find(targetPath, ref targetFiles);
-            foreach (var item in sourceFiles)
+            await Task.Run(() => 
             {
-                var sourceFileBytes = File.ReadAllBytes(item);
-                var targetFileBytes = File.ReadAllBytes(item);
-                await Comparebytes(sourceFileBytes, targetFileBytes);
-            }
+                if(string.IsNullOrWhiteSpace(diffPath))diffPath = Environment.CurrentDirectory;
+                if (string.IsNullOrWhiteSpace(generatePath)) generatePath = Environment.CurrentDirectory;
+                _compressProgressCallback = compressProgressCallback;
+                var tupleResult = FileUtil.Compare(sourcePath, targetPath);
+                foreach (var file in tupleResult.Item2)
+                {
+                    var findFile = tupleResult.Item1.FirstOrDefault(f => f.Name.Equals(file.Name));
+                    if (findFile == null) continue;
+                    Comparebytes(File.ReadAllBytes(findFile.FullName), File.ReadAllBytes(file.FullName));
+                }
+                var factory = new GeneralZipFactory();
+                factory.CompressProgress += OnCompressProgress;
+                factory.CreatefOperate(type, diffPath, generatePath,false,encoding).CreatZip();
+            });
         }
 
-        public bool IsSameTree(TreeNode p, TreeNode q)
-        {
-            if (p == null && q == null) return true;
-            if (p == null && q != null) return false;
-            if (p != null && q == null) return false;
-            if (p.MD5 != q.MD5)
-                return false;
-            else
-                return IsSameTree(p.RightNode, q.LeftNode) && IsSameTree(p.RightNode, q.LeftNode);
-        }
-
-        /// <summary>
-        /// Find matching files recursively.
-        /// </summary>
-        /// <param name="directory">root directory</param>
-        /// <param name="files">result file list</param>
-        private void Find(string rootDirectory, ref List<string> files)
-        {
-            var rootDirectoryInfo = new DirectoryInfo(rootDirectory);
-            foreach (var file in rootDirectoryInfo.GetFiles())
-            {
-                var fullName = file.FullName;
-                files.Add(fullName);
-            }
-            foreach (var dir in rootDirectoryInfo.GetDirectories())
-            {
-                Find(dir.FullName, ref files);
-            }
-        }
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) => _compressProgressCallback(sender,e);
     }
 }

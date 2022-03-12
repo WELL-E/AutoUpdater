@@ -35,8 +35,10 @@
     <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsReqDTO.cs" Link="DTOs\UpdateVersionsReqDTO.cs" />
     <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
     <Compile Include="..\GeneralUpdate.Common\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Models\OperationType.cs" Link="ZipFactory\Factory\OperationType.cs" />
     <Compile Include="..\GeneralUpdate.Common\Utils\ConvertUtil.cs" Link="Utils\ConvertUtil.cs" />
     <Compile Include="..\GeneralUpdate.Common\Utils\DataValidateUtil.cs" Link="Utils\DataValidateUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Common\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
     <Compile Include="..\GeneralUpdate.Common\Utils\HttpUtil.cs" Link="Utils\HttpUtil.cs" />
     <Compile Include="..\GeneralUpdate.Common\Utils\SerializeUtil.cs" Link="Utils\SerializeUtil.cs" />
     <Compile Include="..\GeneralUpdate.Core\Bootstrap\AbstractBootstrap.cs" Link="Bootstrap\AbstractBootstrap.cs" />
@@ -55,14 +57,12 @@
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateEventArgs.cs" Link="Update\UpdateEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
-    <Compile Include="..\GeneralUpdate.Core\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompleteEventArgs.cs" Link="ZipFactory\Events\BaseCompleteEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompressProgressEventArgs.cs" Link="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseUnZipProgressEventArgs.cs" Link="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\BaseCompress.cs" Link="ZipFactory\Factory\BaseCompress.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IFactory.cs" Link="ZipFactory\Factory\IFactory.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IOperation.cs" Link="ZipFactory\Factory\IOperation.cs" />
-    <Compile Include="..\GeneralUpdate.Zip\Factory\OperationType.cs" Link="ZipFactory\Factory\OperationType.cs" />
     <Compile Include="..\GeneralUpdate.Zip\G7z\General7z.cs" Link="ZipFactory\G7z\General7z.cs" />
     <Compile Include="..\GeneralUpdate.Zip\GeneralZipFactory.cs" Link="ZipFactory\GeneralZipFactory.cs" />
     <Compile Include="..\GeneralUpdate.Zip\GZip\GeneralZip.cs" Link="ZipFactory\GZip\GeneralZip.cs" />

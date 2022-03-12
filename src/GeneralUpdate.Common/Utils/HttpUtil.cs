@@ -29,36 +29,24 @@ namespace GeneralUpdate.Common.Utils
                     request.Headers[header_key] = header_value;
                 }
                 response = (HttpWebResponse)await request.GetResponseAsync();
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (response.StatusCode != HttpStatusCode.OK) return default(T);
+                using (var reader = new StreamReader(response.GetResponseStream(), encoding))
                 {
-                    using (var reader = new StreamReader(response.GetResponseStream(), encoding))
-                    {
-                        var tempStr = reader.ReadToEnd();
-                        var respContent = JsonConvert.DeserializeObject<T>(tempStr);
-                        return respContent;
-                    }
-                }
-                else
-                {
-                    return default(T);
+                    var tempStr = reader.ReadToEnd();
+                    var respContent = JsonConvert.DeserializeObject<T>(tempStr);
+                    return respContent;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return default(T);
             }
             finally
             {
-                if (response != null)
-                {
-                    response.Close();
-                }
+                if (response != null) response.Close();
             }
         }
 
-        private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
+        private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
     }
 }

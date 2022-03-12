@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using GeneralUpdate.Common.Models;
+using System.Text;
 
 namespace GeneralUpdate.Zip.Factory
 {

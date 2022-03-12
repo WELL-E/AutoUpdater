@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\UpdateConfig.cs" />
-    <Compile Remove="Utils\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="GeneralUpdate.Core.2.0.0.nupkg" />

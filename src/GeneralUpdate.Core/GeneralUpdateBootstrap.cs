@@ -2,7 +2,6 @@
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Bootstrap;
 using GeneralUpdate.Core.Strategys;
-using GeneralUpdate.Core.Utils;
 using System;
 
 namespace GeneralUpdate.Core

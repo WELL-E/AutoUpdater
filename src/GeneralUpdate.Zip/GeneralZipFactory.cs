@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Zip.Events;
+﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Zip.Events;
 using GeneralUpdate.Zip.Factory;
 using GeneralUpdate.Zip.G7z;
 using GeneralUpdate.Zip.GZip;

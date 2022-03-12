@@ -1,9 +1,8 @@
 ﻿using GeneralUpdate.Common.Models;
+using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
-using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Zip;
-using GeneralUpdate.Zip.Factory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
