@@ -12,15 +12,15 @@ namespace GeneralUpdate.Core.Download
     /// Download task class.
     /// </summary>
     /// <typeparam name="T">'T' is the version information that needs to be downloaded.</typeparam>
-    internal sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
+    public sealed class DownloadTask<T> : AbstractTask<T>, IAwaiter<DownloadTask<T>> where T : class
     {
         #region Private Members
 
         private Exception _exception;
         private DownloadManager _manager;
+        private const int DEFAULT_DELTA = 1048576;//1024*1024
+
         public T _version { get; private set; }
-        //1024*1024
-        private const int DEFAULT_DELTA = 1048576;
 
         public bool IsCompleted { get; private set; }
 

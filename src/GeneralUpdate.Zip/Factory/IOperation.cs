@@ -1,9 +1,11 @@
 ﻿using GeneralUpdate.Zip.Events;
+using System.Text;
+
 namespace GeneralUpdate.Zip.Factory
 {
-    internal interface IOperation
+    public interface IOperation
     {
-        void Configs(string sourcePath,string targetPath);
+        void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false);
 
         bool CreatZip();
 

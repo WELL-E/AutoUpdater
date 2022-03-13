@@ -1,11 +1,10 @@
-﻿using GeneralUpdate.Core.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 
 namespace AutoUpdate.WpfApp
 {
-    class Program : Application, ISingleInstanceApp
+    class Program : Application//, ISingleInstanceApp
     {
         private const string AppId = "{7F280539-0814-4F9C-95BF-D2BB60023657}";
 
@@ -32,16 +31,16 @@ namespace AutoUpdate.WpfApp
             }
 
             if (resultArgs.Length != 6) return;
-            if (SingleInstance<Program>.InitializeAsFirstInstance(AppId))
-            {
-                //var win = new MainWindow();
-                //var vm = new MainViewModel(resultArgs, win.Close);
-                //win.DataContext = vm;
+            //if (SingleInstance<Program>.InitializeAsFirstInstance(AppId))
+            //{
+            //    var win = new MainWindow();
+            //    var vm = new MainViewModel(resultArgs, win.Close);
+            //    win.DataContext = vm;
 
-                var application = new Program();
-                //application.Run(win);
-                SingleInstance<Program>.Cleanup();
-            }
+            //    var application = new Program();
+            //    application.Run(win);
+            //    SingleInstance<Program>.Cleanup();
+            //}
         }
 
         public bool SignalExternalCommandLineArgs(IList<string> args)

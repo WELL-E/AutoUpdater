@@ -8,6 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
+            <!--ZIP-->
             <TabItem Header="Zip Test">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -17,6 +18,13 @@
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
                         <Button x:Name="BtnCreateZip" Width="100" Height="30" Content="Create Zip" Margin="5,0,0,0" Click="BtnCreateZip_Click" />
                         <Button x:Name="BtnUnZip" Width="100" Height="30" Content="UnZip" Margin="5,0,0,0" Click="BtnUnZip_Click" />
+                        <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
+                            <TextBlock Text="Choise zip format :"  HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <ComboBox x:Name="CmbxZipFormat" SelectedIndex="0" Width="100" Height="20" Margin="5,0,0,0">
+                                <ComboBoxItem>ZIP</ComboBoxItem>
+                                <ComboBoxItem>7z</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="35">
@@ -30,7 +38,8 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Update Test">
+            <!--GUpdate.Core-->
+            <TabItem Header="GUpdate.Core Test">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition>
@@ -41,6 +50,19 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--GUpdate.Client-->
+            <TabItem Header="GUpdate.Client Test">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button x:Name="BtnClientTest" Width="120" Height="30" Content="Enable test update " Click="BtnClientTest_Click"  Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!--MD5-->
             <TabItem Header="File MD5">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -60,6 +82,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <!--Process launch-->
             <TabItem Header="Process launch">
                 <Grid>
                     <Grid.RowDefinitions>
