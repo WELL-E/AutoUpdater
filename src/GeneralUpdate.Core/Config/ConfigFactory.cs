@@ -163,7 +163,7 @@ namespace GeneralUpdate.Core.Config
             {
                 foreach (var file in files)
                 {
-                    File.Copy(file, _tempBackupPath);
+                    File.Copy(file, _tempBackupPath,true);
                     var fileMD5 = FileUtil.GetFileMD5(file);
                     var entity = await Handle(file, fileMD5);
                     _configCache.TryAdd(fileMD5, entity);

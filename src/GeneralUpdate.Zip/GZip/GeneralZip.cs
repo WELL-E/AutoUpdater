@@ -297,5 +297,6 @@ namespace GeneralUpdate.Zip.GZip
             _includeBaseDirectory = includeBaseDirectory;
             Verifypath(sourcePath, destinationPath);
         }
+
     }
 }
