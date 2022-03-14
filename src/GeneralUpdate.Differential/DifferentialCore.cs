@@ -1,6 +1,8 @@
 ﻿using GeneralUpdate.Common.Models;
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Differential.Binary;
+using GeneralUpdate.Differential.Common;
+using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.Events;
 using System;
@@ -19,8 +21,6 @@ namespace GeneralUpdate.Differential
         /// Differential file format .
         /// </summary>
         private const string DIFF_FORMAT = ".patch";
-        private const string SEVENZ_FORMAT = ".7z";
-        private const string ZIP_FORMAT = ".zip";
         private static readonly object _lockObj = new object();
         private static DifferentialCore _instance;
 
@@ -127,6 +127,11 @@ namespace GeneralUpdate.Differential
                     if (findFile != null) await DrityPatch(oldFile.FullName, findFile.FullName);
                 }
                 DrityNew(appPath, patchPath);
+                using (var configFactory = new ConfigFactory()) 
+                {
+                    await configFactory.Scan(patchPath);
+                    await configFactory.Deploy();
+                }
                 if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
             }
             catch (Exception ex)
@@ -171,7 +176,7 @@ namespace GeneralUpdate.Differential
                 foreach (var file in listExcept.Item2)
                 {
                     var extensionName = Path.GetExtension(file.FullName);
-                    if (extensionName.Equals(DIFF_FORMAT) || extensionName.Equals(SEVENZ_FORMAT) || extensionName.Equals(ZIP_FORMAT)) continue;
+                    if (Filefilter.Diff.Contains(extensionName)) continue;
                     File.Copy(file.FullName, Path.Combine(appPath, file.Name), true);
                 }
             }

@@ -26,5 +26,7 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="getUrlsAction">The latest version of the server.</param>
         /// <returns>Json object.</returns>
         Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction);
+
+        Task UploadPatchPacket();
     }
 }
