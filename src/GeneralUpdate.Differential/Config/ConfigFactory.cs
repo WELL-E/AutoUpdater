@@ -17,22 +17,20 @@ namespace GeneralUpdate.Differential.Config
     {
         #region Private Members
 
-        private const string FolderName = "backup";
         private ConfigCache<ConfigEntity> _configCache;
-        private string _tempBackupPath;
-        private string _scanPath;
+        private string _appPath,_scanPath;
         private List<string> _files;
         private bool _disposed = false;
+        private readonly static object _locker = new object();
+        private static ConfigFactory _instance;
 
         #endregion Private Members
 
         #region Constructors
 
-        public ConfigFactory()
+        private ConfigFactory()
         {
             _configCache = new ConfigCache<ConfigEntity>();
-            _scanPath = _scanPath ?? Environment.CurrentDirectory;
-            _tempBackupPath = _tempBackupPath ?? Path.Combine(_scanPath, $"{ FolderName }");
         }
 
         ~ConfigFactory()
@@ -41,6 +39,28 @@ namespace GeneralUpdate.Differential.Config
         }
 
         #endregion Constructors
+
+        #region Public Properties
+
+        public static ConfigFactory Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_locker)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new ConfigFactory();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        #endregion
 
         #region Public Methods
 
@@ -57,8 +77,9 @@ namespace GeneralUpdate.Differential.Config
                     {
                         var value = cacheItem.Value;
                         if (value == null) continue;
-                        var handle = InitHandle<ConfigEntity>(value.Handle);
-                        await handle.Write(value.Path, value);
+                        var fileMD5 = FileUtil.GetFileMD5(value.OldPath);
+                        var oldEntity = await Handle(value.OldPath, fileMD5);
+                        await InitHandle<ConfigEntity>(value.Handle).Write(oldEntity, value);
                     }
                     Dispose();
                 }
@@ -72,20 +93,24 @@ namespace GeneralUpdate.Differential.Config
         /// <summary>
         /// Scan configuration files and cache, backup.
         /// </summary>
-        public async Task Scan(string scanPath = null)
+        public async Task Scan(string appPath = null,string scanPath = null)
         {
             try
             {
+                _appPath = appPath ?? Environment.CurrentDirectory;
                 _scanPath = scanPath ?? Environment.CurrentDirectory;
                 List<string> files = new List<string>();
                 Find(_scanPath, ref files, Filefilter.Temp);
                 if (files.Count == 0) return;
-                _files = files;
-                await Cache(_files);
+                await Cache(_files = files);
             }
             catch (Exception ex)
             {
                 throw new Exception($"Scan config files error : { ex.Message } .", ex.InnerException);
+            }
+            finally 
+            {
+                _disposed = false;
             }
         }
 
@@ -99,8 +124,6 @@ namespace GeneralUpdate.Differential.Config
 
             try
             {
-                if (Directory.Exists(_tempBackupPath)) Directory.Delete(_tempBackupPath, true);
-
                 if (_configCache != null)
                 {
                     _configCache.Dispose();
@@ -155,13 +178,10 @@ namespace GeneralUpdate.Differential.Config
         private async Task Cache(IEnumerable<string> files)
         {
             if (_files == null) return;
-            if (!Directory.Exists(_tempBackupPath)) Directory.CreateDirectory(_tempBackupPath);
             try
             {
                 foreach (var file in files)
                 {
-                    var tempPath = Path.Combine(_tempBackupPath, Path.GetFileName(file));
-                    File.Copy(file, tempPath, true);
                     var fileMD5 = FileUtil.GetFileMD5(file);
                     var entity = await Handle(file, fileMD5);
                     _configCache.TryAdd(fileMD5, entity);
@@ -184,6 +204,8 @@ namespace GeneralUpdate.Differential.Config
         {
             var entity = new ConfigEntity();
             entity.Path = file;
+            entity.Name = Path.GetFileName(file);
+            entity.OldPath = Path.Combine(_appPath, entity.Name);
             entity.MD5 = fileMD5;
             entity.Handle = ToEnum(file);
             entity.Content = await InitHandle<object>(entity.Handle).Read(file);

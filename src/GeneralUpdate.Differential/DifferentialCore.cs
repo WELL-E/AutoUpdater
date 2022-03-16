@@ -127,11 +127,6 @@ namespace GeneralUpdate.Differential
                     if (findFile != null) await DrityPatch(oldFile.FullName, findFile.FullName);
                 }
                 DrityNew(appPath, patchPath);
-                using (var configFactory = new ConfigFactory()) 
-                {
-                    await configFactory.Scan(patchPath);
-                    await configFactory.Deploy();
-                }
                 if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
             }
             catch (Exception ex)

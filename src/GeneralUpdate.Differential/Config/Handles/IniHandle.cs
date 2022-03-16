@@ -23,7 +23,7 @@ namespace GeneralUpdate.Differential.Config.Handles
             throw new NotImplementedException();
         }
 
-        public Task<bool> Write(string path, TEntity entities)
+        public Task<bool> Write(TEntity oldEntity, TEntity newEntity)
         {
             throw new NotImplementedException();
         }

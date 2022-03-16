@@ -2,6 +2,8 @@
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Differential;
+using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
 using System;
 using System.Collections.Generic;
@@ -38,12 +40,13 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
-                //if(Packet.AppType == 2) ConfigFactory.Instance.Scan();
+                
                 var updateVersions = Packet.UpdateVersions;
                 updateVersions = updateVersions.OrderBy(x => x.PubTime).ToList();
                 foreach (var version in updateVersions)
                 {
                     var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.CompressFormat }";
+                    //await ConfigFactory.Instance.Scan();
                     var isVerify = VerifyFileMd5(zipFilePath, version.MD5);
                     if (!isVerify)
                     {
@@ -60,10 +63,12 @@ namespace GeneralUpdate.Core.Strategys
                         var eventArgs = new MutiDownloadProgressChangedEventArgs(versionArgs, type, message);
                         ProgressEventAction(this, eventArgs);
                     }
+                    //await ConfigFactory.Instance.Deploy();
+                    //await DifferentialCore.Instance.Drity(Packet.InstallPath, zipFilePath);
+                    //ConfigFactory.Instance.Dispose();
                 }
                 CheckAllIsUnZip(updateVersions);
                 Dirty();
-                //if (Packet.AppType == 2) ConfigFactory.Instance.Deploy();
                 StartApp(Packet.AppName);
             }
             catch (Exception ex)

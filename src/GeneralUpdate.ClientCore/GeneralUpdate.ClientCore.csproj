@@ -57,6 +57,25 @@
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateEventArgs.cs" Link="Update\UpdateEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Binary\BinaryHandle.cs" Link="Differential\Binary\BinaryHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Binary\IBinary.cs" Link="Differential\Binary\IBinary.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Common\Filefilter.cs" Link="Differential\Common\Filefilter.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Cache\ConfigCache.cs" Link="Differential\Config\Cache\ConfigCache.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Cache\ConfigEntity.cs" Link="Differential\Config\Cache\ConfigEntity.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Cache\ICache.cs" Link="Differential\Config\Cache\ICache.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\ConfigFactory.cs" Link="Differential\Config\ConfigFactory.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\DBHandle.cs" Link="Differential\Config\Handles\DBHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\HandleEnum.cs" Link="Differential\Config\Handles\HandleEnum.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\IHandle.cs" Link="Differential\Config\Handles\IHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\IniHandle.cs" Link="Differential\Config\Handles\IniHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\JsonHandle.cs" Link="Differential\Config\Handles\JsonHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\Config\Handles\XmlHandle.cs" Link="Differential\Config\Handles\XmlHandle.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\DifferentialCore.cs" Link="Differential\DifferentialCore.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\GStream\BZip2Constants.cs" Link="Differential\GStream\BZip2Constants.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\GStream\BZip2InputStream.cs" Link="Differential\GStream\BZip2InputStream.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\GStream\BZip2OutputStream.cs" Link="Differential\GStream\BZip2OutputStream.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\GStream\IChecksum.cs" Link="Differential\GStream\IChecksum.cs" />
+    <Compile Include="..\GeneralUpdate.Differential\GStream\StrangeCRC.cs" Link="Differential\GStream\StrangeCRC.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompleteEventArgs.cs" Link="ZipFactory\Events\BaseCompleteEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseCompressProgressEventArgs.cs" Link="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Events\BaseUnZipProgressEventArgs.cs" Link="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
@@ -79,6 +98,11 @@
   <ItemGroup>
     <Folder Include="Bootstrap\" />
     <Folder Include="CustomAwaiter\" />
+    <Folder Include="Differential\Binary\" />
+    <Folder Include="Differential\Common\" />
+    <Folder Include="Differential\Config\Cache\" />
+    <Folder Include="Differential\Config\Handles\" />
+    <Folder Include="Differential\GStream\" />
     <Folder Include="Download\" />
     <Folder Include="DTOs\" />
     <Folder Include="Update\" />

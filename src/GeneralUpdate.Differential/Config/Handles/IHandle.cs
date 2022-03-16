@@ -7,10 +7,10 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <summary>
         /// Write the cache content to the file to be updated.
         /// </summary>
-        /// <param name="path">file path</param>
-        /// <param name="entities">file content</param>
+        /// <param name="oldEntity"></param>
+        /// <param name="newEntity"></param>
         /// <returns></returns>
-        Task<bool> Write(string path, TEntity entities);
+        Task<bool> Write(TEntity oldEntity, TEntity newEntity);
 
         /// <summary>
         /// read file content.

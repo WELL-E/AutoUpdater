@@ -5,6 +5,11 @@ namespace GeneralUpdate.Differential.Config.Cache
     public class ConfigEntity
     {
         /// <summary>
+        /// 文件名
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// file md5 code .
         /// </summary>
         public string MD5 { get; set; }
@@ -18,6 +23,8 @@ namespace GeneralUpdate.Differential.Config.Cache
         /// configuration file path.
         /// </summary>
         public string Path { get; set; }
+
+        public string OldPath { get; set; }
 
         /// <summary>
         /// handle type (.json .ini .xml .db) .

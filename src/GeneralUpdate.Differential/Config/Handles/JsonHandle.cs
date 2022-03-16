@@ -32,8 +32,19 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <returns>file content.</returns>
         public Task<TContent> Read(string path)
         {
-            var jsonText = File.ReadAllText(path);
-            return Task.FromResult(JsonConvert.DeserializeObject<TContent>(jsonText));
+            try
+            {
+                var jsonText = File.ReadAllText(path);
+                return Task.FromResult(JsonConvert.DeserializeObject<TContent>(jsonText));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"read config error : { ex.Message } !",ex.InnerException);
+            }
+            finally 
+            {
+                IsCompleted = true;
+            }
         }
 
         /// <summary>
@@ -42,20 +53,22 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <param name="path">file path.</param>
         /// <param name="content">file content.</param>
         /// <returns>is done.</returns>
-        public Task<bool> Write(string path, TContent content)
+        public async Task<bool> Write(TContent oldEntity, TContent newEntity)
         {
             try
             {
-                var targetObj = Read(path);
-                CopyValue(content, targetObj);
-                File.WriteAllText(path, JsonConvert.SerializeObject(targetObj));
-                return Task.FromResult(IsCompleted = true);
+                var oldResult = GetPropertyValue<object>(oldEntity, "Content");
+                var newResult = GetPropertyValue<object>(newEntity, "Content");
+                var oldPath = GetPropertyValue<string>(oldEntity, "Path");
+                CopyValue(oldResult, newResult);
+                File.WriteAllText(oldPath, JsonConvert.SerializeObject(newResult));
+                return await Task.FromResult(IsCompleted = true);
             }
             catch (Exception ex)
             {
                 _exception = ex;
             }
-            return Task.FromResult(false);
+            return await Task.FromResult(false);
         }
 
         /// <summary>
@@ -64,27 +77,46 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <typeparam name="T">json object .</typeparam>
         /// <param name="source">original configuration file .</param>
         /// <param name="target">latest configuration file .</param>
-        private void CopyValue<T>(TContent source, T target) where T : class
+        private void CopyValue<T>(T source, T target) where T : class
         {
             try
             {
-                Type type = source.GetType();
-                var fields = type.GetRuntimeFields().ToList();
-                foreach (var field in fields)
-                {
-                    field.SetValue(target, field.GetValue(source));
-                }
-
-                var properties = type.GetRuntimeProperties().ToList();
-                foreach (var property in properties)
-                {
-                    property.SetValue(target, property.GetValue(source));
-                }
+                //TODO:差分遍历赋值
+                //PropertyInfo[] propertiesSource = source.GetType().GetProperties();
+                //PropertyInfo[] propertiesTarget = target.GetType().GetProperties();
+                //foreach (var propertieSoure in propertiesSource)
+                //{
+                //    var propertieTarge = propertiesTarget.FirstOrDefault(p=>p.Name == propertieSoure.Name);
+                //    if (propertieTarge != null)
+                //    {
+                //        propertieTarge.SetValue(propertieSoure.Name, propertieSoure.GetValue(propertieSoure.Name));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
                 _exception = ex;
             }
+        }
+
+        private TResult GetPropertyValue<TResult>(TContent entity, string propertyName)
+        {
+            TResult result = default(TResult);
+            Type entityType = typeof(TContent);
+            try
+            {
+                PropertyInfo info = entityType.GetProperty(propertyName);
+                result = (TResult)info.GetValue(entity);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw _exception = new ArgumentNullException("'GetPropertyValue' The method executes abnormally !", ex);
+            }
+            catch (AmbiguousMatchException ex)
+            {
+                throw _exception = new AmbiguousMatchException("'GetPropertyValue' The method executes abnormally !", ex);
+            }
+            return result;
         }
 
         public JsonHandle<TContent> GetAwaiter()
