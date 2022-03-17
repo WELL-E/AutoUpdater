@@ -1,5 +1,6 @@
 ﻿using GeneralUpdate.Common.CustomAwaiter;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
@@ -60,13 +61,18 @@ namespace GeneralUpdate.Differential.Config.Handles
                 var oldResult = GetPropertyValue<object>(oldEntity, "Content");
                 var newResult = GetPropertyValue<object>(newEntity, "Content");
                 var oldPath = GetPropertyValue<string>(oldEntity, "Path");
-                CopyValue(oldResult, newResult);
-                File.WriteAllText(oldPath, JsonConvert.SerializeObject(newResult));
-                return await Task.FromResult(IsCompleted = true);
+                string json = string.Empty;
+                CopyValue(oldResult, newResult,ref json);
+                File.WriteAllText(oldPath, json);
+                return await Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 _exception = ex;
+            }
+            finally 
+            {
+                IsCompleted = true;
             }
             return await Task.FromResult(false);
         }
@@ -77,21 +83,21 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <typeparam name="T">json object .</typeparam>
         /// <param name="source">original configuration file .</param>
         /// <param name="target">latest configuration file .</param>
-        private void CopyValue<T>(T source, T target) where T : class
+        private void CopyValue<T>(T source, T target,ref string json) where T : class
         {
             try
             {
-                //TODO:差分遍历赋值
-                //PropertyInfo[] propertiesSource = source.GetType().GetProperties();
-                //PropertyInfo[] propertiesTarget = target.GetType().GetProperties();
-                //foreach (var propertieSoure in propertiesSource)
-                //{
-                //    var propertieTarge = propertiesTarget.FirstOrDefault(p=>p.Name == propertieSoure.Name);
-                //    if (propertieTarge != null)
-                //    {
-                //        propertieTarge.SetValue(propertieSoure.Name, propertieSoure.GetValue(propertieSoure.Name));
-                //    }
-                //}
+                JObject jSource = JObject.Parse(source.ToString());
+                JObject jTarget = JObject.Parse(target.ToString());
+                foreach (JProperty jProperty in jSource.Properties()) 
+                {
+                    var jFindObj = jTarget.Properties().FirstOrDefault(j=>j.Name.Equals(jProperty.Name));
+                    if (jFindObj != null)
+                    {
+                        jFindObj.Value = jProperty.Value;
+                    }
+                }
+                json = JsonConvert.SerializeObject(jTarget);
             }
             catch (Exception ex)
             {
