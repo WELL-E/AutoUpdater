@@ -1,4 +1,6 @@
 ﻿
+using GeneralUpdate.Core.PipeLine;
+using GeneralUpdate.Core.PipeLine.Stages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,9 @@ namespace AutoUpdate.WpfNet6_Sample
 
         private void BtnTest_Click(object sender, RoutedEventArgs e)
         {
+            //var setup = Config.Stage(new TestClass()).
+            //    Stage(new TestClass2());
+            //PipelineBuilder.Create<double>(setup);
             //await ConfigFactory.Instance.Scan();
         }
     }

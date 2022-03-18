@@ -77,12 +77,14 @@ namespace GeneralUpdate.Differential.Config.Handles
             return await Task.FromResult(false);
         }
 
+
         /// <summary>
         /// Iterate over objects and copy values .
         /// </summary>
         /// <typeparam name="T">json object .</typeparam>
         /// <param name="source">original configuration file .</param>
         /// <param name="target">latest configuration file .</param>
+        /// <param name="json">result json.</param>
         private void CopyValue<T>(T source, T target,ref string json) where T : class
         {
             try
