@@ -1,6 +1,7 @@
-﻿
-using GeneralUpdate.Core.PipeLine;
-using GeneralUpdate.Core.PipeLine.Stages;
+﻿using GeneralUpdate.Core.Pipelines;
+using GeneralUpdate.Core.Pipelines.Context;
+using GeneralUpdate.Core.Pipelines.Middleware;
+using GeneralUpdate.Core.Pipelines.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,14 @@ namespace AutoUpdate.WpfNet6_Sample
             //    Stage(new TestClass2());
             //PipelineBuilder.Create<double>(setup);
             //await ConfigFactory.Instance.Scan();
+
+            var context = new UpdateContext();
+            IPipelineBuilder builder = new PipelineBuilder<UpdateContext>(context).
+                UseMiddleware<MD5Middleware>().
+                UseMiddleware<CompressMiddleware>().
+                UseMiddleware<ConfigMiddleware>().
+                UseMiddleware<PatchMiddleware>().
+                Launch();
         }
     }
 }
