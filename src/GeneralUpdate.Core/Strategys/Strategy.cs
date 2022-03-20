@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Zip;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using GeneralUpdate.Zip.Factory;
 
 namespace GeneralUpdate.Core.Strategys
 {

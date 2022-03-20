@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.Core.Utils
 {
     public class SerializeUtil
     {

@@ -1,9 +1,9 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Differential.Binary;
 using GeneralUpdate.Differential.Common;
 using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.Events;
+using GeneralUpdate.Zip.Factory;
 using System;
 using System.IO;
 using System.Linq;

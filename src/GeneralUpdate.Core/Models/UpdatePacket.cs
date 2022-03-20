@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Core.Models;
 using System.Collections.Generic;
 using System.Text;
 

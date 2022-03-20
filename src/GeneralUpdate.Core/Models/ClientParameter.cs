@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GeneralUpdate.Common.Models
+namespace GeneralUpdate.Core.Models
 {
     [Serializable]
     public class ClientParameter

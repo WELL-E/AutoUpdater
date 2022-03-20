@@ -1,8 +1,9 @@
-﻿using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Factory;
 using System;
 using System.Threading.Tasks;
 

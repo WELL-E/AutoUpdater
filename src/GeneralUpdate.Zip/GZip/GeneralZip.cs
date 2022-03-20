@@ -99,7 +99,7 @@ namespace GeneralUpdate.Zip.GZip
                     return false;
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

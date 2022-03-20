@@ -1,4 +1,4 @@
-﻿namespace GeneralUpdate.Common.Models
+﻿namespace GeneralUpdate.Zip.Factory
 {
     public enum OperationType
     {

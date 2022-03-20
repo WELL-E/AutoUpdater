@@ -1,10 +1,9 @@
-﻿using GeneralUpdate.Common.DTOs;
-using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
-using GeneralUpdate.Core.Download;
+﻿using GeneralUpdate.Core.Download;
+using GeneralUpdate.Core.DTOs;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;

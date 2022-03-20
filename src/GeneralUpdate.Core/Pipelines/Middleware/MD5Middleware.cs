@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Update;
 using System;

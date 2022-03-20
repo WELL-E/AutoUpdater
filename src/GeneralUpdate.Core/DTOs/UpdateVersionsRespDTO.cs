@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GeneralUpdate.Common.DTOs
+namespace GeneralUpdate.Core.DTOs
 {
     public class UpdateVersionsRespDTO : BaseResponseDTO<UpdateVersionsDTO>
     { }

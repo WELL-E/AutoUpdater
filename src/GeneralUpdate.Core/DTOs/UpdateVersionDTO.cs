@@ -1,4 +1,4 @@
-﻿namespace GeneralUpdate.Common.DTOs
+﻿namespace GeneralUpdate.Core.DTOs
 {
     public class UpdateVersionDTO
     {

@@ -1,6 +1,9 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
 
-namespace GeneralUpdate.Common.CustomAwaiter
+namespace GeneralUpdate.Core.CustomAwaiter
 {
     public interface IAwaiter : INotifyCompletion
     {

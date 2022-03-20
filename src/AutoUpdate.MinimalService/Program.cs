@@ -1,6 +1,6 @@
 using GeneralUpdate.AspNetCore.Hubs;
 using GeneralUpdate.AspNetCore.Services;
-using GeneralUpdate.Common.DTOs;
+using GeneralUpdate.Core.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IUpdateService, GeneralUpdateService>();

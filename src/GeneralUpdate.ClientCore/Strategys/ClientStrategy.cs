@@ -1,6 +1,6 @@
-﻿using GeneralUpdate.Common.DTOs;
-using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.DTOs;
+using GeneralUpdate.Core.Models;
+using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
 using System;

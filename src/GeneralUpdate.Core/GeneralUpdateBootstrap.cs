@@ -1,5 +1,5 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Models;
+using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Bootstrap;
 using GeneralUpdate.Core.Strategys;
 using System;

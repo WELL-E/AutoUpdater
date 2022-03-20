@@ -1,10 +1,10 @@
-﻿using GeneralUpdate.Common.DTOs;
-using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Core.DTOs;
+using GeneralUpdate.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.Core.Utils
 {
     public class ConvertUtil
     {

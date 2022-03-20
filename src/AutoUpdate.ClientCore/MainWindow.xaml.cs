@@ -1,7 +1,6 @@
 ﻿using GeneralUpdate.ClientCore;
 using GeneralUpdate.ClientCore.Hubs;
 using GeneralUpdate.ClientCore.Strategys;
-using GeneralUpdate.Common.Models;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using System;

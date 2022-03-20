@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.Core.Utils
 {
     public class DataValidateUtil
     {

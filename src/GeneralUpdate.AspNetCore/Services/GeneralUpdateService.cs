@@ -1,5 +1,5 @@
 ﻿using GeneralUpdate.AspNetCore.Models;
-using GeneralUpdate.Common.DTOs;
+using GeneralUpdate.Core.DTOs;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;

@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.AspNetCore", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.ClientCore", "GeneralUpdate.ClientCore\GeneralUpdate.ClientCore.csproj", "{BAEFF926-6B2C-46F1-BB73-AA2AB1355565}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.Common", "GeneralUpdate.Common\GeneralUpdate.Common.csproj", "{7ABB2DDF-7033-4584-8180-25F5340E26C0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.Test", "AutoUpdate.Test\AutoUpdate.Test.csproj", "{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.MinimalService", "AutoUpdate.MinimalService\AutoUpdate.MinimalService.csproj", "{43695C1B-35CA-466A-B443-B83F6951E50F}"
@@ -31,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.MD5", "AutoUpdat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.ClientCore", "AutoUpdate.ClientCore\AutoUpdate.ClientCore.csproj", "{D18CADC0-FB28-4B88-BCA2-D531C1F9691A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralUpdate.Differential", "GeneralUpdate.Differential\GeneralUpdate.Differential.csproj", "{40BDA496-7614-4213-92D0-3B1B187675D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralUpdate.Differential", "GeneralUpdate.Differential\GeneralUpdate.Differential.csproj", "{40BDA496-7614-4213-92D0-3B1B187675D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate.Differential", "AutoUpdate.Differential\AutoUpdate.Differential.csproj", "{DD41B7C0-1742-4BC7-98AC-0D83BE9D95CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoUpdate.Differential", "AutoUpdate.Differential\AutoUpdate.Differential.csproj", "{DD41B7C0-1742-4BC7-98AC-0D83BE9D95CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +59,6 @@ Global
 		{BAEFF926-6B2C-46F1-BB73-AA2AB1355565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAEFF926-6B2C-46F1-BB73-AA2AB1355565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAEFF926-6B2C-46F1-BB73-AA2AB1355565}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7ABB2DDF-7033-4584-8180-25F5340E26C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7ABB2DDF-7033-4584-8180-25F5340E26C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7ABB2DDF-7033-4584-8180-25F5340E26C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7ABB2DDF-7033-4584-8180-25F5340E26C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -107,7 +101,6 @@ Global
 		{D94882E1-55A7-4787-B049-265F52DC576E} = {91F059E6-7AD3-4FB7-9604-30A7849C6EFF}
 		{7D529953-3846-485F-AC71-3EEACB9161EC} = {91F059E6-7AD3-4FB7-9604-30A7849C6EFF}
 		{BAEFF926-6B2C-46F1-BB73-AA2AB1355565} = {91F059E6-7AD3-4FB7-9604-30A7849C6EFF}
-		{7ABB2DDF-7033-4584-8180-25F5340E26C0} = {91F059E6-7AD3-4FB7-9604-30A7849C6EFF}
 		{9FE9DC65-F45E-43C1-A62A-02ADD096EB1C} = {5836AD39-6293-4CFE-AD7D-298C167973DB}
 		{43695C1B-35CA-466A-B443-B83F6951E50F} = {5836AD39-6293-4CFE-AD7D-298C167973DB}
 		{879B20F4-22BF-46CA-A5F5-62A9DCF29CFD} = {5836AD39-6293-4CFE-AD7D-298C167973DB}

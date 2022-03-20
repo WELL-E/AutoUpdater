@@ -5,12 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\IAwaitable.cs" Link="CustomAwaiter\IAwaitable.cs" />
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\IAwaiter.cs" Link="CustomAwaiter\IAwaiter.cs" />
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\ICriticalAwaiter.cs" Link="CustomAwaiter\ICriticalAwaiter.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\FileUtil.cs" Link="Common\FileUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="SharpCompress" Version="0.30.1" />
     <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeneralUpdate.Common\GeneralUpdate.Common.csproj" />
+    <Folder Include="CustomAwaiter\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GeneralUpdate.Zip\GeneralUpdate.Zip.csproj" />
   </ItemGroup>
 

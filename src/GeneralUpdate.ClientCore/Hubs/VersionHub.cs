@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;

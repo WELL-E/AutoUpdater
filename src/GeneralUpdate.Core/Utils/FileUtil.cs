@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.Core.Utils
 {
     public static class FileUtil
     {

@@ -1,6 +1,6 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Zip;
+﻿using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.Events;
+using GeneralUpdate.Zip.Factory;
 using System;
 using System.Diagnostics;
 using System.Windows;

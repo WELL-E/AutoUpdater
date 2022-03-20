@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralUpdate.Common.Utils
+namespace GeneralUpdate.Core.Utils
 {
     public class HttpUtil
     {
