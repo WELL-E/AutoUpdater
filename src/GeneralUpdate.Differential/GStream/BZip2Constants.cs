@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeneralUpdate.Differential.GStream
+﻿namespace GeneralUpdate.Differential.GStream
 {
     internal sealed class BZip2Constants
     {

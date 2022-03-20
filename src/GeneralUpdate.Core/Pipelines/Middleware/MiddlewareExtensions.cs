@@ -48,10 +48,10 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
 
             return pipeline.Use(((IMiddleware)ActivatorMiddlewareResolver.Resolve(middleware)));
         }
-        
+
         private readonly struct InvokeMiddlewareState
         {
-            public InvokeMiddlewareState([DynamicallyAccessedMembers(MiddlewareAccessibility)] Type middleware)=> Middleware = middleware;
+            public InvokeMiddlewareState([DynamicallyAccessedMembers(MiddlewareAccessibility)] Type middleware) => Middleware = middleware;
 
             [DynamicallyAccessedMembers(MiddlewareAccessibility)]
             public Type Middleware { get; }

@@ -13,7 +13,6 @@ namespace GeneralUpdate.Differential.Binary
         /// <returns>future results .</returns>
         Task Clean(string oldfilePath, string newfilePath, string patchPath);
 
-
         /// <summary>
         /// Restore the patch.
         /// </summary>
@@ -21,6 +20,6 @@ namespace GeneralUpdate.Differential.Binary
         /// <param name="newBytes">Current version file path .</param>
         /// <param name="patchPath">Path to generate patch file .</param>
         /// <returns>future results .</returns>
-        Task Drity(string oldfilePath,string newfilePath,string patchPath);
+        Task Drity(string oldfilePath, string newfilePath, string patchPath);
     }
 }

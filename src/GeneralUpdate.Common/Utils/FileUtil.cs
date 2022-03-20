@@ -85,33 +85,33 @@ namespace GeneralUpdate.Common.Utils
         /// <param name="folder1">source path</param>
         /// <param name="folder2">target path</param>
         /// <returns>item1 :  The following files are in both folders, item2 : The following files are in list1 but not list2.</returns>
-        public static (IEnumerable<FileInfo>, IEnumerable<FileInfo>) Compare(string folder1,string folder2) 
+        public static (IEnumerable<FileInfo>, IEnumerable<FileInfo>) Compare(string folder1, string folder2)
         {
             // Create two identical or different temporary folders
             // on a local drive and change these file paths.
             var dir1 = new DirectoryInfo(folder1);
             var dir2 = new DirectoryInfo(folder2);
 
-            // Take a snapshot of the file system.  
+            // Take a snapshot of the file system.
             var list1 = dir1.GetFiles("*.*", SearchOption.AllDirectories);
             var list2 = dir2.GetFiles("*.*", SearchOption.AllDirectories);
 
-            //A custom file comparer defined below  
+            //A custom file comparer defined below
             var fileCompare = new FileCompare();
 
-            // This query determines whether the two folders contain  
-            // identical file lists, based on the custom file comparer  
-            // that is defined in the FileCompare class.  
-            // The query executes immediately because it returns a bool. 
+            // This query determines whether the two folders contain
+            // identical file lists, based on the custom file comparer
+            // that is defined in the FileCompare class.
+            // The query executes immediately because it returns a bool.
             //areIdentical  true : the two folders are the same; false : The two folders are not the same.
             var areIdentical = list1.SequenceEqual(list2, fileCompare);
 
             // Find the common files. It produces a sequence and doesn't
-            // execute until the foreach statement.  
+            // execute until the foreach statement.
             // list1.Intersect(list2, fileCompare);
 
-            // Find the set difference between the two folders.  
-            // For this example we only check one way.  
+            // Find the set difference between the two folders.
+            // For this example we only check one way.
             //The following files are in list1 but not list2
             // (from file in list1 select file).Except(list2, fileCompare);
             return (list1.Intersect(list2, fileCompare), (from file in list1 select file).Except(list2, fileCompare));
@@ -138,13 +138,14 @@ namespace GeneralUpdate.Common.Utils
     }
 
     /// <summary>
-    /// This implementation defines a very simple comparison  
-    /// between two FileInfo objects. It only compares the name  
-    /// of the files being compared and their length in bytes.  
+    /// This implementation defines a very simple comparison
+    /// between two FileInfo objects. It only compares the name
+    /// of the files being compared and their length in bytes.
     /// </summary>
-    public class FileCompare : IEqualityComparer<FileInfo> 
+    public class FileCompare : IEqualityComparer<FileInfo>
     {
-        public FileCompare() { }
+        public FileCompare()
+        { }
 
         public bool Equals(FileInfo f1, FileInfo f2)
         {
@@ -153,10 +154,10 @@ namespace GeneralUpdate.Common.Utils
         }
 
         // Return a hash that reflects the comparison criteria. According to the
-        // rules for IEqualityComparer<T>, if Equals is true, then the hash codes must  
-        // also be equal. Because equality as defined here is a simple value equality, not  
-        // reference identity, it is possible that two or more objects will produce the same  
-        // hash code.  
+        // rules for IEqualityComparer<T>, if Equals is true, then the hash codes must
+        // also be equal. Because equality as defined here is a simple value equality, not
+        // reference identity, it is possible that two or more objects will produce the same
+        // hash code.
         public int GetHashCode(FileInfo fi)
         {
             string s = $"{fi.Name}{fi.Length}";

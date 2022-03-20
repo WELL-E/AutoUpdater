@@ -1,7 +1,4 @@
-﻿using GeneralUpdate.Differential;
-using GeneralUpdate.Differential.Config;
-
-//Task.Run(async () =>
+﻿//Task.Run(async () =>
 //{
 //    var path1 = @"D:\TestCode\compare\source";
 //    var path2 = @"D:\TestCode\compare\target";
@@ -17,7 +14,7 @@ using GeneralUpdate.Differential.Config;
 //    await DifferentialCore.Instance.Drity(path1, path3);
 //});
 
-//Task.Run(async () => 
+//Task.Run(async () =>
 //{
 //    var path1 = @"D:\TestCode\compare\source";
 //    var path2 = @"D:\TestCode\compare\target";

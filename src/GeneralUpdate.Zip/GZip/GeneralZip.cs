@@ -285,9 +285,9 @@ namespace GeneralUpdate.Zip.GZip
             return fList;
         }
 
-        public override bool CreatZip()=> CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal, _includeBaseDirectory);
+        public override bool CreatZip() => CreatZip(SOURSE_PATH, Path.Combine(_destinationPath, COMPRESS_NAME), CompressionLevel.Optimal, _includeBaseDirectory);
 
-        public override bool UnZip()=> UnZip(SOURSE_PATH, _destinationPath);
+        public override bool UnZip() => UnZip(SOURSE_PATH, _destinationPath);
 
         public override void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false)
         {
@@ -297,6 +297,5 @@ namespace GeneralUpdate.Zip.GZip
             _includeBaseDirectory = includeBaseDirectory;
             Verifypath(sourcePath, destinationPath);
         }
-
     }
 }

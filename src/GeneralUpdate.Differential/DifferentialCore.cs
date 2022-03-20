@@ -20,26 +20,28 @@ namespace GeneralUpdate.Differential
         /// Differential file format .
         /// </summary>
         private const string DIFF_FORMAT = ".patch";
+
         private static readonly object _lockObj = new object();
         private static DifferentialCore _instance;
 
         private Action<object, BaseCompressProgressEventArgs> _compressProgressCallback;
 
-        #endregion
+        #endregion Private Members
 
         #region Constructors
 
-        private DifferentialCore() { }
+        private DifferentialCore()
+        { }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Properties
 
         public static DifferentialCore Instance
         {
-            get 
+            get
             {
-                if (_instance == null) 
+                if (_instance == null)
                 {
                     lock (_lockObj)
                     {
@@ -53,7 +55,7 @@ namespace GeneralUpdate.Differential
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -67,12 +69,12 @@ namespace GeneralUpdate.Differential
         /// <param name="type">7z or zip</param>
         /// <param name="encoding">Incremental packet encoding format .</param>
         /// <returns></returns>
-        public async Task Clean(string appPath, string targetPath , string patchPath = null, Action<object, BaseCompressProgressEventArgs> compressProgressCallback = null, OperationType type = OperationType.GZip, Encoding encoding = null)
+        public async Task Clean(string appPath, string targetPath, string patchPath = null, Action<object, BaseCompressProgressEventArgs> compressProgressCallback = null, OperationType type = OperationType.GZip, Encoding encoding = null)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(patchPath)) patchPath = Path.Combine(Environment.CurrentDirectory, "patchs");
-                if(!Directory.Exists(patchPath)) Directory.CreateDirectory(patchPath);
+                if (!Directory.Exists(patchPath)) Directory.CreateDirectory(patchPath);
 
                 //Take the left tree as the center to match the files that are not in the right tree .
                 var tupleResult = FileUtil.Compare(targetPath, appPath);
@@ -90,12 +92,12 @@ namespace GeneralUpdate.Differential
                     }
                     else
                     {
-                        File.Copy(newfile, Path.Combine(patchPath, Path.GetFileName(newfile)),true);
+                        File.Copy(newfile, Path.Combine(patchPath, Path.GetFileName(newfile)), true);
                     }
                 }
                 _compressProgressCallback = compressProgressCallback;
                 var factory = new GeneralZipFactory();
-                if(_compressProgressCallback != null) factory.CompressProgress += OnCompressProgress;
+                if (_compressProgressCallback != null) factory.CompressProgress += OnCompressProgress;
                 factory.CreatefOperate(type, patchPath, patchPath, false, encoding).CreatZip();
             }
             catch (Exception ex)
@@ -115,7 +117,7 @@ namespace GeneralUpdate.Differential
         {
             try
             {
-                if(string.IsNullOrWhiteSpace(patchPath) || string.IsNullOrWhiteSpace(appPath))
+                if (string.IsNullOrWhiteSpace(patchPath) || string.IsNullOrWhiteSpace(appPath))
                     throw new ArgumentNullException(nameof(appPath));
 
                 var patchFiles = FileUtil.GetAllFiles(patchPath);
@@ -141,7 +143,7 @@ namespace GeneralUpdate.Differential
         /// <param name="patchPath"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private async Task DrityPatch(string appPath,string patchPath) 
+        private async Task DrityPatch(string appPath, string patchPath)
         {
             try
             {
@@ -162,7 +164,7 @@ namespace GeneralUpdate.Differential
         /// </summary>
         /// <param name="appPath">Client application directory .</param>
         /// <param name="patchPath"></param>
-        private void DrityNew(string appPath, string patchPath) 
+        private void DrityNew(string appPath, string patchPath)
         {
             try
             {
@@ -180,12 +182,12 @@ namespace GeneralUpdate.Differential
             }
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
         private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) => _compressProgressCallback(sender, e);
 
-        #endregion
+        #endregion Private Methods
     }
 }

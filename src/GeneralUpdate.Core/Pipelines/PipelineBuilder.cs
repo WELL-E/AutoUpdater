@@ -27,7 +27,7 @@ namespace GeneralUpdate.Core.Pipelines
 
         public IPipelineBuilder Launch()
         {
-            if(nodes == null || nodes.Count == 0) throw new ArgumentNullException(nameof(nodes));
+            if (nodes == null || nodes.Count == 0) throw new ArgumentNullException(nameof(nodes));
             _components = new MiddlewareStack(nodes);
             _components.Pop().Next.Invoke(_context, _components);
             return this;

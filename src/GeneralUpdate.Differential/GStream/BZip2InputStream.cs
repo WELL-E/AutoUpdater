@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GeneralUpdate.Differential.GStream
 {
@@ -214,12 +212,15 @@ namespace GeneralUpdate.Differential.GStream
                 case 3:
                     SetupRandPartB();
                     break;
+
                 case 4:
                     SetupRandPartC();
                     break;
+
                 case 6:
                     SetupNoRandPartB();
                     break;
+
                 case 7:
                     SetupNoRandPartC();
                     break;
@@ -530,6 +531,7 @@ namespace GeneralUpdate.Differential.GStream
                             case 0:
                                 num10 += num11;
                                 break;
+
                             case 1:
                                 num10 += 2 * num11;
                                 break;

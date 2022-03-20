@@ -40,9 +40,9 @@ namespace GeneralUpdate.Differential.Config.Handles
             }
             catch (Exception ex)
             {
-                throw new Exception($"read config error : { ex.Message } !",ex.InnerException);
+                throw new Exception($"read config error : { ex.Message } !", ex.InnerException);
             }
-            finally 
+            finally
             {
                 IsCompleted = true;
             }
@@ -62,7 +62,7 @@ namespace GeneralUpdate.Differential.Config.Handles
                 var newResult = GetPropertyValue<object>(newEntity, "Content");
                 var oldPath = GetPropertyValue<string>(oldEntity, "Path");
                 string json = string.Empty;
-                CopyValue(oldResult, newResult,ref json);
+                CopyValue(oldResult, newResult, ref json);
                 File.WriteAllText(oldPath, json);
                 return await Task.FromResult(true);
             }
@@ -70,7 +70,7 @@ namespace GeneralUpdate.Differential.Config.Handles
             {
                 _exception = ex;
             }
-            finally 
+            finally
             {
                 IsCompleted = true;
             }
@@ -84,15 +84,15 @@ namespace GeneralUpdate.Differential.Config.Handles
         /// <param name="source">original configuration file .</param>
         /// <param name="target">latest configuration file .</param>
         /// <param name="json">result json.</param>
-        private void CopyValue<T>(T source, T target,ref string json) where T : class
+        private void CopyValue<T>(T source, T target, ref string json) where T : class
         {
             try
             {
                 JObject jSource = JObject.Parse(source.ToString());
                 JObject jTarget = JObject.Parse(target.ToString());
-                foreach (JProperty jProperty in jSource.Properties()) 
+                foreach (JProperty jProperty in jSource.Properties())
                 {
-                    var jFindObj = jTarget.Properties().FirstOrDefault(j=>j.Name.Equals(jProperty.Name));
+                    var jFindObj = jTarget.Properties().FirstOrDefault(j => j.Name.Equals(jProperty.Name));
                     if (jFindObj != null)
                     {
                         jFindObj.Value = jProperty.Value;

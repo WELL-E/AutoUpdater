@@ -10,7 +10,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
     {
         public Func<BaseContext, MiddlewareStack, Task> Next { get; set; }
 
-        public MiddlewareNode(Func<BaseContext, MiddlewareStack, Task> next)=> Next = next;
+        public MiddlewareNode(Func<BaseContext, MiddlewareStack, Task> next) => Next = next;
     }
 
     public class MiddlewareStack
@@ -32,9 +32,9 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
             stackArray = nodes.Reverse().ToArray();
         }
 
-        public bool IsFull()=> top == maxSize - 1;
+        public bool IsFull() => top == maxSize - 1;
 
-        public bool IsEmpty()=> top == -1;
+        public bool IsEmpty() => top == -1;
 
         public void Push(MiddlewareNode value)
         {

@@ -35,14 +35,14 @@ namespace GeneralUpdate.Core.Pipelines.Context
             Encoding = encoding;
         }
 
-        public void OnProgressEventAction(object handle, ProgressType type,string message)
+        public void OnProgressEventAction(object handle, ProgressType type, string message)
         {
             if (ProgressEventAction != null) return;
             var eventArgs = new MutiDownloadProgressChangedEventArgs(new UpdateVersion(Version.MD5, Version.PubTime, Version.Version, null, Version.Name), type, message);
             ProgressEventAction(handle, eventArgs);
         }
 
-        public void OnExceptionEventAction(object handle,Exception exception) 
+        public void OnExceptionEventAction(object handle, Exception exception)
         {
             if (ExceptionEventAction != null) return;
             ExceptionEventAction(handle, new ExceptionEventArgs(exception));

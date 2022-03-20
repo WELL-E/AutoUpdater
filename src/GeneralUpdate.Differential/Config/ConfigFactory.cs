@@ -18,10 +18,10 @@ namespace GeneralUpdate.Differential.Config
         #region Private Members
 
         private ConfigCache<ConfigEntity> _configCache;
-        private string _appPath,_scanPath;
+        private string _appPath, _scanPath;
         private List<string> _files;
         private bool _disposed = false;
-        private readonly static object _locker = new object();
+        private static readonly object _locker = new object();
         private static ConfigFactory _instance;
 
         #endregion Private Members
@@ -60,7 +60,7 @@ namespace GeneralUpdate.Differential.Config
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -93,7 +93,7 @@ namespace GeneralUpdate.Differential.Config
         /// <summary>
         /// Scan configuration files and cache, backup.
         /// </summary>
-        public async Task Scan(string appPath = null,string scanPath = null)
+        public async Task Scan(string appPath = null, string scanPath = null)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace GeneralUpdate.Differential.Config
             {
                 throw new Exception($"Scan config files error : { ex.Message } .", ex.InnerException);
             }
-            finally 
+            finally
             {
                 _disposed = false;
             }

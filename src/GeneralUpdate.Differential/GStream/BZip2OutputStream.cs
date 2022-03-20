@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GeneralUpdate.Differential.GStream
 {
@@ -281,12 +279,14 @@ namespace GeneralUpdate.Differential.GStream
                         last++;
                         block[last + 1] = (byte)currentChar;
                         break;
+
                     case 2:
                         last++;
                         block[last + 1] = (byte)currentChar;
                         last++;
                         block[last + 1] = (byte)currentChar;
                         break;
+
                     case 3:
                         last++;
                         block[last + 1] = (byte)currentChar;
@@ -295,6 +295,7 @@ namespace GeneralUpdate.Differential.GStream
                         last++;
                         block[last + 1] = (byte)currentChar;
                         break;
+
                     default:
                         inUse[runLength - 4] = true;
                         last++;
@@ -1476,6 +1477,7 @@ namespace GeneralUpdate.Differential.GStream
                                 num2++;
                                 mtfFreq[0]++;
                                 break;
+
                             case 1:
                                 szptr[num2] = 1;
                                 num2++;
@@ -1511,6 +1513,7 @@ namespace GeneralUpdate.Differential.GStream
                             num2++;
                             mtfFreq[0]++;
                             break;
+
                         case 1:
                             szptr[num2] = 1;
                             num2++;

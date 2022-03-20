@@ -60,7 +60,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
             }
         }
 
-        private OperationType MatchType(string extensionName) 
+        private OperationType MatchType(string extensionName)
         {
             OperationType type = OperationType.None;
             switch (extensionName)
@@ -68,6 +68,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
                 case ".zip":
                     type = OperationType.GZip;
                     break;
+
                 case ".7z":
                     type = OperationType.G7z;
                     break;

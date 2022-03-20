@@ -1,5 +1,4 @@
-﻿using AutoUpdate.Core;
-using System.Windows;
+﻿using System.Windows;
 
 namespace AutoUpdate.WpfNet6_Sample
 {
