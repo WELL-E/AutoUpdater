@@ -47,7 +47,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                                 clientParameter.MainUpdateUrl = Packet.MainUpdateUrl;
                                 clientParameter.AppName = Packet.MainAppName;
                                 clientParameter.AppType = 1;
-                                clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.CompressEncoding);
+                                clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.Encoding);
                                 clientParameter.CompressFormat = Packet.Format;
                                 clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;
                                 clientParameter.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);

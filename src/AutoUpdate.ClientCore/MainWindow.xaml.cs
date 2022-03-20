@@ -24,7 +24,7 @@ namespace AutoUpdate.ClientCore
         public MainWindow()
         {
             InitializeComponent();
-            InitVersionHub();
+            //InitVersionHub();
         }
 
         #region VersionHub
@@ -106,8 +106,8 @@ namespace AutoUpdate.ClientCore
                 //generalClientBootstrap.Config(clientParameter).
                 generalClientBootstrap.Config(baseUrl).
                 Option(UpdateOption.DownloadTimeOut, 60).
-                Option(UpdateOption.CompressEncoding, Encoding.Default).
-                Option(UpdateOption.CompressFormat, "zip").
+                Option(UpdateOption.Encoding, Encoding.Default).
+                Option(UpdateOption.Format, "zip").
                 Strategy<ClientStrategy>();
                 await generalClientBootstrap.LaunchTaskAsync();
             });

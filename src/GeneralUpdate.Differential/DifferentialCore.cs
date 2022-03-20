@@ -21,6 +21,8 @@ namespace GeneralUpdate.Differential
         /// </summary>
         private const string DIFF_FORMAT = ".patch";
 
+        private const string PATCHS = "patchs";
+
         private static readonly object _lockObj = new object();
         private static DifferentialCore _instance;
 
@@ -73,7 +75,7 @@ namespace GeneralUpdate.Differential
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(patchPath)) patchPath = Path.Combine(Environment.CurrentDirectory, "patchs");
+                if (string.IsNullOrWhiteSpace(patchPath)) patchPath = Path.Combine(Environment.CurrentDirectory, PATCHS);
                 if (!Directory.Exists(patchPath)) Directory.CreateDirectory(patchPath);
 
                 //Take the left tree as the center to match the files that are not in the right tree .

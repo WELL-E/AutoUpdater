@@ -92,9 +92,9 @@ namespace GeneralUpdate.Core.Bootstrap
                         new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
                 }
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
-                var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
+                var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
                 Packet.Format = $".{pacektFormat}";
-                Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
+                Packet.Encoding = GetOption(UpdateOption.Encoding) ?? Encoding.Default;
                 Packet.DownloadTimeOut = GetOption(UpdateOption.DownloadTimeOut);
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";

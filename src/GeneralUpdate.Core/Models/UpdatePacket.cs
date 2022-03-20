@@ -1,5 +1,4 @@
-﻿using GeneralUpdate.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace GeneralUpdate.Core.Models
@@ -71,7 +70,7 @@ namespace GeneralUpdate.Core.Models
         /// </summary>
         public List<UpdateVersion> UpdateVersions { get; set; }
 
-        public Encoding CompressEncoding { get; set; }
+        public Encoding Encoding { get; set; }
 
         public int DownloadTimeOut { get; set; }
     }

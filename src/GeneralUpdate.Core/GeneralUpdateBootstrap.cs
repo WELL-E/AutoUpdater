@@ -45,7 +45,7 @@ namespace GeneralUpdate.Core
             Packet.UpdateUrl = ClientParameter.UpdateUrl;
             Packet.UpdateLogUrl = ClientParameter.UpdateLogUrl;
             Packet.UpdateVersions = ClientParameter.UpdateVersions;
-            Packet.CompressEncoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
+            Packet.Encoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
             Packet.Format = ClientParameter.CompressFormat;
             Packet.DownloadTimeOut = ClientParameter.DownloadTimeOut;
             Packet.MainUpdateUrl = ClientParameter.MainUpdateUrl;

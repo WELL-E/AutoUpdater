@@ -26,9 +26,9 @@ namespace AutoUpdate.Core.ViewModels
                 bootStrap.MutiDownloadStatistics += OnMutiDownloadStatistics;
                 bootStrap.Exception += OnException;
                 bootStrap.Strategy<DefaultStrategy>().
-                Option(UpdateOption.CompressEncoding, Encoding.Default).
+                Option(UpdateOption.Encoding, Encoding.Default).
                 Option(UpdateOption.DownloadTimeOut, 60).
-                Option(UpdateOption.CompressFormat, "zip").
+                Option(UpdateOption.Format, "zip").
                 RemoteAddressBase64(args);
                 await bootStrap.LaunchTaskAsync();
             });
