@@ -35,13 +35,15 @@ namespace AutoUpdate.WpfNet6_Sample
             //PipelineBuilder.Create<double>(setup);
             //await ConfigFactory.Instance.Scan();
 
-            var context = new UpdateContext();
-            IPipelineBuilder builder = new PipelineBuilder<UpdateContext>(context).
-                UseMiddleware<MD5Middleware>().
-                UseMiddleware<CompressMiddleware>().
-                UseMiddleware<ConfigMiddleware>().
-                UseMiddleware<PatchMiddleware>().
-                Launch();
+            //var context = new BaseContext();
+            //context.TargetPath = "123";
+            //context.SourcePath = "123";
+            //IPipelineBuilder builder = new PipelineBuilder<BaseContext>(context).
+            //    UseMiddleware<MD5Middleware>().
+            //    UseMiddleware<CompressMiddleware>().
+            //    UseMiddleware<ConfigMiddleware>().
+            //    UseMiddleware<PatchMiddleware>();
+            //builder.Launch();
         }
     }
 }

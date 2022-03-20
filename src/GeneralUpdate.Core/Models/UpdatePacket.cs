@@ -54,7 +54,7 @@ namespace GeneralUpdate.Core.Models
         /// <summary>
         /// Update package file format(Defult format is Zip).
         /// </summary>
-        public string CompressFormat { get; set; }
+        public string Format { get; set; }
 
         /// <summary>
         /// Whether to force update.

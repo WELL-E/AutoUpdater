@@ -77,7 +77,6 @@ namespace GeneralUpdate.Differential.Config.Handles
             return await Task.FromResult(false);
         }
 
-
         /// <summary>
         /// Iterate over objects and copy values .
         /// </summary>

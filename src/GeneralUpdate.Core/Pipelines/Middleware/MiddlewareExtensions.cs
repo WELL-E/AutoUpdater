@@ -3,9 +3,7 @@ using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Pipelines.MiddlewareResolver;
 using GeneralUpdate.Core.Pipelines.Pipeline;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Pipelines.Middleware
@@ -17,10 +15,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
         private const DynamicallyAccessedMemberTypes MiddlewareAccessibility =
             DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods;
 
-        public static IPipelineBuilder UseMiddleware<[DynamicallyAccessedMembers(MiddlewareAccessibility)] TMiddleware>(this IPipelineBuilder pipeline)
-        {
-            return pipeline.UseMiddleware(typeof(TMiddleware));
-        }
+        public static IPipelineBuilder UseMiddleware<[DynamicallyAccessedMembers(MiddlewareAccessibility)] TMiddleware>(this IPipelineBuilder pipeline) => pipeline.UseMiddleware(typeof(TMiddleware));
 
         public static IPipelineBuilder UseMiddleware(
     this IPipelineBuilder pipeline,
@@ -42,33 +37,21 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
             }
 
             if (invokeMethod is null)
-            {
                 throw new InvalidOperationException("No suitable method matched .");
-            }
 
             if (!typeof(Task).IsAssignableFrom(invokeMethod.ReturnType))
-            {
                 throw new InvalidOperationException($"The method is not an awaitable method { nameof(Task) } !");
-            }
 
             var parameters = invokeMethod.GetParameters();
-            if (parameters.Length == 0 || parameters[0].ParameterType != typeof(UpdateContext))
-            {
-                throw new InvalidOperationException($" The method parameter does not contain an { nameof(UpdateContext) } type parameter !");
-            }
+            if (parameters.Length == 0 || parameters[0].ParameterType != typeof(BaseContext))
+                throw new InvalidOperationException($" The method parameter does not contain an { nameof(BaseContext) } type parameter !");
 
-            return pipeline.Use(next => 
-            {
-                return (UpdateDelegate)invokeMethod.CreateDelegate(typeof(UpdateDelegate), ActivatorMiddlewareResolver.Resolve(middleware));
-            });
+            return pipeline.Use(((IMiddleware)ActivatorMiddlewareResolver.Resolve(middleware)));
         }
         
         private readonly struct InvokeMiddlewareState
         {
-            public InvokeMiddlewareState([DynamicallyAccessedMembers(MiddlewareAccessibility)] Type middleware)
-            {
-                Middleware = middleware;
-            }
+            public InvokeMiddlewareState([DynamicallyAccessedMembers(MiddlewareAccessibility)] Type middleware)=> Middleware = middleware;
 
             [DynamicallyAccessedMembers(MiddlewareAccessibility)]
             public Type Middleware { get; }

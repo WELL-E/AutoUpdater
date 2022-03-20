@@ -94,12 +94,12 @@ namespace GeneralUpdate.Core.Bootstrap
                 }
                 if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
                 var pacektFormat = GetOption(UpdateOption.CompressFormat) ?? DefaultFormat;
-                Packet.CompressFormat = $".{pacektFormat}";
+                Packet.Format = $".{pacektFormat}";
                 Packet.CompressEncoding = GetOption(UpdateOption.CompressEncoding) ?? Encoding.Default;
                 Packet.DownloadTimeOut = GetOption(UpdateOption.DownloadTimeOut);
                 Packet.AppName = Packet.AppName ?? GetOption(UpdateOption.MainApp);
                 Packet.TempPath = $"{ FileUtil.GetTempDirectory(Packet.LastVersion) }\\";
-                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.CompressFormat, Packet.DownloadTimeOut);
+                var manager = new DownloadManager<UpdateVersion>(Packet.TempPath, Packet.Format, Packet.DownloadTimeOut);
                 manager.MutiAllDownloadCompleted += OnMutiAllDownloadCompleted;
                 manager.MutiDownloadCompleted += OnMutiDownloadCompleted;
                 manager.MutiDownloadError += OnMutiDownloadError;

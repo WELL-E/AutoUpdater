@@ -29,7 +29,19 @@ namespace GeneralUpdate.Core.Update
         /// <summary>
         /// Update failed
         /// </summary>
-        Fail
+        Fail,
+
+        /// <summary>
+        /// Update config
+        /// </summary>
+        Config,
+
+        /// <summary>
+        /// Update patch
+        /// </summary>
+        Patch,
+
+        MD5
     }
 
     public class DownloadProgressChangedEventArgsEx

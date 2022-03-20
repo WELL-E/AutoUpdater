@@ -2,7 +2,6 @@
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Differential.Binary;
 using GeneralUpdate.Differential.Common;
-using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.Events;
 using System;

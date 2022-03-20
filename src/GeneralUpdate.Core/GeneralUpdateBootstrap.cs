@@ -46,7 +46,7 @@ namespace GeneralUpdate.Core
             Packet.UpdateLogUrl = ClientParameter.UpdateLogUrl;
             Packet.UpdateVersions = ClientParameter.UpdateVersions;
             Packet.CompressEncoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
-            Packet.CompressFormat = ClientParameter.CompressFormat;
+            Packet.Format = ClientParameter.CompressFormat;
             Packet.DownloadTimeOut = ClientParameter.DownloadTimeOut;
             Packet.MainUpdateUrl = ClientParameter.MainUpdateUrl;
             Packet.MainValidateUrl = ClientParameter.MainValidateUrl;
@@ -56,34 +56,22 @@ namespace GeneralUpdate.Core
         private void ValidateRemoteAddress(ClientParameter clientParameter)
         {
             if (clientParameter == null)
-            {
                 throw new NullReferenceException("Client parameter not set.");
-            }
 
             if (string.IsNullOrEmpty(clientParameter.ClientVersion))
-            {
                 throw new NullReferenceException("Client version not set.");
-            }
 
             if (string.IsNullOrEmpty(clientParameter.LastVersion))
-            {
                 throw new NullReferenceException("Last version not set.");
-            }
 
             if (string.IsNullOrEmpty(clientParameter.InstallPath))
-            {
                 throw new NullReferenceException("Install path not set.");
-            }
 
             if (string.IsNullOrEmpty(clientParameter.AppName))
-            {
                 throw new NullReferenceException("Main app name not set.");
-            }
 
             if (clientParameter.UpdateVersions == null || clientParameter.UpdateVersions.Count == 0)
-            {
                 throw new NullReferenceException("Update versions not set.");
-            }
         }
     }
 }

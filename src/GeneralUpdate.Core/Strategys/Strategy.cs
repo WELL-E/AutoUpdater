@@ -2,8 +2,6 @@
 using GeneralUpdate.Common.Utils;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
-using GeneralUpdate.Differential;
-using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
 using System;
 using System.Collections.Generic;
@@ -33,7 +31,7 @@ namespace GeneralUpdate.Core.Strategys
             Packet = (UpdatePacket)file;
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
-            _operationType = Packet.CompressFormat.Equals(".zip") ? OperationType.GZip : OperationType.G7z;
+            _operationType = Packet.Format.Equals(".zip") ? OperationType.GZip : OperationType.G7z;
         }
 
         public override void Excute()
@@ -44,7 +42,7 @@ namespace GeneralUpdate.Core.Strategys
                 updateVersions = updateVersions.OrderBy(x => x.PubTime).ToList();
                 foreach (var version in updateVersions)
                 {
-                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.CompressFormat }";
+                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
                     var isVerify = VerifyFileMd5(zipFilePath, version.MD5);
                     if (!isVerify)
                     {
