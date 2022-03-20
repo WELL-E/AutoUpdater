@@ -20,9 +20,9 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
                 var node = stack.Pop();
                 if (node != null) await node.Next.Invoke(context, stack);
             }
-            catch
+            catch(Exception ex)
             {
-                context.OnExceptionEventAction(this, exception);
+                context.OnExceptionEventAction(this, exception ?? ex);
                 throw exception;
             }
         }

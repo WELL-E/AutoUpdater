@@ -52,7 +52,7 @@ namespace GeneralUpdate.Core.Strategys
                         UseMiddleware<PatchMiddleware>();
                     pipelineBuilder.Launch();
                 }
-                CheckAllIsUnZip(updateVersions);
+                //CheckAllIsUnZip(updateVersions);
                 Dirty();
                 StartApp(Packet.AppName);
             }
@@ -95,9 +95,7 @@ namespace GeneralUpdate.Core.Strategys
         protected void CheckAllIsUnZip(List<UpdateVersion> versions)
         {
             foreach (var version in versions)
-            {
                 if (!version.IsUnZip) throw new Exception($"Failed to decompress the compressed package! Version-{ version.Version }  MD5-{ version.MD5 } .");
-            }
         }
 
         private bool Dirty()

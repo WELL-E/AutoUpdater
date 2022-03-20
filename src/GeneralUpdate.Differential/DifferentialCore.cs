@@ -117,6 +117,7 @@ namespace GeneralUpdate.Differential
         /// <exception cref="Exception"></exception>
         public async Task Drity(string appPath, string patchPath)
         {
+            if (!Directory.Exists(appPath) || !Directory.Exists(patchPath)) return;
             try
             {
                 if (string.IsNullOrWhiteSpace(patchPath) || string.IsNullOrWhiteSpace(appPath))

@@ -19,7 +19,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
             }
             catch (Exception ex)
             {
-                var exception = new Exception($"An exception occurred while updating the patch file : { ex.Message } !", ex.InnerException);
+                var exception = new Exception($"{ ex.Message } !", ex.InnerException);
                 context.OnExceptionEventAction(this, exception);
                 throw exception;
             }
