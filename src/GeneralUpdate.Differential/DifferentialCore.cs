@@ -19,7 +19,7 @@ namespace GeneralUpdate.Differential
         /// <summary>
         /// Differential file format .
         /// </summary>
-        private const string DIFF_FORMAT = ".patch";
+        private const string PATCH_FORMAT = ".patch";
 
         private const string PATCHS = "patchs";
 
@@ -86,11 +86,12 @@ namespace GeneralUpdate.Differential
                 {
                     var oldfile = Path.Combine(appPath, file.Name);
                     var newfile = file.FullName;
-                    if (File.Exists(oldfile) && File.Exists(newfile))
+                    var extensionName = Path.GetExtension(file.FullName);
+                    if (File.Exists(oldfile) && File.Exists(newfile) && !Filefilter.Diff.Contains(extensionName))
                     {
                         //Generate the difference file to the difference directory .
                         await new BinaryHandle().Clean(Path.Combine(appPath, file.Name), file.FullName,
-                            Path.Combine(patchPath, $"{ Path.GetFileNameWithoutExtension(file.Name) }{ DIFF_FORMAT }"));
+                            Path.Combine(patchPath, $"{ Path.GetFileNameWithoutExtension(file.Name) }{ PATCH_FORMAT }"));
                     }
                     else
                     {
@@ -100,7 +101,8 @@ namespace GeneralUpdate.Differential
                 _compressProgressCallback = compressProgressCallback;
                 var factory = new GeneralZipFactory();
                 if (_compressProgressCallback != null) factory.CompressProgress += OnCompressProgress;
-                factory.CreatefOperate(type, patchPath, patchPath, false, encoding).CreatZip();
+                //The update package exists in the 'target path' directory.
+                factory.CreatefOperate(type, patchPath, targetPath, true, encoding).CreatZip();
             }
             catch (Exception ex)
             {
@@ -127,10 +129,17 @@ namespace GeneralUpdate.Differential
                 var oldFiles = FileUtil.GetAllFiles(appPath);
                 foreach (var oldFile in oldFiles)
                 {
+                    //Only the difference file (.patch) can be updated here.
                     var findFile = patchFiles.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f.Name).Equals(Path.GetFileNameWithoutExtension(oldFile.Name)));
-                    if (findFile != null) await DrityPatch(oldFile.FullName, findFile.FullName);
+                    if (findFile != null) 
+                    {
+                        var extensionName = Path.GetExtension(findFile.FullName);
+                        if (!extensionName.Equals(PATCH_FORMAT)) continue;
+                        await DrityPatch(oldFile.FullName, findFile.FullName);
+                    }
                 }
-                DrityNew(appPath, patchPath);
+                //Update does not include files or copies configuration files.
+                DrityUnkonw(appPath, patchPath);
                 if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
             }
             catch (Exception ex)
@@ -167,7 +176,7 @@ namespace GeneralUpdate.Differential
         /// </summary>
         /// <param name="appPath">Client application directory .</param>
         /// <param name="patchPath"></param>
-        private void DrityNew(string appPath, string patchPath)
+        private void DrityUnkonw(string appPath, string patchPath)
         {
             try
             {

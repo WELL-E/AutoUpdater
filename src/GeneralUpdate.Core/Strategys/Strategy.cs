@@ -1,7 +1,6 @@
 ﻿using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -44,15 +43,13 @@ namespace GeneralUpdate.Core.Strategys
                 foreach (var version in updateVersions)
                 {
                     var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
-                    _context = new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding);
-                    var pipelineBuilder = new PipelineBuilder<BaseContext>(_context).
+                    var pipelineBuilder = new PipelineBuilder<BaseContext>(new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding)).
                         UseMiddleware<MD5Middleware>().
                         UseMiddleware<ZipMiddleware>().
                         UseMiddleware<ConfigMiddleware>().
                         UseMiddleware<PatchMiddleware>();
                     pipelineBuilder.Launch();
                 }
-                //CheckAllIsUnZip(updateVersions);
                 Dirty();
                 StartApp(Packet.AppName);
             }
@@ -91,12 +88,6 @@ namespace GeneralUpdate.Core.Strategys
 
         private void Error(Exception ex)
         { if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex)); }
-
-        protected void CheckAllIsUnZip(List<UpdateVersion> versions)
-        {
-            foreach (var version in versions)
-                if (!version.IsUnZip) throw new Exception($"Failed to decompress the compressed package! Version-{ version.Version }  MD5-{ version.MD5 } .");
-        }
 
         private bool Dirty()
         {
