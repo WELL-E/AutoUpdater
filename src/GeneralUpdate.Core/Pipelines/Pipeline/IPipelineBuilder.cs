@@ -1,4 +1,5 @@
 ﻿using GeneralUpdate.Core.Pipelines.Middleware;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Pipelines.Pipeline
 {
@@ -6,6 +7,6 @@ namespace GeneralUpdate.Core.Pipelines.Pipeline
     {
         IPipelineBuilder Use(IMiddleware middleware);
 
-        IPipelineBuilder Launch();
+        Task<IPipelineBuilder> Launch();
     }
 }

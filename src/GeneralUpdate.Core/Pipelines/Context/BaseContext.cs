@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.Models;
+﻿using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Update;
 using System;
 using System.Text;

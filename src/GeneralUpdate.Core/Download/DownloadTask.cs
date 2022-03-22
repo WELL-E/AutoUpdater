@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.CustomAwaiter;
+﻿using GeneralUpdate.Core.CustomAwaiter;
 using GeneralUpdate.Core.Update;
 using System;
 using System.Globalization;

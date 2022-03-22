@@ -54,10 +54,5 @@ namespace GeneralUpdate.Core.Models
         /// 下载文件临时存储路径（用于更新文件逻辑）
         /// </summary>
         public string TempPath { get; set; }
-
-        /// <summary>
-        /// 文件当前路径（用于增量文件逻辑）
-        /// </summary>
-        public string Path { get; set; }
     }
 }

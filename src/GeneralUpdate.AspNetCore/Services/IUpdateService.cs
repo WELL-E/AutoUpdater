@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.DTOs;
+﻿using GeneralUpdate.Core.DTOs;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

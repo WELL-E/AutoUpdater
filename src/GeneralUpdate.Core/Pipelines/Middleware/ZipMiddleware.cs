@@ -1,8 +1,8 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Core.Pipelines.Context;
+﻿using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Differential.Config;
 using GeneralUpdate.Zip;
+using GeneralUpdate.Zip.Factory;
 using System;
 using System.Threading.Tasks;
 
@@ -18,14 +18,15 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
                 context.OnProgressEventAction(this, ProgressType.Updatefile, "In the unzipped file ...");
                 var version = context.Version;
                 bool isUnzip = UnZip(context);
-                if (!isUnzip) throw exception = new Exception($"Unzip file failed !  Version-{ version.Version }  MD5-{ version.MD5 } .");
+                if (!isUnzip) throw exception = new Exception($"Unzip file failed , Version-{ version.Version }  MD5-{ version.MD5 } !");
 
                 await ConfigFactory.Instance.Scan(context.SourcePath, context.TargetPath);
                 var node = stack.Pop();
                 if (node != null) await node.Next.Invoke(context, stack);
             }
-            catch
+            catch(Exception ex)
             {
+                exception = exception ?? ex;
                 context.OnExceptionEventAction(this, exception);
                 throw exception;
             }
@@ -44,12 +45,9 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
             {
                 bool isComplated = false;
                 var generalZipfactory = new GeneralZipFactory();
-                generalZipfactory.UnZipProgress += (sender, e) =>
-                {
-                    context.OnProgressEventAction(this, ProgressType.Updatefile, "Updatting file...");
-                };
+                generalZipfactory.UnZipProgress += (sender, e) => context.OnProgressEventAction(this, ProgressType.Updatefile, "Updatting file...");
                 generalZipfactory.Completed += (sender, e) => isComplated = true;
-                generalZipfactory.CreatefOperate(MatchType(context.Format), context.ZipfilePath, context.SourcePath, false, context.Encoding).
+                generalZipfactory.CreatefOperate(MatchType(context.Format), context.ZipfilePath, context.TargetPath, false, context.Encoding).
                     UnZip();
                 return isComplated;
             }

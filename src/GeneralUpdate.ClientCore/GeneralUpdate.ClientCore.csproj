@@ -22,34 +22,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\IAwaitable.cs" Link="CustomAwaiter\IAwaitable.cs" />
-    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\IAwaiter.cs" Link="CustomAwaiter\IAwaiter.cs" />
-    <Compile Include="..\GeneralUpdate.Common\CustomAwaiter\ICriticalAwaiter.cs" Link="CustomAwaiter\ICriticalAwaiter.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateValidateReqDTO.cs" Link="DTOs\UpdateValidateReqDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionDTO.cs" Link="DTOs\UpdateVersionDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsReqDTO.cs" Link="DTOs\UpdateVersionsReqDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Models\OperationType.cs" Link="ZipFactory\Factory\OperationType.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Utils\ConvertUtil.cs" Link="Utils\ConvertUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Utils\DataValidateUtil.cs" Link="Utils\DataValidateUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Utils\HttpUtil.cs" Link="Utils\HttpUtil.cs" />
-    <Compile Include="..\GeneralUpdate.Common\Utils\SerializeUtil.cs" Link="Utils\SerializeUtil.cs" />
     <Compile Include="..\GeneralUpdate.Core\Bootstrap\AbstractBootstrap.cs" Link="Bootstrap\AbstractBootstrap.cs" />
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\IAwaitable.cs" Link="CustomAwaiter\IAwaitable.cs" />
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\IAwaiter.cs" Link="CustomAwaiter\IAwaiter.cs" />
+    <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\ICriticalAwaiter.cs" Link="CustomAwaiter\ICriticalAwaiter.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\AbstractTask.cs" Link="Download\AbstractTask.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\AbstractTaskManager.cs" Link="Download\AbstractTaskManager.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\DownloadManager.cs" Link="Download\DownloadManager.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\DownloadTask.cs" Link="Download\DownloadTask.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\ITask.cs" Link="Download\ITask.cs" />
     <Compile Include="..\GeneralUpdate.Core\Download\ITaskManger.cs" Link="Download\ITaskManger.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateReqDTO.cs" Link="DTOs\UpdateValidateReqDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionDTO.cs" Link="DTOs\UpdateVersionDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsReqDTO.cs" Link="DTOs\UpdateVersionsReqDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\FileBase.cs" Link="Models\FileBase.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Models\UpdateConfig.cs" Link="Models\UpdateConfig.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\UpdatePacket.cs" Link="Models\UpdatePacket.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Attributes\DynamicallyAccessedMembersAttribute.cs" Link="Pipelines\Attributes\DynamicallyAccessedMembersAttribute.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Attributes\DynamicallyAccessedMemberTypes.cs" Link="Pipelines\Attributes\DynamicallyAccessedMemberTypes.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Context\BaseContext.cs" Link="Pipelines\Context\BaseContext.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\MiddlewareResolver\ActivatorMiddlewareResolver.cs" Link="Pipelines\MiddlewareResolver\ActivatorMiddlewareResolver.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\ConfigMiddleware.cs" Link="Pipelines\Middleware\ConfigMiddleware.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\IMiddleware.cs" Link="Pipelines\Middleware\IMiddleware.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\MD5Middleware.cs" Link="Pipelines\Middleware\MD5Middleware.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\MiddlewareExtensions.cs" Link="Pipelines\Middleware\MiddlewareExtensions.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\MiddlewareStack.cs" Link="Pipelines\Middleware\MiddlewareStack.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\PatchMiddleware.cs" Link="Pipelines\Middleware\PatchMiddleware.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Middleware\ZipMiddleware.cs" Link="Pipelines\Middleware\ZipMiddleware.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\PipelineBuilder.cs" Link="Pipelines\PipelineBuilder.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Pipelines\Pipeline\IPipelineBuilder.cs" Link="Pipelines\Pipeline\IPipelineBuilder.cs" />
     <Compile Include="..\GeneralUpdate.Core\Strategys\AbstractStrategy.cs" Link="Strategys\AbstractStrategy.cs" />
     <Compile Include="..\GeneralUpdate.Core\Strategys\IStrategy.cs" Link="Strategys\IStrategy.cs" />
     <Compile Include="..\GeneralUpdate.Core\Strategys\Strategy.cs" Link="Strategys\Strategy.cs" />
@@ -57,6 +65,11 @@
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateEventArgs.cs" Link="Update\UpdateEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\ConvertUtil.cs" Link="Utils\ConvertUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\DataValidateUtil.cs" Link="Utils\DataValidateUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\FileUtil.cs" Link="Utils\FileUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\HttpUtil.cs" Link="Utils\HttpUtil.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\SerializeUtil.cs" Link="Utils\SerializeUtil.cs" />
     <Compile Include="..\GeneralUpdate.Differential\Binary\BinaryHandle.cs" Link="Differential\Binary\BinaryHandle.cs" />
     <Compile Include="..\GeneralUpdate.Differential\Binary\IBinary.cs" Link="Differential\Binary\IBinary.cs" />
     <Compile Include="..\GeneralUpdate.Differential\Common\Filefilter.cs" Link="Differential\Common\Filefilter.cs" />
@@ -82,6 +95,7 @@
     <Compile Include="..\GeneralUpdate.Zip\Factory\BaseCompress.cs" Link="ZipFactory\Factory\BaseCompress.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IFactory.cs" Link="ZipFactory\Factory\IFactory.cs" />
     <Compile Include="..\GeneralUpdate.Zip\Factory\IOperation.cs" Link="ZipFactory\Factory\IOperation.cs" />
+    <Compile Include="..\GeneralUpdate.Zip\Factory\OperationType.cs" Link="ZipFactory\Factory\OperationType.cs" />
     <Compile Include="..\GeneralUpdate.Zip\G7z\General7z.cs" Link="ZipFactory\G7z\General7z.cs" />
     <Compile Include="..\GeneralUpdate.Zip\GeneralZipFactory.cs" Link="ZipFactory\GeneralZipFactory.cs" />
     <Compile Include="..\GeneralUpdate.Zip\GZip\GeneralZip.cs" Link="ZipFactory\GZip\GeneralZip.cs" />
@@ -96,7 +110,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Bootstrap\" />
     <Folder Include="CustomAwaiter\" />
     <Folder Include="Differential\Binary\" />
     <Folder Include="Differential\Common\" />
@@ -104,12 +117,20 @@
     <Folder Include="Differential\Config\Handles\" />
     <Folder Include="Differential\GStream\" />
     <Folder Include="Download\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Update\" />
+    <Folder Include="Pipelines\Attributes\" />
+    <Folder Include="Pipelines\Context\" />
+    <Folder Include="Pipelines\Middleware\" />
+    <Folder Include="Pipelines\MiddlewareResolver\" />
+    <Folder Include="Pipelines\Pipeline\" />
     <Folder Include="ZipFactory\Events\" />
     <Folder Include="ZipFactory\Factory\" />
     <Folder Include="ZipFactory\G7z\" />
     <Folder Include="ZipFactory\GZip\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Bootstrap\" />
+    <Folder Include="Update\" />
+    <Folder Include="Models\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

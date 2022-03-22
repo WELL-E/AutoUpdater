@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.CustomAwaiter;
+﻿using GeneralUpdate.Core.CustomAwaiter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

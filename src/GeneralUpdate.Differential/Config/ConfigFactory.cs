@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Differential.Common;
 using GeneralUpdate.Differential.Config.Cache;
 using GeneralUpdate.Differential.Config.Handles;
@@ -97,8 +97,10 @@ namespace GeneralUpdate.Differential.Config
         {
             try
             {
+                _disposed = false;
                 _appPath = appPath ?? Environment.CurrentDirectory;
                 _scanPath = scanPath ?? Environment.CurrentDirectory;
+                if (!Directory.Exists(_appPath) || !Directory.Exists(_scanPath)) return;
                 List<string> files = new List<string>();
                 Find(_scanPath, ref files, Filefilter.Temp);
                 if (files.Count == 0) return;
@@ -107,10 +109,6 @@ namespace GeneralUpdate.Differential.Config
             catch (Exception ex)
             {
                 throw new Exception($"Scan config files error : { ex.Message } .", ex.InnerException);
-            }
-            finally
-            {
-                _disposed = false;
             }
         }
 
@@ -129,13 +127,11 @@ namespace GeneralUpdate.Differential.Config
                     _configCache.Dispose();
                     _configCache = null;
                 }
-
                 if (_files != null)
                 {
                     _files.Clear();
                     _files = null;
                 }
-
                 _disposed = true;
             }
             catch (Exception ex)

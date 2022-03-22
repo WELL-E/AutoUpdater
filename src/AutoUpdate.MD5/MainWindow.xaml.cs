@@ -25,7 +25,7 @@ namespace AutoUpdate.MD5
             {
                 OpenFileDialog openFile = new OpenFileDialog();
                 bool? isOpen = openFile.ShowDialog(this);
-                if (isOpen.Value)
+                if (isOpen != null && isOpen.Value)
                 {
                     var name = openFile.FileName;
                     var md5 = GetFileMD5(name);

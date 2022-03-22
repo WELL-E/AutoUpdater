@@ -20,12 +20,12 @@ namespace GeneralUpdate.Core.Update
         /// <summary>
         /// Update the file format of the package.
         /// </summary>
-        public static readonly UpdateOption<string> CompressFormat = ValueOf<string>("COMPRESSFORMAT");
+        public static readonly UpdateOption<string> Format = ValueOf<string>("COMPRESSFORMAT");
 
         /// <summary>
         /// Compress encoding.
         /// </summary>
-        public static readonly UpdateOption<Encoding> CompressEncoding = ValueOf<Encoding>("COMPRESSENCODING");
+        public static readonly UpdateOption<Encoding> Encoding = ValueOf<Encoding>("COMPRESSENCODING");
 
         /// <summary>
         /// Main program name.

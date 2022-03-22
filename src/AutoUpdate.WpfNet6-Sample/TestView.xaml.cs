@@ -14,11 +14,6 @@ namespace AutoUpdate.WpfNet6_Sample
 
         private void BtnTest_Click(object sender, RoutedEventArgs e)
         {
-            //var setup = Config.Stage(new TestClass()).
-            //    Stage(new TestClass2());
-            //PipelineBuilder.Create<double>(setup);
-            //await ConfigFactory.Instance.Scan();
-
             //var context = new BaseContext();
             //context.TargetPath = "123";
             //context.SourcePath = "123";

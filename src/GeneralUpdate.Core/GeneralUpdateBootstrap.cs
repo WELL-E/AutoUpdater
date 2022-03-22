@@ -1,5 +1,5 @@
-﻿using GeneralUpdate.Common.Models;
-using GeneralUpdate.Common.Utils;
+﻿using GeneralUpdate.Core.Models;
+using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Bootstrap;
 using GeneralUpdate.Core.Strategys;
 using System;
@@ -45,7 +45,7 @@ namespace GeneralUpdate.Core
             Packet.UpdateUrl = ClientParameter.UpdateUrl;
             Packet.UpdateLogUrl = ClientParameter.UpdateLogUrl;
             Packet.UpdateVersions = ClientParameter.UpdateVersions;
-            Packet.CompressEncoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
+            Packet.Encoding = ConvertUtil.ToEncoding(ClientParameter.CompressEncoding);
             Packet.Format = ClientParameter.CompressFormat;
             Packet.DownloadTimeOut = ClientParameter.DownloadTimeOut;
             Packet.MainUpdateUrl = ClientParameter.MainUpdateUrl;

@@ -8,6 +8,6 @@ namespace GeneralUpdate.Differential.Common
 
         public static readonly List<string> Temp = new List<string>() { ".json" };
 
-        public static readonly List<string> Diff = new List<string>() { ".patch", ".7z", ".zip", ".json" };
+        public static readonly List<string> Diff = new List<string>() { ".patch", ".7z", ".zip", ".rar" , ".tar", ".db", ".xml", ".ini", ".json", ".config" };
     }
 }
