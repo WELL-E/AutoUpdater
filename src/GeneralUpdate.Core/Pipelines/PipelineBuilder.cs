@@ -3,6 +3,7 @@ using GeneralUpdate.Core.Pipelines.Middleware;
 using GeneralUpdate.Core.Pipelines.Pipeline;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Pipelines
 {
@@ -25,11 +26,11 @@ namespace GeneralUpdate.Core.Pipelines
             return this;
         }
 
-        public IPipelineBuilder Launch()
+        public async Task<IPipelineBuilder> Launch()
         {
             if (nodes == null || nodes.Count == 0) throw new ArgumentNullException(nameof(nodes));
             _components = new MiddlewareStack(nodes);
-            _components.Pop().Next.Invoke(_context, _components);
+            await _components.Pop().Next.Invoke(_context, _components);
             return this;
         }
     }

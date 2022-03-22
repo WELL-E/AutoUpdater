@@ -7,6 +7,8 @@ using System.Linq;
 using GeneralUpdate.Core.Pipelines;
 using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Pipelines.Middleware;
+using GeneralUpdate.Core.Utils;
+using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Strategys
 {
@@ -38,20 +40,23 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
-                var updateVersions = Packet.UpdateVersions.OrderBy(x => x.PubTime).ToList();
-                var patchPath = Path.Combine(Packet.InstallPath, PATCHS);
-                foreach (var version in updateVersions)
+                Task.Run(async () => 
                 {
-                    var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
-                    var pipelineBuilder = new PipelineBuilder<BaseContext>(new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding)).
-                        UseMiddleware<MD5Middleware>().
-                        UseMiddleware<ZipMiddleware>().
-                        UseMiddleware<ConfigMiddleware>().
-                        UseMiddleware<PatchMiddleware>();
-                    pipelineBuilder.Launch();
-                }
-                Dirty();
-                StartApp(Packet.AppName);
+                    var updateVersions = Packet.UpdateVersions.OrderBy(x => x.PubTime).ToList();
+                    var patchPath = FileUtil.GetTempDirectory(PATCHS);
+                    foreach (var version in updateVersions)
+                    {
+                        var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
+                        var pipelineBuilder = new PipelineBuilder<BaseContext>(new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding)).
+                            UseMiddleware<MD5Middleware>().
+                            UseMiddleware<ZipMiddleware>().
+                            UseMiddleware<ConfigMiddleware>().
+                            UseMiddleware<PatchMiddleware>();
+                        await pipelineBuilder.Launch();
+                    }
+                    Dirty();
+                    StartApp(Packet.AppName);
+                });
             }
             catch (Exception ex)
             {

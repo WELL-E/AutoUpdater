@@ -68,9 +68,9 @@ namespace GeneralUpdate.Core.Utils
             Directory.Delete(sourceDirName, true);
         }
 
-        public static string GetTempDirectory(string version)
+        public static string GetTempDirectory(string name)
         {
-            var path2 = $"generalupdate_{ DateTime.Now.ToString("yyyy-MM-dd") }_{version}";
+            var path2 = $"generalupdate_{ DateTime.Now.ToString("yyyy-MM-dd") }_{name}";
             var tempDir = Path.Combine(Path.GetTempPath(), path2);
             if (!Directory.Exists(tempDir))
             {

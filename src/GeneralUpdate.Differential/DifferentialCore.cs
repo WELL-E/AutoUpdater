@@ -139,8 +139,7 @@ namespace GeneralUpdate.Differential
                     }
                 }
                 //Update does not include files or copies configuration files.
-                DrityUnkonw(appPath, patchPath);
-                if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
+                await DrityUnkonw(appPath, patchPath);
             }
             catch (Exception ex)
             {
@@ -162,8 +161,6 @@ namespace GeneralUpdate.Differential
                 if (!File.Exists(appPath) || !File.Exists(patchPath)) return;
                 var newPath = Path.Combine(Path.GetDirectoryName(appPath), $"{ Path.GetRandomFileName() }_{ Path.GetFileName(appPath) }");
                 await new BinaryHandle().Drity(appPath, newPath, patchPath);
-                File.Delete(appPath);
-                File.Move(newPath, appPath);
             }
             catch (Exception ex)
             {
@@ -176,7 +173,7 @@ namespace GeneralUpdate.Differential
         /// </summary>
         /// <param name="appPath">Client application directory .</param>
         /// <param name="patchPath"></param>
-        private void DrityUnkonw(string appPath, string patchPath)
+        private Task DrityUnkonw(string appPath, string patchPath)
         {
             try
             {
@@ -187,6 +184,8 @@ namespace GeneralUpdate.Differential
                     if (Filefilter.Diff.Contains(extensionName)) continue;
                     File.Copy(file.FullName, Path.Combine(appPath, file.Name), true);
                 }
+                if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
+                return Task.CompletedTask;
             }
             catch (Exception ex)
             {
