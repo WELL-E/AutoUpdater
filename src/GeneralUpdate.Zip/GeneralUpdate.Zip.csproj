@@ -8,7 +8,7 @@
     <Copyright>Copyright ©  2022</Copyright>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
     <PackageIcon>Snipaste_128.png</PackageIcon>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Version>2.2.0</Version>
     <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
   </PropertyGroup>
