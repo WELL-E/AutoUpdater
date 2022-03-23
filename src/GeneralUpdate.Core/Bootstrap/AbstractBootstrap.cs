@@ -153,6 +153,13 @@ namespace GeneralUpdate.Core.Bootstrap
 
         #region Config option.
 
+        /// <summary>
+        /// Setting update configuration.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="option">Configuration Action Enumeration.</param>
+        /// <param name="value">Value</param>
+        /// <returns></returns>
         public virtual TBootstrap Option<T>(UpdateOption<T> option, T value)
         {
             Contract.Requires(option != null);

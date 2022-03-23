@@ -96,7 +96,5 @@ namespace GeneralUpdate.Core.Models
         public string Version { get; set; }
 
         public string Url { get; set; }
-
-        public bool IsUnZip { get; set; }
     }
 }

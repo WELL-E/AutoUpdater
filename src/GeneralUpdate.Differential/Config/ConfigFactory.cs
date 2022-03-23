@@ -93,6 +93,10 @@ namespace GeneralUpdate.Differential.Config
         /// <summary>
         /// Scan configuration files and cache, backup.
         /// </summary>
+        /// <param name="appPath">The application directory that needs to be updated.</param>
+        /// <param name="scanPath">update package directory.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Scan(string appPath = null, string scanPath = null)
         {
             try

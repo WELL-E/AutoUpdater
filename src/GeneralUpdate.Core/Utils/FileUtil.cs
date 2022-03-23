@@ -9,17 +9,6 @@ namespace GeneralUpdate.Core.Utils
 {
     public static class FileUtil
     {
-        public static void Update32Or64Libs(string currentDir)
-        {
-            var is64XSystem = Environment.Is64BitOperatingSystem;
-            var sourceDir = Path.Combine(currentDir, is64XSystem ? "x64" : "x32");
-            var destDir = Path.Combine(currentDir, "dlls");
-
-            if (!Directory.Exists(sourceDir)) return;
-            DirectoryCopy(sourceDir, destDir, true, true, null);
-            Directory.Delete(sourceDir);
-        }
-
         public static string GetFileMD5(string fileName)
         {
             try

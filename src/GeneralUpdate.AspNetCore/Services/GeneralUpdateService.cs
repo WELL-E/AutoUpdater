@@ -88,6 +88,12 @@ namespace GeneralUpdate.AspNetCore.Services
             return JsonConvert.SerializeObject(respDTO);
         }
 
+        /// <summary>
+        /// TODO: To be perfected, not available.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="insertLastVserion"></param>
+        /// <returns></returns>
         public async Task UploadPatchPacket(HttpContext context, Func<bool> insertLastVserion)
         {
             //file root dir path 文件保存目录路径
@@ -151,18 +157,9 @@ namespace GeneralUpdate.AspNetCore.Services
 
         private void ParameterVerification(int clientType, string clientVersion, string serverLastVersion)
         {
-            if (clientType == 0)
-            {
-                throw new Exception(@"'clientType' cannot both be 0!");
-            }
-            else if (string.IsNullOrWhiteSpace(clientVersion))
-            {
-                throw new ArgumentNullException(@"'clientVersion' cannot be null!");
-            }
-            else if (string.IsNullOrWhiteSpace(serverLastVersion))
-            {
-                throw new ArgumentNullException(@"'serverLastVersion' cannot be null!");
-            }
+            if (clientType <= 0) throw new Exception(@"'clientType' cannot be less than or equal to 0 !");
+            if (string.IsNullOrWhiteSpace(clientVersion)) throw new ArgumentNullException(@"'clientVersion' cannot be null !");
+            if (string.IsNullOrWhiteSpace(serverLastVersion)) throw new ArgumentNullException(@"'serverLastVersion' cannot be null !");
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using GeneralUpdate.Core.Update;
-using System;
 
 namespace GeneralUpdate.Core.Models
 {
@@ -8,50 +7,50 @@ namespace GeneralUpdate.Core.Models
         /// <summary>
         /// 文件名
         /// </summary>
-        public string Name { get; set; }
+        //public string Name { get; set; }
 
         /// <summary>
         /// MD5校验码
         /// </summary>
-        public string MD5 { get; set; }
+        //public string MD5 { get; set; }
 
         /// <summary>
-        /// 当前版本
+        /// Client current version.
         /// </summary>
         public string ClientVersion { get; set; }
 
         /// <summary>
-        /// 最新版本
+        /// The latest version.
         /// </summary>
         public string LastVersion { get; set; }
 
         /// <summary>
         /// 文件唯一id
         /// </summary>
-        public string Guid { get; set; }
+        //public string Guid { get; set; }
 
         /// <summary>
         /// 文件大小
         /// </summary>
-        public long Size { get; set; }
+        //public long Size { get; set; }
 
         /// <summary>
         /// 下载的文件大小
         /// </summary>
-        public long? TotalSize { get; set; }
+        //public long? TotalSize { get; set; }
 
         /// <summary>
         /// 时间
         /// </summary>
-        public DateTime Date { get; set; }
+        //public DateTime Date { get; set; }
 
         /// <summary>
-        /// 安装路径（用于更新文件逻辑）
+        /// installation path (for update file logic).
         /// </summary>
         public string InstallPath { get; set; }
 
         /// <summary>
-        /// 下载文件临时存储路径（用于更新文件逻辑）
+        /// Download file temporary storage path (for update file logic).
         /// </summary>
         public string TempPath { get; set; }
     }

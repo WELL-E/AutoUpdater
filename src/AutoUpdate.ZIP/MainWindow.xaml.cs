@@ -31,7 +31,7 @@ namespace AutoUpdate.ZIP
             {
                 var factory = new GeneralZipFactory();
                 factory.CompressProgress += OnCompressProgress;
-                //压缩该路径下所有的文件：D:\Updatetest_hub\Run_app ， D:\Updatetest_hub
+                //Compress all files in this path：D:\Updatetest_hub\Run_app ， D:\Updatetest_hub
                 factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text).
                     CreatZip();
             }
@@ -53,7 +53,7 @@ namespace AutoUpdate.ZIP
                 var factory = new GeneralZipFactory();
                 factory.UnZipProgress += OnUnZipProgress;
                 factory.Completed += OnCompleted;
-                //解压文件包：D:\Updatetest_hub\Run_app\1.zip , D:\Updatetest_hub
+                //D:\Updatetest_hub\Run_app\1.zip , D:\Updatetest_hub
                 factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text, true).
                     UnZip();
             }

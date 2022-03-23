@@ -1,7 +1,7 @@
-﻿using GeneralUpdate.Core.Models;
-using GeneralUpdate.Core.Utils;
-using GeneralUpdate.Core.Bootstrap;
+﻿using GeneralUpdate.Core.Bootstrap;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
+using GeneralUpdate.Core.Utils;
 using System;
 
 namespace GeneralUpdate.Core

@@ -6,8 +6,16 @@ namespace GeneralUpdate.Zip.Factory
     {
         IFactory CreatefOperate(OperationType type, string sourcePath, string destinationPath, bool includeBaseDirectory = false, Encoding encoding = null);
 
+        /// <summary>
+        /// Create a compressed package.
+        /// </summary>
+        /// <returns></returns>
         IFactory CreatZip();
 
+        /// <summary>
+        /// unzip
+        /// </summary>
+        /// <returns></returns>
         IFactory UnZip();
     }
 }
