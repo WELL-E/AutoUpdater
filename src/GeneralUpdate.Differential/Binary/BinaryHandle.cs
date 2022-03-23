@@ -17,6 +17,14 @@ namespace GeneralUpdate.Differential.Binary
 
         #region Public Methods
 
+        /// <summary>
+        /// Clean out the files that need to be updated and generate the update package.
+        /// </summary>
+        /// <param name="oldfilePath">Old version file path.</param>
+        /// <param name="newfilePath">New version file path</param>
+        /// <param name="patchPath">Patch file generation path.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Clean(string oldfilePath, string newfilePath, string patchPath)
         {
             _oldfilePath = oldfilePath;
@@ -205,6 +213,15 @@ namespace GeneralUpdate.Differential.Binary
             }
         }
 
+        /// <summary>
+        /// Update the patch file to the client application.
+        /// </summary>
+        /// <param name="oldfilePath"></param>
+        /// <param name="newfilePath"></param>
+        /// <param name="patchPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task Drity(string oldfilePath, string newfilePath, string patchPath)
         {
             _oldfilePath = oldfilePath;

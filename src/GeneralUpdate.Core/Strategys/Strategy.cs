@@ -1,13 +1,13 @@
 ﻿using GeneralUpdate.Core.Models;
+using GeneralUpdate.Core.Pipelines;
+using GeneralUpdate.Core.Pipelines.Context;
+using GeneralUpdate.Core.Pipelines.Middleware;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using GeneralUpdate.Core.Pipelines;
-using GeneralUpdate.Core.Pipelines.Context;
-using GeneralUpdate.Core.Pipelines.Middleware;
-using GeneralUpdate.Core.Utils;
 using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Strategys
@@ -23,7 +23,7 @@ namespace GeneralUpdate.Core.Strategys
         protected UpdatePacket Packet { get; set; }
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
         protected Action<object, ExceptionEventArgs> ExceptionEventAction { get; set; }
-        
+
         #endregion Private Members
 
         #region Public Methods
@@ -40,7 +40,7 @@ namespace GeneralUpdate.Core.Strategys
         {
             try
             {
-                Task.Run(async () => 
+                Task.Run(async () =>
                 {
                     var updateVersions = Packet.UpdateVersions.OrderBy(x => x.PubTime).ToList();
                     var patchPath = FileUtil.GetTempDirectory(PATCHS);

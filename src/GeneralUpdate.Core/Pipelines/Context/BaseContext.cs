@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Pipelines.Context
 {
+    /// <summary>
+    /// Pipeline common content.
+    /// </summary>
     public class BaseContext
     {
         private Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }

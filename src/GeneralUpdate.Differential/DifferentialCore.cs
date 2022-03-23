@@ -131,7 +131,7 @@ namespace GeneralUpdate.Differential
                 {
                     //Only the difference file (.patch) can be updated here.
                     var findFile = patchFiles.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f.Name).Equals(Path.GetFileNameWithoutExtension(oldFile.Name)));
-                    if (findFile != null) 
+                    if (findFile != null)
                     {
                         var extensionName = Path.GetExtension(findFile.FullName);
                         if (!extensionName.Equals(PATCH_FORMAT)) continue;
@@ -197,7 +197,10 @@ namespace GeneralUpdate.Differential
 
         #region Private Methods
 
-        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e) => _compressProgressCallback(sender, e);
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)
+        {
+            if (_compressProgressCallback != null) _compressProgressCallback(sender, e);
+        }
 
         #endregion Private Methods
     }

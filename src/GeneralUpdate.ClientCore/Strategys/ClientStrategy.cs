@@ -1,8 +1,8 @@
 ﻿using GeneralUpdate.Core.DTOs;
 using GeneralUpdate.Core.Models;
-using GeneralUpdate.Core.Utils;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;

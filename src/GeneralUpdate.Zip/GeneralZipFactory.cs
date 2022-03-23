@@ -75,10 +75,6 @@ namespace GeneralUpdate.Zip
             if (CompressProgress != null) CompressProgress(sender, e);
         }
 
-        /// <summary>
-        /// Creat zip.
-        /// </summary>
-        /// <returns></returns>
         public IFactory CreatZip()
         {
             try
@@ -92,10 +88,6 @@ namespace GeneralUpdate.Zip
             return this;
         }
 
-        /// <summary>
-        /// Un zip.
-        /// </summary>
-        /// <returns></returns>
         public IFactory UnZip()
         {
             try

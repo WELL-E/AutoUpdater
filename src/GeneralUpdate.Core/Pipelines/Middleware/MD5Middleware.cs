@@ -1,6 +1,6 @@
-﻿using GeneralUpdate.Core.Utils;
-using GeneralUpdate.Core.Pipelines.Context;
+﻿using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Update;
+using GeneralUpdate.Core.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -20,7 +20,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
                 var node = stack.Pop();
                 if (node != null) await node.Next.Invoke(context, stack);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 context.OnExceptionEventAction(this, exception ?? ex);
                 throw exception;

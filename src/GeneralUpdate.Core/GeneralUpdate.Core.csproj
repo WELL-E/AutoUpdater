@@ -2,11 +2,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>F35F100D-B8E9-4F20-8572-7AB549913D69</PackageId>
-    <Version>2.0.1</Version>
-    <Authors>juster.chu</Authors>
-    <Company>none</Company>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Version>4.10.12</Version>
+    <Authors>juster.zhu</Authors>
+    <Company>juster.zhu</Company>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
+    <PackageIcon>Snipaste_128.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>Copyright ©  2022</Copyright>
+    <Description>This section describes how to upgrade client applications.</Description>
+    <PackageReleaseNotes>Provides high-performance, low-loss, resume-breakpoint, version-by-version update, binary differential update, incremental update function, configuration file retention update and other features.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
+    <AssemblyName>GeneralUpdate.Core</AssemblyName>
+    <RootNamespace>GeneralUpdate.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Config\**" />
@@ -28,8 +37,15 @@
     <None Remove="GeneralUpdate.Core.3.6.9.nupkg" />
     <None Remove="GeneralUpdate.Core.csproj.old" />
     <None Remove="GeneralUpdate.Core.nuspec" />
+    <None Remove="GeneralUpdate.ico" />
     <None Remove="nuget.exe" />
     <None Remove="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\juster.zhu\Desktop\Snipaste_128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeneralUpdate.Differential\GeneralUpdate.Differential.csproj" />

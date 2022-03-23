@@ -2,7 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
+    <PackageIcon>Snipaste_128.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
+    <Description>The binary differential update function is provided, but the configuration file update function is reserved.</Description>
+    <Authors>juster.zhu</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="GeneralUpdate.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\GeneralUpdate.Core\CustomAwaiter\IAwaitable.cs" Link="CustomAwaiter\IAwaitable.cs" />
@@ -20,6 +30,13 @@
 
   <ItemGroup>
     <Folder Include="CustomAwaiter\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\juster.zhu\Desktop\Snipaste_128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
