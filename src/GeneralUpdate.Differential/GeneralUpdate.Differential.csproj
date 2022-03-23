@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
     <PackageIcon>Snipaste_128.png</PackageIcon>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
     <Description>The binary differential update function is provided, but the configuration file update function is reserved.</Description>
     <Authors>juster.zhu</Authors>
