@@ -139,9 +139,16 @@ namespace GeneralUpdate.Core.Download
                 _state.Request = (HttpWebRequest)GetWebRequest(new Uri(url));
                 _state.Request.ReadWriteTimeout = _timeOut;
                 _state.Request.Timeout = _timeOut;
-                if (startPos > 0) _state.Request.AddRange((int)startPos);
-                _state.Respone = _state.Request.GetResponse();//TODO: fix the bug
+                _state.Respone = _state.Request.GetResponse();
                 _state.Stream = _state.Respone.GetResponseStream();
+                if (_state.Respone.ContentLength == startPos) 
+                {
+                    _state.Close();
+                    File.Move(_state.TempPath, _state.Path);
+                    _state.Done(true);
+                    return;
+                }
+                if (startPos > 0) _state.Request.AddRange((int)startPos);
                 long totalBytesReceived = _state.Respone.ContentLength + startPos;
                 long bytesReceived = startPos;
                 if (totalBytesReceived != 0 && bytesReceived >= totalBytesReceived)
@@ -170,10 +177,7 @@ namespace GeneralUpdate.Core.Download
             }
             finally
             {
-                if (_state != null)
-                {
-                    _state.Close();
-                }
+                if (_state != null) _state.Close();
             }
         }
 
@@ -217,6 +221,10 @@ namespace GeneralUpdate.Core.Download
             int readSize = state.Stream.Read(bytes, 0, 1024);
             while (readSize > 0 && state.IsRangeDownload)
             {
+                if (bytesReceived == 47664803)
+                {
+
+                }
                 if (state == null || state.FileStream == null) break;
                 lock (state.FileStream)
                 {
