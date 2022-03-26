@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Core.Utils;
+using GeneralUpdate.Core.Utils;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -40,7 +40,6 @@ namespace GeneralUpdate.AspNetCore.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
             await base.OnConnectedAsync();
-            await SendMessage("TESTNAME", "zhuzhen");
             if (OnConnectionStatus != null) OnConnectionStatus(HubStatus.Connected, "The Version hub is connected .");
         }
 
