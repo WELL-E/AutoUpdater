@@ -3,13 +3,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>$(AssemblyName)</PackageId>
-    <Version>4.10.12</Version>
+    <Version>4.10.13</Version>
     <Authors>juster.zhu</Authors>
     <Company>juster.zhu</Company>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
     <PackageIcon>Snipaste_128.png</PackageIcon>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>Copyright ©  2022</Copyright>
     <Description>This section describes how to upgrade client applications.</Description>
     <PackageReleaseNotes>Provides high-performance, low-loss, resume-breakpoint, version-by-version update, binary differential update, incremental update function, configuration file retention update and other features.</PackageReleaseNotes>

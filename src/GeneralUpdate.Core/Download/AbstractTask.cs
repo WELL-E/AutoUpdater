@@ -221,10 +221,6 @@ namespace GeneralUpdate.Core.Download
             int readSize = state.Stream.Read(bytes, 0, 1024);
             while (readSize > 0 && state.IsRangeDownload)
             {
-                if (bytesReceived == 47664803)
-                {
-
-                }
                 if (state == null || state.FileStream == null) break;
                 lock (state.FileStream)
                 {

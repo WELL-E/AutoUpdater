@@ -197,10 +197,7 @@ namespace GeneralUpdate.Differential
 
         #region Private Methods
 
-        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)
-        {
-            if (_compressProgressCallback != null) _compressProgressCallback(sender, e);
-        }
+        private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)=> _compressProgressCallback(sender, e);
 
         #endregion Private Methods
     }
