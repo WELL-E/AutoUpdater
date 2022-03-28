@@ -9,7 +9,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
     <PackageIcon>Snipaste_128.png</PackageIcon>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Copyright>Copyright ©  2022</Copyright>
     <Description>This section describes how to upgrade client applications.</Description>
     <PackageReleaseNotes>Provides high-performance, low-loss, resume-breakpoint, version-by-version update, binary differential update, incremental update function, configuration file retention update and other features.</PackageReleaseNotes>
