@@ -1,9 +1,13 @@
 using Avalonia.Controls;
 using GeneralUpdate.Differential;
+using GeneralUpdate.PacketTool.Utils;
 using GeneralUpdate.PacketTool.Views;
 using ReactiveUI;
 using System;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reactive;
 using System.Threading.Tasks;
 
@@ -12,15 +16,21 @@ namespace GeneralUpdate.PacketTool.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private string sourcePath, targetPath, patchPath,infoMessage;
+        private bool isPublish;
+        private string url;
+
         public ReactiveCommand<Unit, Unit> BuildCommand { get; }
         public ReactiveCommand<object, Unit> SelectFolderCommand { get; }
         public string SourcePath { get => sourcePath; set => this.RaiseAndSetIfChanged(ref sourcePath, value); }
         public string TargetPath { get => targetPath; set => this.RaiseAndSetIfChanged(ref targetPath, value); }
         public string PatchPath { get => patchPath; set => this.RaiseAndSetIfChanged(ref patchPath, value); }
         public string InfoMessage { get => infoMessage; set => this.RaiseAndSetIfChanged(ref infoMessage,value); }
+        public bool IsPublish { get => isPublish; set => this.RaiseAndSetIfChanged(ref isPublish, value); }
+        public string Url { get => url; set => this.RaiseAndSetIfChanged(ref url, value); }
 
         public MainWindowViewModel()
         {
+            IsPublish = false;
             BuildCommand = ReactiveCommand.Create(BuildPacketAction);
             SelectFolderCommand = ReactiveCommand.Create<object>(SelectFolderAction);
         }
@@ -47,8 +57,7 @@ namespace GeneralUpdate.PacketTool.ViewModels
 
         private void BuildPacketAction()
         {
-            if (string.IsNullOrEmpty(SourcePath) || string.IsNullOrEmpty(TargetPath) || string.IsNullOrEmpty(PatchPath) || 
-                !Directory.Exists(SourcePath) || !Directory.Exists(TargetPath) || !Directory.Exists(PatchPath)) 
+            if (ValidationParameters()) 
             {
                 InfoMessage += "The path is not set or the folder does not exist !" + "\r\n";
                 return;
@@ -62,12 +71,37 @@ namespace GeneralUpdate.PacketTool.ViewModels
                         InfoMessage += $"{args.Name} - {args.Path}" + "\r\n";
                     });
                     InfoMessage += $" Build succeeded : { TargetPath } ." + "\r\n";
+                    if (IsPublish) 
+                    {
+                        var directoryInfo = new DirectoryInfo(TargetPath);
+                        var fileArray = directoryInfo.GetFiles();
+                        var findPacket = fileArray.FirstOrDefault(f=>f.Extension.Equals(".zip"));
+                        if (findPacket == null) return;
+                        InfoMessage += $" Update package found under { TargetPath }  path , file full name { findPacket.Name } ." + "\r\n";
+                        var httpClient = new HttpClient();
+                        var responseMessage = await httpClient.PostFileAsync(Url, findPacket.FullName);
+                        InfoMessage = responseMessage.StatusCode == HttpStatusCode.OK ? $" Successfully published to the server { Url } ." + "\r\n" : $" Failed to publish to server { Url } !" + "\r\n";
+                        IsPublish = !(responseMessage.StatusCode == HttpStatusCode.OK);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    InfoMessage += $" Build failed : { TargetPath } , Error : { ex.Message }  !" + "\r\n";
+                    InfoMessage += $"Operation failed : { TargetPath } , Error : { ex.Message }  !" + "\r\n";
                 }
             });
+        }
+
+        private bool ValidationParameters()
+        {
+            if (string.IsNullOrEmpty(SourcePath) || string.IsNullOrEmpty(TargetPath) || string.IsNullOrEmpty(PatchPath) ||
+                !Directory.Exists(SourcePath) || !Directory.Exists(TargetPath) || !Directory.Exists(PatchPath)) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

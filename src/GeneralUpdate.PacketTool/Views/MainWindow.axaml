@@ -18,6 +18,7 @@
 			<RowDefinition Height="35"></RowDefinition>
 			<RowDefinition Height="35"></RowDefinition>
 			<RowDefinition Height="35"></RowDefinition>
+			<RowDefinition Height="35"></RowDefinition>
 			<RowDefinition ></RowDefinition>
 			<RowDefinition></RowDefinition>
 		</Grid.RowDefinitions>
@@ -39,9 +40,16 @@
 			<TextBox Width="400" Height="30" Margin="9,0,3,0" Text="{Binding PatchPath}"></TextBox>
 			<Button Width="105" Height="30" Content="Select folder" Command="{Binding SelectFolderCommand}" Name="BtnPatch" CommandParameter="{Binding ElementName=BtnPatch}" ></Button>
 		</StackPanel>
-		<StackPanel Grid.Row="4"  HorizontalAlignment="Center" Width="500" Margin="0,10,0,0">
+		<StackPanel Margin="0,0,50,0" Grid.Row="4" Orientation="Horizontal" Height="35" HorizontalAlignment="Center">
+			<TextBlock VerticalAlignment="Center"  Text="url :"></TextBlock>
+			<TextBox Width="400" Height="30" Margin="9,0,3,0" Text="{Binding Url}"></TextBox>
+		</StackPanel>
+		<StackPanel Grid.Row="5"  HorizontalAlignment="Center" Width="500" Margin="0,10,0,0">
 			<TextBox Height="130" AcceptsReturn="True" TextWrapping="Wrap" InnerLeftContent="{Binding InfoMessage}" ></TextBox>
 		</StackPanel>
-		<Button HorizontalAlignment="Center" Grid.Row="5" HorizontalContentAlignment="Center" Content="Build" Width="100" Height="30" Command="{Binding BuildCommand}" ></Button>
+	    <StackPanel HorizontalAlignment="Center" Grid.Row="6"  Height="35" Orientation="Horizontal">
+			<Button HorizontalContentAlignment="Center"  Content="Build" Width="100" Height="30" Command="{Binding BuildCommand}" />
+		    <CheckBox Margin="10,0,0,0" Content="publish to server" IsChecked="{Binding IsPublish}" ></CheckBox>
+		</StackPanel>
 	</Grid>
 </Window>
