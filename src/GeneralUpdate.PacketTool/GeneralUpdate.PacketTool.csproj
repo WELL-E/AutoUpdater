@@ -6,6 +6,7 @@
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <PackageIcon>Snipaste_2022-03-23_20-48-50.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -16,6 +17,12 @@
   <ItemGroup>
     <AvaloniaResource Include="imgs\GeneralUpdate.ico" />
     <AvaloniaResource Include="imgs\GeneralUpdate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\juster.zhu\Desktop\Snipaste_2022-03-23_20-48-50.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
