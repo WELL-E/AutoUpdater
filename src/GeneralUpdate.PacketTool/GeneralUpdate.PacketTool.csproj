@@ -19,12 +19,6 @@
     <AvaloniaResource Include="imgs\GeneralUpdate.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\juster.zhu\Desktop\Snipaste_2022-03-23_20-48-50.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <!--This helps with theme dll-s trimming.
 	If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
 	https://github.com/AvaloniaUI/Avalonia/issues/5593 -->

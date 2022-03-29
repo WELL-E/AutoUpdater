@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="GeneralUpdate.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\GeneralUpdate.Core\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
@@ -43,13 +39,6 @@
   <ItemGroup>
     <Folder Include="DTOs\" />
     <Folder Include="Utils\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\juster.zhu\Desktop\GeneralUpdate.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>

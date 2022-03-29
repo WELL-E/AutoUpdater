@@ -33,13 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\juster.zhu\Desktop\Snipaste_128.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GeneralUpdate.Zip\GeneralUpdate.Zip.csproj" />
   </ItemGroup>
 

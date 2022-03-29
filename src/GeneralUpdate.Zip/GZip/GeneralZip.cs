@@ -19,6 +19,7 @@ namespace GeneralUpdate.Zip.GZip
     {
         private string _destinationPath;
         private bool _includeBaseDirectory;
+        private Encoding _encoding;
 
         /// <summary>
         /// Creates a zip archive containing the files and subdirectories of the specified directory.
@@ -214,14 +215,12 @@ namespace GeneralUpdate.Zip.GZip
             {
                 unZipDir = unZipDir.EndsWith(@"\") ? unZipDir : unZipDir + @"\";
                 var directoryInfo = new DirectoryInfo(unZipDir);
-                if (!directoryInfo.Exists)
-                    directoryInfo.Create();
+                if (!directoryInfo.Exists) directoryInfo.Create();
                 var fileInfo = new FileInfo(zipFilePath);
-                if (!fileInfo.Exists)
-                    return false;
+                if (!fileInfo.Exists) return false;
                 using (var zipToOpen = new FileStream(zipFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read))
                 {
-                    using (var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read))
+                    using (var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read,false,_encoding))
                     {
                         var count = archive.Entries.Count;
                         for (int i = 0; i < count; i++)
@@ -290,6 +289,7 @@ namespace GeneralUpdate.Zip.GZip
 
         public override void Configs(string sourcePath, string destinationPath, Encoding encoding, bool includeBaseDirectory = false)
         {
+            _encoding = encoding;
             SOURSE_PATH = sourcePath;
             COMPRESS_NAME = $"{ Path.GetFileNameWithoutExtension(sourcePath) }.zip";
             _destinationPath = string.IsNullOrWhiteSpace(destinationPath) ? SOLUTION_BASE_PATH : destinationPath;
