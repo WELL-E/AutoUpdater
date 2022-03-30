@@ -86,10 +86,7 @@ namespace GeneralUpdate.AspNetCore.Hubs
             }
         }
 
-        public Task ThrowException()
-        {
-            throw new HubException("This error will be sent to the client!");
-        }
+        public Task ThrowException()=> throw new HubException("This error will be sent to the client!");
 
         #endregion Public Methods
     }

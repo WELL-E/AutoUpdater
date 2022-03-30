@@ -19,6 +19,12 @@ namespace GeneralUpdate.Core.Pipelines
             _context = context;
         }
 
+        /// <summary>
+        /// Add middleware to the stack.
+        /// </summary>
+        /// <param name="middleware"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public IPipelineBuilder Use(IMiddleware middleware)
         {
             if (middleware == null) throw new ArgumentNullException(nameof(middleware));
@@ -26,6 +32,11 @@ namespace GeneralUpdate.Core.Pipelines
             return this;
         }
 
+        /// <summary>
+        /// Start the pipeline and execute the middleware sequentially.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<IPipelineBuilder> Launch()
         {
             if (nodes == null || nodes.Count == 0) throw new ArgumentNullException(nameof(nodes));

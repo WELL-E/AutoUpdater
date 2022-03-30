@@ -94,6 +94,10 @@ namespace GeneralUpdate.Core.Strategys
         private void Error(Exception ex)
         { if (ExceptionEventAction != null) ExceptionEventAction(this, new ExceptionEventArgs(ex)); }
 
+        /// <summary>
+        /// Remove update redundant files.
+        /// </summary>
+        /// <returns></returns>
         private bool Dirty()
         {
             try

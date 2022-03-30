@@ -26,7 +26,9 @@ namespace GeneralUpdate.Core.Pipelines.Context
 
         public Encoding Encoding { get; set; }
 
-        public BaseContext(Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction, Action<object, ExceptionEventArgs> exceptionEventAction, UpdateVersion version, string zipfilePath, string targetPath, string sourcePath, string format, Encoding encoding)
+        public BaseContext(Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
+            Action<object, ExceptionEventArgs> exceptionEventAction, 
+            UpdateVersion version, string zipfilePath, string targetPath, string sourcePath, string format, Encoding encoding)
         {
             ProgressEventAction = progressEventAction;
             ExceptionEventAction = exceptionEventAction;
@@ -40,15 +42,15 @@ namespace GeneralUpdate.Core.Pipelines.Context
 
         public void OnProgressEventAction(object handle, ProgressType type, string message)
         {
-            if (ProgressEventAction != null) return;
-            var eventArgs = new MutiDownloadProgressChangedEventArgs(new UpdateVersion(Version.MD5, Version.PubTime, Version.Version, null, Version.Name), type, message);
+            if (ProgressEventAction == null) return;
+            var eventArgs = 
+                new MutiDownloadProgressChangedEventArgs(new UpdateVersion(Version.MD5, Version.PubTime, Version.Version, null, Version.Name), type, message);
             ProgressEventAction(handle, eventArgs);
         }
 
         public void OnExceptionEventAction(object handle, Exception exception)
         {
-            if (ExceptionEventAction != null) return;
-            ExceptionEventAction(handle, new ExceptionEventArgs(exception));
+            if (ExceptionEventAction != null) ExceptionEventAction(handle, new ExceptionEventArgs(exception));
         }
     }
 }

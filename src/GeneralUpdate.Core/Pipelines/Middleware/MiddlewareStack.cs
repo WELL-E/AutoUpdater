@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace GeneralUpdate.Core.Pipelines.Middleware
 {
-    public class MiddlewareNode
+    public sealed class MiddlewareNode
     {
         public Func<BaseContext, MiddlewareStack, Task> Next { get; set; }
 
         public MiddlewareNode(Func<BaseContext, MiddlewareStack, Task> next) => Next = next;
     }
 
-    public class MiddlewareStack
+    public sealed class MiddlewareStack
     {
         private int maxSize;
         private MiddlewareNode[] stackArray;

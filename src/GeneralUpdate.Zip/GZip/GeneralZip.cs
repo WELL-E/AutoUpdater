@@ -197,8 +197,7 @@ namespace GeneralUpdate.Zip.GZip
             foreach (var directory in directories)
                 resultDictionary = resultDictionary.Concat(GetAllDirList(directory.FullName, true, namePrefix)).ToDictionary(k => k.Key, k => k.Value);
             foreach (var fileInfo in fileInfos)
-                if (!resultDictionary.ContainsKey(fileInfo.FullName))
-                    resultDictionary.Add(fileInfo.FullName, namePrefix + fileInfo.Name);
+                if (!resultDictionary.ContainsKey(fileInfo.FullName)) resultDictionary.Add(fileInfo.FullName, namePrefix + fileInfo.Name);
             return resultDictionary;
         }
 
@@ -234,8 +233,7 @@ namespace GeneralUpdate.Zip.GZip
                                 var content = new byte[entries.Length];
                                 entries.Open().Read(content, 0, content.Length);
                                 var greatFolder = Directory.GetParent(filePath);
-                                if (!greatFolder.Exists)
-                                    greatFolder.Create();
+                                if (!greatFolder.Exists) greatFolder.Create();
                                 File.WriteAllBytes(filePath, content);
                             }
                         }
@@ -271,8 +269,7 @@ namespace GeneralUpdate.Zip.GZip
                     using (var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read))
                     {
                         foreach (var zipArchiveEntry in archive.Entries)
-                            if (!zipArchiveEntry.FullName.EndsWith("/"))
-                                fList.Add(Regex.Replace(zipArchiveEntry.FullName.Replace("/", @"\"), @"^\\*", ""));
+                            if (!zipArchiveEntry.FullName.EndsWith("/")) fList.Add(Regex.Replace(zipArchiveEntry.FullName.Replace("/", @"\"), @"^\\*", ""));
                     }
                 }
             }
