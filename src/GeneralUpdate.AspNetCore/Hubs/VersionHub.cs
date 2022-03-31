@@ -26,14 +26,6 @@ namespace GeneralUpdate.AspNetCore.Hubs
 
         #endregion Private Members
 
-        #region Public Properties
-
-        public VersionHub()
-        {
-        }
-
-        #endregion Public Properties
-
         #region Public Methods
 
         public override async Task OnConnectedAsync()

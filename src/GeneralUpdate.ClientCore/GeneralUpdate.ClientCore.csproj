@@ -17,12 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ZipFactory\Events\BaseCompressProgressEventArgs.cs" />
-    <Compile Remove="ZipFactory\Events\BaseUnZipProgressEventArgs.cs" />
-    <Compile Remove="ZipFactory\Events\CompleteEventArgs.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="GeneralUpdate.ClientCore.1.1.1.nupkg" />
     <None Remove="GeneralUpdate.ClientCore.nuspec" />
     <None Remove="GeneralUpdate.ico" />
@@ -139,6 +133,16 @@
     <Folder Include="Update\" />
     <Folder Include="Models\" />
     <Folder Include="Utils\" />
+    <Folder Include="Bootstrap\" />
+    <Folder Include="CustomAwaiter\" />
+    <Folder Include="Differential\" />
+    <Folder Include="Download\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Models\" />
+    <Folder Include="Pipelines\" />
+    <Folder Include="Update\" />
+    <Folder Include="Utils\" />
+    <Folder Include="ZipFactory\" />
   </ItemGroup>
 
 </Project>

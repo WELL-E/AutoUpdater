@@ -39,6 +39,8 @@
   <ItemGroup>
     <Folder Include="DTOs\" />
     <Folder Include="Utils\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

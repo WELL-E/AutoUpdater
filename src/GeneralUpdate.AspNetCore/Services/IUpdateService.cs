@@ -1,5 +1,4 @@
 ﻿using GeneralUpdate.Core.DTOs;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,13 +26,5 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="getUrlsAction">The latest version of the server.</param>
         /// <returns>Json object.</returns>
         Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction);
-
-        /// <summary>
-        /// Upload patch packet .
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="insertLastVserion"></param>
-        /// <returns></returns>
-        Task UploadPatchPacket(HttpContext context, Func<bool> insertLastVserion);
     }
 }
