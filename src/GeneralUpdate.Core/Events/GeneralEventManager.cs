@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Events
 {
-    public class EventManager
+    public class GeneralEventManager 
     {
     }
 }
