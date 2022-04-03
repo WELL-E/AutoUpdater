@@ -15,6 +15,7 @@ GeneralUpdate寓意为通用更新力致于成为全平台更新客户端的框�
 
 - 讲解视频： https://www.bilibili.com/video/BV1aX4y137dd
 - 官方网站： http://justerzhu.cn/
+- 快速启动： https://mp.weixin.qq.com/s/pRKPFe3eC0NSqv9ixXEiTg
 
 ### 开源地址 ###
 
