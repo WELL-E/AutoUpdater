@@ -13,6 +13,8 @@ namespace GeneralUpdate.ClientCore
 {
     public class GeneralClientBootstrap : AbstractBootstrap<GeneralClientBootstrap, IStrategy>
     {
+        private Func<bool> _customOption;
+
         public GeneralClientBootstrap() : base()
         {
         }
@@ -33,7 +35,9 @@ namespace GeneralUpdate.ClientCore
                     }
                     else
                     {
-                        base.ExcuteStrategy();
+                        bool isSkip = false;
+                        if (_customOption != null) isSkip = _customOption.Invoke();
+                        if (isSkip) await base.LaunchTaskAsync();
                     }
                 }
             }
@@ -138,6 +142,17 @@ namespace GeneralUpdate.ClientCore
             {
                 throw new Exception($"Failed to obtain file '{ filePath }' version. Procedure. Eorr message : { ex.Message } .", ex.InnerException);
             }
+        }
+
+        /// <summary>
+        /// Let the user decide whether to update in the state of non-mandatory update.
+        /// </summary>
+        /// <param name="func">Custom funcion ,C ustom actions to let users decide whether to update. true update false do not update .</param>
+        /// <returns></returns>
+        public GeneralClientBootstrap SetCustomOption(Func<bool> func) 
+        {
+            _customOption = func;
+            return this;
         }
     }
 }

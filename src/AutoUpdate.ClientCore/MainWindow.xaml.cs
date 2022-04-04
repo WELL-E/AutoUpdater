@@ -110,9 +110,17 @@ namespace AutoUpdate.ClientCore
                 Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.Encoding, Encoding.Default).
                 Option(UpdateOption.Format, "zip").
+                //注入一个func让用户决定是否跳过本次更新，如果是强制更新则不生效
+                SetCustomOption(ShowCustomOption).
                 Strategy<ClientStrategy>();
                 await generalClientBootstrap.LaunchTaskAsync();
             });
+        }
+
+        private bool ShowCustomOption() 
+        {
+            var messageBoxResult = MessageBox.Show("检测到本地与服务器版本不一致，是否更新？","click",MessageBoxButton.YesNoCancel);
+            return messageBoxResult == MessageBoxResult.Yes;
         }
 
         private void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
