@@ -13,11 +13,19 @@ namespace GeneralUpdate.ClientCore
 {
     public class GeneralClientBootstrap : AbstractBootstrap<GeneralClientBootstrap, IStrategy>
     {
+        #region Private Members
+
         private Func<bool> _customOption;
 
-        public GeneralClientBootstrap() : base()
-        {
-        }
+        #endregion
+
+        #region Constructors
+
+        public GeneralClientBootstrap() : base() { }
+
+        #endregion
+
+        #region Public Methods
 
         public override async Task<GeneralClientBootstrap> LaunchTaskAsync()
         {
@@ -101,6 +109,21 @@ namespace GeneralUpdate.ClientCore
             return this;
         }
 
+        /// <summary>
+        /// Let the user decide whether to update in the state of non-mandatory update.
+        /// </summary>
+        /// <param name="func">Custom funcion ,C ustom actions to let users decide whether to update. true update false do not update .</param>
+        /// <returns></returns>
+        public GeneralClientBootstrap SetCustomOption(Func<bool> func)
+        {
+            _customOption = func;
+            return this;
+        }
+
+        #endregion
+
+        #region Private Methods
+
         private void ValidateConfig(ClientParameter clientParameter)
         {
             if (clientParameter == null) throw new NullReferenceException("Client parameter not set.");
@@ -144,15 +167,6 @@ namespace GeneralUpdate.ClientCore
             }
         }
 
-        /// <summary>
-        /// Let the user decide whether to update in the state of non-mandatory update.
-        /// </summary>
-        /// <param name="func">Custom funcion ,C ustom actions to let users decide whether to update. true update false do not update .</param>
-        /// <returns></returns>
-        public GeneralClientBootstrap SetCustomOption(Func<bool> func) 
-        {
-            _customOption = func;
-            return this;
-        }
+        #endregion
     }
 }
