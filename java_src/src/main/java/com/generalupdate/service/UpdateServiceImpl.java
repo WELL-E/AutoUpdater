@@ -1,41 +1,66 @@
 package com.generalupdate.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.generalupdate.dto.UpdateResponseDto;
-import com.generalupdate.dto.UpdateVersionDto;
-import jdk.nashorn.internal.runtime.Version;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Indexed;
+import com.generalupdate.entity.db.Version;
+import com.generalupdate.entity.dto.UpdateVersionDto;
+import com.generalupdate.entity.dto.VeriosnDto;
+import com.generalupdate.supports.UpdateVersionMapper;
+import com.generalupdate.utils.VersionUtil;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.List;
 
-@Component("UpdateService")
+@Slf4j
+@Service
 public class UpdateServiceImpl implements UpdateService {
 
+    @Resource
+    private UpdateVersionMapper versionMapper;
+
+    private String fileServerUrl;
+
     @Override
-    public UpdateResponseDto validate(Integer clientType, String clientVersion, String serverLastVersion, List<UpdateVersionDto> versionDtos) {
+    public List<UpdateVersionDto> validate(Integer clientType, String clientVersion) {
         String jsonResult = null;
         try {
+            String serverLastVersion = "99.99.99.99";
             Integer compareResult = compareVersion(clientVersion,serverLastVersion);
             if (compareResult == 0){
-                return new UpdateResponseDto(200,jsonResult,"No need to update.");
+                //return new UpdateResponseDto(200,jsonResult,"No need to update.");
             }else if(compareResult > 0){
-                return new UpdateResponseDto(200,jsonResult,"No need to update.");
+                //return new UpdateResponseDto(200,jsonResult,"No need to update.");
             }else if(compareResult < 0){
-                jsonResult = JSONObject.toJSONString(versionDtos);
+                //DOTO:select
             }
-            return new UpdateResponseDto(200,jsonResult,"");
+            return null;
         }catch (Exception exception){
             exception.printStackTrace();
-            return new UpdateResponseDto(500,jsonResult,"Server internal error." + exception.getMessage());
+            return null;
         }
     }
 
+    @SneakyThrows
     @Override
-    public Boolean DifferentialPackage(String oldPath, String newPath, String targetPath) {
-        return null;
+    public Boolean upload(MultipartFile multipartFile, VeriosnDto veriosnDto) {
+        String md5 = VersionUtil.getMD5(multipartFile.getBytes());
+        if(!veriosnDto.getMD5().equals(md5))return false;
+        if (transferToFileServer(multipartFile,veriosnDto.getMD5())) {
+            Integer pubTime = (int)(System.currentTimeMillis() / 1000);
+            Version version = Version.builder().
+                    version(veriosnDto.getVersion()).
+                    MD5(veriosnDto.getMD5()).
+                    clientType(veriosnDto.getClientType()).
+                    name(veriosnDto.getName()).
+                    pubTime(pubTime).
+                    url(fileServerUrl + veriosnDto.getMD5()).
+                    build();
+            return versionMapper.insert(version) > 0;
+        }
+        return false;
     }
 
     /**
@@ -61,5 +86,12 @@ public class UpdateServiceImpl implements UpdateService {
         //如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大；
         diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
         return diff;
+    }
+
+    /**
+     * TODO: upload file to the file server.
+     */
+    private Boolean transferToFileServer(MultipartFile file,String md5){
+        return true;
     }
 }

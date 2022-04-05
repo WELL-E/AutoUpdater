@@ -1,13 +1,14 @@
 package com.generalupdate.service;
 
-import com.generalupdate.dto.UpdateResponseDto;
-import com.generalupdate.dto.UpdateVersionDto;
+import com.generalupdate.entity.dto.UpdateVersionDto;
+import com.generalupdate.entity.dto.VeriosnDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface UpdateService {
 
-    public UpdateResponseDto validate(Integer clientType , String clientVersion, String serverLastVersion, List<UpdateVersionDto> versionDtos);
+    List<UpdateVersionDto> validate(Integer clientType , String clientVersion);
 
-    public Boolean DifferentialPackage(String oldPath,String newPath,String targetPath);
+    Boolean upload(MultipartFile multipartFile, VeriosnDto veriosnDto);
 }

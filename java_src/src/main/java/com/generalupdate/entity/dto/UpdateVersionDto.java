@@ -1,4 +1,4 @@
-package com.generalupdate.dto;
+package com.generalupdate.entity.dto;
 
 import lombok.Data;
 

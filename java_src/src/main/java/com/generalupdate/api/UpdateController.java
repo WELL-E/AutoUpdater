@@ -1,15 +1,21 @@
-package com.generalupdate.controller;
+package com.generalupdate.api;
 
-import com.generalupdate.dto.UpdateResponseDto;
-import com.generalupdate.dto.UpdateVersionDto;
+import com.generalupdate.entity.dto.UpdateVersionDto;
+import com.generalupdate.entity.dto.VeriosnDto;
+import com.generalupdate.entity.vo.Response;
 import com.generalupdate.service.UpdateService;
-import com.generalupdate.service.UpdateServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.generalupdate.entity.consts.ResponseCodes.ERROR;
+import static com.generalupdate.entity.consts.ResponseCodes.SUCCESS;
+
+@Slf4j
 @RestController
 @RequestMapping("/update")
 public class UpdateController {
@@ -18,21 +24,26 @@ public class UpdateController {
     UpdateService updateService;
 
     @PostMapping("validate")
-    public UpdateResponseDto validate(@RequestBody Integer clientType, @RequestBody String clientVersion, Integer type){
+    public Response<List<UpdateVersionDto>> validate(@RequestBody Integer clientType, @RequestBody String clientVersion){
         try {
-            List<UpdateVersionDto> resultInfo = null;
-            switch (type){
-                case 1:
-                    resultInfo = getValidateInfos(clientVersion);
-                    break;
-                case 2:
-                    resultInfo = getVersions(clientVersion);
-                    break;
-            }
-            return updateService.validate(clientType,clientVersion,getLastVersion(),resultInfo);
+            return new Response(SUCCESS,updateService.validate(clientType,clientVersion),"Validation completed successfully.");
         }catch (Exception exception){
             exception.printStackTrace();
-            return new UpdateResponseDto(400,null,"" + exception.getMessage());
+            return new Response(ERROR,null,exception.getMessage());
+        }
+    }
+
+    @PostMapping("upload")
+    public Response<Boolean> upload(@RequestParam("file") MultipartFile file, VeriosnDto veriosnDto){
+        try {
+            Boolean isUpload = updateService.upload(file,veriosnDto);
+            Integer status = isUpload ? SUCCESS : ERROR;
+            String message = isUpload ? "Uploaded successfully." : "Failed to upload update patch package !";
+            return new Response<>(status, isUpload,message);
+        }catch (Exception exception){
+            exception.printStackTrace();
+            log.error("" + exception.getMessage());
+            return new Response<>(ERROR,false,"Failed to upload update patch package !");
         }
     }
 
