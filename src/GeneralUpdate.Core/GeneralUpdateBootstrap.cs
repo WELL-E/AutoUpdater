@@ -8,11 +8,9 @@ namespace GeneralUpdate.Core
 {
     public class GeneralUpdateBootstrap : AbstractBootstrap<GeneralUpdateBootstrap, IStrategy>
     {
-        public ClientParameter ClientParameter { get; set; }
+        private ClientParameter ClientParameter { get; set; }
 
-        public GeneralUpdateBootstrap() : base()
-        {
-        }
+        public GeneralUpdateBootstrap() : base(){}
 
         /// <summary>
         /// Set parameter.

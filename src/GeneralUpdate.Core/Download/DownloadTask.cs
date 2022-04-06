@@ -77,10 +77,7 @@ namespace GeneralUpdate.Core.Download
             if (IsCompleted) continuation?.Invoke();
         }
 
-        public DownloadTask<TVersion> GetAwaiter()
-        {
-            return this;
-        }
+        public DownloadTask<TVersion> GetAwaiter()=> this;
 
         public async Task AsTask(DownloadTask<TVersion> awaiter) => await awaiter;
 

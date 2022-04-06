@@ -260,8 +260,7 @@ namespace GeneralUpdate.Zip.GZip
         public List<string> GetZipFileList(string zipFilePath)
         {
             List<string> fList = new List<string>();
-            if (!File.Exists(zipFilePath))
-                return fList;
+            if (!File.Exists(zipFilePath)) return fList;
             try
             {
                 using (var zipToOpen = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))

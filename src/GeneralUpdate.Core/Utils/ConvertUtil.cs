@@ -8,10 +8,7 @@ namespace GeneralUpdate.Core.Utils
 {
     public class ConvertUtil
     {
-        public static UpdateVersion ToUpdateVersion(UpdateVersionDTO versionDTO)
-        {
-            return new UpdateVersion(versionDTO.MD5, versionDTO.PubTime, versionDTO.Version, versionDTO.Url, versionDTO.Name);
-        }
+        public static UpdateVersion ToUpdateVersion(UpdateVersionDTO versionDTO)=> new UpdateVersion(versionDTO.MD5, versionDTO.PubTime, versionDTO.Version, versionDTO.Url, versionDTO.Name);
 
         public static List<UpdateVersion> ToUpdateVersions(List<UpdateVersionDTO> versionDTOs)
         {

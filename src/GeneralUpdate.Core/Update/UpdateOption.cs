@@ -38,9 +38,7 @@ namespace GeneralUpdate.Core.Update
         public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
 
         internal UpdateOption(int id, string name)
-          : base(id, name)
-        {
-        }
+          : base(id, name) {}
 
         public abstract bool Set(IUpdateConfiguration configuration, object value);
     }
@@ -60,7 +58,6 @@ namespace GeneralUpdate.Core.Update
     public abstract class ConstantPool
     {
         private readonly Dictionary<string, IConstant> constants = new Dictionary<string, IConstant>();
-
         private int nextId = 1;
 
         /// <summary>Shortcut of <c>this.ValueOf(firstNameComponent.Name + "#" + secondNameComponent)</c>.</summary>
@@ -68,7 +65,6 @@ namespace GeneralUpdate.Core.Update
         {
             Contract.Requires(firstNameComponent != null);
             Contract.Requires(secondNameComponent != null);
-
             return this.ValueOf<T>(firstNameComponent.Name + '#' + secondNameComponent);
         }
 
@@ -82,7 +78,6 @@ namespace GeneralUpdate.Core.Update
         public IConstant ValueOf<T>(string name)
         {
             IConstant c;
-
             lock (this.constants)
             {
                 if (this.constants.TryGetValue(name, out c))
@@ -94,7 +89,6 @@ namespace GeneralUpdate.Core.Update
                     c = this.NewInstance0<T>(name);
                 }
             }
-
             return c;
         }
 
@@ -103,9 +97,7 @@ namespace GeneralUpdate.Core.Update
         {
             CheckNotNullAndNotEmpty(name);
             lock (this.constants)
-            {
                 return this.constants.ContainsKey(name);
-            }
         }
 
         /// <summary>
@@ -114,13 +106,8 @@ namespace GeneralUpdate.Core.Update
         /// </summary>
         public IConstant NewInstance<T>(string name)
         {
-            if (this.Exists(name))
-            {
-                throw new ArgumentException($"'{name}' is already in use");
-            }
-
+            if (this.Exists(name)) throw new ArgumentException($"'{name}' is already in use");
             IConstant c = this.NewInstance0<T>(name);
-
             return c;
         }
 
@@ -173,7 +160,6 @@ namespace GeneralUpdate.Core.Update
     public abstract class AbstractConstant : IConstant
     {
         private static long nextUniquifier;
-
         private long volatileUniquifier;
 
         protected AbstractConstant(int id, string name)
@@ -197,12 +183,8 @@ namespace GeneralUpdate.Core.Update
                 {
                     result = Interlocked.Increment(ref nextUniquifier);
                     long previousUniquifier = Interlocked.CompareExchange(ref this.volatileUniquifier, result, 0);
-                    if (previousUniquifier != 0)
-                    {
-                        result = previousUniquifier;
-                    }
+                    if (previousUniquifier != 0) result = previousUniquifier;
                 }
-
                 return result;
             }
         }
@@ -213,9 +195,7 @@ namespace GeneralUpdate.Core.Update
     {
         /// <summary>Creates a new instance.</summary>
         protected AbstractConstant(int id, string name)
-            : base(id, name)
-        {
-        }
+            : base(id, name) { }
 
         public override sealed int GetHashCode() => base.GetHashCode();
 
@@ -225,30 +205,14 @@ namespace GeneralUpdate.Core.Update
 
         public int CompareTo(T o)
         {
-            if (ReferenceEquals(this, o))
-            {
-                return 0;
-            }
-
+            if (ReferenceEquals(this, o)) return 0;
             AbstractConstant<T> other = o;
-
             int returnCode = this.GetHashCode() - other.GetHashCode();
-            if (returnCode != 0)
-            {
-                return returnCode;
-            }
-
+            if (returnCode != 0) return returnCode;
             long thisUV = this.Uniquifier;
             long otherUV = other.Uniquifier;
-            if (thisUV < otherUV)
-            {
-                return -1;
-            }
-            if (thisUV > otherUV)
-            {
-                return 1;
-            }
-
+            if (thisUV < otherUV) return -1;
+            if (thisUV > otherUV) return 1;
             throw new Exception("failed to compare two different constants");
         }
     }

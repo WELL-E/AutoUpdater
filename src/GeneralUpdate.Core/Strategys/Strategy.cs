@@ -17,8 +17,6 @@ namespace GeneralUpdate.Core.Strategys
         #region Private Members
 
         private const string PATCHS = "patchs";
-        private const string DIFF_FORMAT = ".patch";
-        private BaseContext _context;
 
         protected UpdatePacket Packet { get; set; }
         protected Action<object, MutiDownloadProgressChangedEventArgs> ProgressEventAction { get; set; }
