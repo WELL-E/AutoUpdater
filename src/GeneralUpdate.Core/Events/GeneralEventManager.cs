@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GeneralUpdate.Core.Events
 {
+    /// <summary>
+    /// Manage all events in the component.
+    /// </summary>
     public sealed class GeneralEventManager
     {
         private static readonly object _lockObj = new object();
