@@ -14,9 +14,6 @@ namespace GeneralUpdate.Core.Events
         private static GeneralEventManager _instance;
         private Dictionary<Type, Delegate> _dicDelegates = new Dictionary<Type, Delegate>();
 
-        public delegate void EventDelegate<T>(T e);
-        private delegate void EventDelegate(EventArgs args);
-
         private GeneralEventManager() { }
 
         public static GeneralEventManager Instance
@@ -37,13 +34,35 @@ namespace GeneralUpdate.Core.Events
             }
         }
 
-        public void AddListener<TEventDelegate, TEventArgs>(TEventDelegate listener, TEventArgs args) where TEventArgs : EventArgs , TEventDelegate
+        public void AddListener<TDelegate>(TDelegate newDelegate) where TDelegate : Delegate
         {
+            if (_dicDelegates.ContainsKey(typeof(TDelegate))) return;
+            _dicDelegates.Add(typeof(TDelegate), newDelegate);
         }
 
-        public void RemoveListener() { }
+        public void RemoveListener<TDelegate>(TDelegate oldDelegate) where TDelegate : Delegate
+        {
+            var delegateType = oldDelegate.GetType();
+            if (!delegateType.IsInstanceOfType(typeof(TDelegate))) return;
+            Delegate tempDelegate = null;
+            if (_dicDelegates.TryGetValue(delegateType, out tempDelegate))
+            {
+                if (tempDelegate == null)
+                {
+                    _dicDelegates.Remove(delegateType);
+                }
+                else
+                {
+                    _dicDelegates[delegateType] = tempDelegate;
+                }
+            }
+        }
 
-        public void Dispatch() { }
+        public void Dispatch<TDelegate>(EventArgs eventArgs) where TDelegate : Delegate 
+        {
+            if (!_dicDelegates.ContainsKey(typeof(TDelegate))) return;
+            _dicDelegates[typeof(TDelegate)].DynamicInvoke(eventArgs);
+        }
 
         public void Clear()=> _dicDelegates.Clear();
     }
