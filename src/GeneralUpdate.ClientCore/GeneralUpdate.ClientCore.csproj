@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyVersion>2.3.6.0</AssemblyVersion>
-    <FileVersion>2.3.6.0</FileVersion>
-    <Version>2.3.6</Version>
+    <AssemblyVersion>2.4.6.0</AssemblyVersion>
+    <FileVersion>2.4.6.0</FileVersion>
+    <Version>2.4.6</Version>
     <Authors>juster.chu</Authors>
     <Description>Provides functions related to upgrade and update programs.</Description>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
-    <PackageIcon>Snipaste_128.png</PackageIcon>
+    <PackageIcon>GeneralUpdate128.png</PackageIcon>
     <SignAssembly>False</SignAssembly>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
@@ -38,10 +38,8 @@
     <Compile Include="..\GeneralUpdate.Core\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
-    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateReqDTO.cs" Link="DTOs\UpdateValidateReqDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionDTO.cs" Link="DTOs\UpdateVersionDTO.cs" />
-    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsReqDTO.cs" Link="DTOs\UpdateVersionsReqDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\FileBase.cs" Link="Models\FileBase.cs" />
@@ -104,6 +102,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="GeneralUpdate.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
     <PackageReference Include="SharpCompress" Version="0.30.1" />
@@ -153,6 +155,13 @@
     <Folder Include="ZipFactory\Factory\" />
     <Folder Include="ZipFactory\G7z\" />
     <Folder Include="ZipFactory\GZip\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\imgs\GeneralUpdate128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
