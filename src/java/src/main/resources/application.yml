@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driverClass: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/juster_java
+    username: 123
+    password: 123
