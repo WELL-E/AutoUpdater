@@ -33,37 +33,34 @@ namespace GeneralUpdate.ClientCore.Strategys
                     if (respDTO.Code == 200)
                     {
                         var body = respDTO.Body;
-                        if (body.IsForcibly)
+                        try
                         {
-                            try
+                            //Request updated information for the main application.
+                            var clientParameter = new ClientParameter();
+                            clientParameter.ClientVersion = Packet.ClientVersion;
+                            clientParameter.LastVersion = Packet.LastVersion;
+                            clientParameter.InstallPath = Packet.InstallPath;
+                            clientParameter.UpdateLogUrl = Packet.UpdateLogUrl;
+                            clientParameter.MainValidateUrl = Packet.MainValidateUrl;
+                            clientParameter.MainUpdateUrl = Packet.MainUpdateUrl;
+                            clientParameter.AppName = Packet.MainAppName;
+                            clientParameter.AppType = 1;
+                            clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.Encoding);
+                            clientParameter.CompressFormat = Packet.Format;
+                            clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;
+                            clientParameter.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
+                            var clientParameterBase64 = SerializeUtil.Serialize(clientParameter);
+                            if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))
                             {
-                                //Request updated information for the main application.
-                                var clientParameter = new ClientParameter();
-                                clientParameter.ClientVersion = Packet.ClientVersion;
-                                clientParameter.LastVersion = Packet.LastVersion;
-                                clientParameter.InstallPath = Packet.InstallPath;
-                                clientParameter.UpdateLogUrl = Packet.UpdateLogUrl;
-                                clientParameter.MainValidateUrl = Packet.MainValidateUrl;
-                                clientParameter.MainUpdateUrl = Packet.MainUpdateUrl;
-                                clientParameter.AppName = Packet.MainAppName;
-                                clientParameter.AppType = 1;
-                                clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.Encoding);
-                                clientParameter.CompressFormat = Packet.Format;
-                                clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;
-                                clientParameter.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
-                                var clientParameterBase64 = SerializeUtil.Serialize(clientParameter);
-                                if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))
-                                {
-                                    Process.Start("explorer.exe", Packet.UpdateLogUrl);
-                                }
-                                Process.Start($"{Packet.InstallPath}\\{appName}.exe", clientParameterBase64);
-                                Process.GetCurrentProcess().Kill();
+                                Process.Start("explorer.exe", Packet.UpdateLogUrl);
                             }
-                            catch (Exception ex)
-                            {
-                                if (ExceptionEventAction != null)
-                                    ExceptionEventAction(this, new ExceptionEventArgs(ex));
-                            }
+                            Process.Start($"{Packet.InstallPath}\\{appName}.exe", clientParameterBase64);
+                            Process.GetCurrentProcess().Kill();
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ExceptionEventAction != null)
+                                ExceptionEventAction(this, new ExceptionEventArgs(ex));
                         }
                     }
                     else

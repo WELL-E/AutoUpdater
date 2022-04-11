@@ -84,14 +84,14 @@ namespace GeneralUpdate.Core.Bootstrap
                 {
                     var body = updateResp.Body;
                     Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
-                    Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
+                    if (Packet.UpdateVersions != null && Packet.UpdateVersions.Count != 0) 
+                        Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
                 }
                 else
                 {
                     MutiDownloadProgressChanged.Invoke(this,
                         new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
                 }
-                if (Packet.UpdateVersions == null || Packet.UpdateVersions.Count == 0) throw new Exception("Request to update content failed!");
                 var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
                 Packet.Format = $".{pacektFormat}";
                 Packet.Encoding = GetOption(UpdateOption.Encoding) ?? Encoding.Default;

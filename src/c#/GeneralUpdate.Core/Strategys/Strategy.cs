@@ -41,16 +41,19 @@ namespace GeneralUpdate.Core.Strategys
                 Task.Run(async () =>
                 {
                     var updateVersions = Packet.UpdateVersions.OrderBy(x => x.PubTime).ToList();
-                    var patchPath = FileUtil.GetTempDirectory(PATCHS);
-                    foreach (var version in updateVersions)
+                    if (updateVersions != null && updateVersions.Count > 0) 
                     {
-                        var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
-                        var pipelineBuilder = new PipelineBuilder<BaseContext>(new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding)).
-                            UseMiddleware<MD5Middleware>().
-                            UseMiddleware<ZipMiddleware>().
-                            UseMiddleware<ConfigMiddleware>().
-                            UseMiddleware<PatchMiddleware>();
-                        await pipelineBuilder.Launch();
+                        var patchPath = FileUtil.GetTempDirectory(PATCHS);
+                        foreach (var version in updateVersions)
+                        {
+                            var zipFilePath = $"{Packet.TempPath}{ version.Name }{ Packet.Format }";
+                            var pipelineBuilder = new PipelineBuilder<BaseContext>(new BaseContext(ProgressEventAction, ExceptionEventAction, version, zipFilePath, patchPath, Packet.InstallPath, Packet.Format, Packet.Encoding)).
+                                UseMiddleware<MD5Middleware>().
+                                UseMiddleware<ZipMiddleware>().
+                                UseMiddleware<ConfigMiddleware>().
+                                UseMiddleware<PatchMiddleware>();
+                            await pipelineBuilder.Launch();
+                        }
                     }
                     Dirty();
                     StartApp(Packet.AppName);
@@ -68,9 +71,7 @@ namespace GeneralUpdate.Core.Strategys
             try
             {
                 if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))
-                {
                     Process.Start("explorer.exe", Packet.UpdateLogUrl);
-                }
                 Process.Start($"{Packet.InstallPath}\\{appName}.exe");
                 return true;
             }
