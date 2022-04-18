@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace GeneralUpdate.Core.Update
+namespace GeneralUpdate.Core.Events
 {
     public enum ProgressType
     {
@@ -42,6 +42,33 @@ namespace GeneralUpdate.Core.Update
         Patch,
 
         MD5
+    }
+
+    public class CommonEvent
+    {
+        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
+
+        public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
+
+        public delegate void MutiDownloadProgressChangedEventHandler(object sender, MutiDownloadProgressChangedEventArgs e);
+
+        public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
+
+        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
+
+        public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
+
+        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
+
+        public event MutiDownloadErrorEventHandler MutiDownloadError;
+
+        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
+
+        public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
+
+        public delegate void ExceptionEventHandler(object sender, ExceptionEventArgs e);
+
+        public event ExceptionEventHandler Exception;
     }
 
     public class DownloadProgressChangedEventArgsEx : EventArgs

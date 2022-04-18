@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyVersion>2.4.6.0</AssemblyVersion>
-    <FileVersion>2.4.6.0</FileVersion>
-    <Version>2.4.6</Version>
+    <AssemblyVersion>2.4.7.0</AssemblyVersion>
+    <FileVersion>2.4.7.0</FileVersion>
+    <Version>2.4.7</Version>
     <Authors>juster.chu</Authors>
     <Description>Provides functions related to upgrade and update programs.</Description>
     <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
@@ -158,7 +158,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\imgs\GeneralUpdate128.png">
+    <None Include="..\..\..\imgs\GeneralUpdate128.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
