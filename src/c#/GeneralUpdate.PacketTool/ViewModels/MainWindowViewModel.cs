@@ -35,6 +35,10 @@ namespace GeneralUpdate.PacketTool.ViewModels
             SelectFolderCommand = ReactiveCommand.Create<object>(SelectFolderAction);
         }
 
+        /// <summary>
+        /// Choose a path
+        /// </summary>
+        /// <param name="obj"></param>
         private async void SelectFolderAction(object obj)
         {
             var button = obj as Button;
@@ -55,6 +59,9 @@ namespace GeneralUpdate.PacketTool.ViewModels
             }
         }
 
+        /// <summary>
+        ///  Build patch package
+        /// </summary>
         private void BuildPacketAction()
         {
             if (ValidationParameters()) 
@@ -71,6 +78,9 @@ namespace GeneralUpdate.PacketTool.ViewModels
                         InfoMessage += $"{args.Name} - {args.Path}" + "\r\n";
                     });
                     InfoMessage += $" Build succeeded : { TargetPath } ." + "\r\n";
+                    //If upload is checked, the differential package will be uploaded to the file server,
+                    //and the file server will insert the information of the update package after receiving it.
+                    //TODO: Still need to design.
                     if (IsPublish) 
                     {
                         var directoryInfo = new DirectoryInfo(TargetPath);
@@ -91,6 +101,10 @@ namespace GeneralUpdate.PacketTool.ViewModels
             });
         }
 
+        /// <summary>
+        /// parameter validation
+        /// </summary>
+        /// <returns></returns>
         private bool ValidationParameters()
         {
             if (string.IsNullOrEmpty(SourcePath) || string.IsNullOrEmpty(TargetPath) || string.IsNullOrEmpty(PatchPath) ||
