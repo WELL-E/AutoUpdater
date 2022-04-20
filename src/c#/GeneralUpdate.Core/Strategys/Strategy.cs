@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Models;
+﻿using GeneralUpdate.Core.Events;
+using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Pipelines;
 using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Pipelines.Middleware;

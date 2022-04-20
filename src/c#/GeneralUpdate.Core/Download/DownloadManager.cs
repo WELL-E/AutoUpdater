@@ -1,4 +1,4 @@
-﻿using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

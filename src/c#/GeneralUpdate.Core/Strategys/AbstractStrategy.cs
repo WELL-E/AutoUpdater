@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Events;
+using GeneralUpdate.Core.Update;
 using System;
 
 namespace GeneralUpdate.Core.Strategys

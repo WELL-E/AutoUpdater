@@ -1,5 +1,5 @@
-﻿using GeneralUpdate.Core.Models;
-using GeneralUpdate.Core.Update;
+﻿using GeneralUpdate.Core.Events;
+using GeneralUpdate.Core.Models;
 using System;
 using System.Text;
 

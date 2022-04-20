@@ -62,7 +62,6 @@
     <Compile Include="..\GeneralUpdate.Core\Strategys\IStrategy.cs" Link="Strategys\IStrategy.cs" />
     <Compile Include="..\GeneralUpdate.Core\Strategys\Strategy.cs" Link="Strategys\Strategy.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\IFile.cs" Link="Update\IFile.cs" />
-    <Compile Include="..\GeneralUpdate.Core\Update\UpdateEventArgs.cs" Link="Update\UpdateEventArgs.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOption.cs" Link="Update\UpdateOption.cs" />
     <Compile Include="..\GeneralUpdate.Core\Update\UpdateOptionValue.cs" Link="Update\UpdateOptionValue.cs" />
     <Compile Include="..\GeneralUpdate.Core\Utils\ConvertUtil.cs" Link="Utils\ConvertUtil.cs" />

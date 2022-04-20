@@ -15,7 +15,7 @@ namespace AutoUpdate.ZIP
     {
         public MainWindow()
         {
-            InitializeComponent();
+            //InitializeComponent();
         }
 
         #region GeneralUpdate Zip
@@ -29,11 +29,11 @@ namespace AutoUpdate.ZIP
         {
             try
             {
-                var factory = new GeneralZipFactory();
-                factory.CompressProgress += OnCompressProgress;
-                //Compress all files in this path：D:\Updatetest_hub\Run_app ， D:\Updatetest_hub
-                factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text).
-                    CreatZip();
+                //var factory = new GeneralZipFactory();
+                //factory.CompressProgress += OnCompressProgress;
+                ////Compress all files in this path：D:\Updatetest_hub\Run_app ， D:\Updatetest_hub
+                //factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text).
+                //    CreatZip();
             }
             catch (Exception ex)
             {
@@ -50,12 +50,12 @@ namespace AutoUpdate.ZIP
         {
             try
             {
-                var factory = new GeneralZipFactory();
-                factory.UnZipProgress += OnUnZipProgress;
-                factory.Completed += OnCompleted;
-                //D:\Updatetest_hub\Run_app\1.zip , D:\Updatetest_hub
-                factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text, true).
-                    UnZip();
+                //var factory = new GeneralZipFactory();
+                //factory.UnZipProgress += OnUnZipProgress;
+                //factory.Completed += OnCompleted;
+                ////D:\Updatetest_hub\Run_app\1.zip , D:\Updatetest_hub
+                //factory.CreatefOperate(GetOperationType(), TxtZipPath.Text, TxtUnZipPath.Text, true).
+                //    UnZip();
             }
             catch (Exception ex)
             {
@@ -68,22 +68,22 @@ namespace AutoUpdate.ZIP
             Debug.WriteLine($"IsCompleted { e.IsCompleted }.");
         }
 
-        private OperationType GetOperationType()
-        {
-            OperationType operationType = 0;
-            var item = CmbxZipFormat.SelectedItem as ComboBoxItem;
-            switch (item.Content)
-            {
-                case "ZIP":
-                    operationType = OperationType.GZip;
-                    break;
+        //private OperationType GetOperationType()
+        //{
+        //    OperationType operationType = 0;
+        //    var item = CmbxZipFormat.SelectedItem as ComboBoxItem;
+        //    switch (item.Content)
+        //    {
+        //        case "ZIP":
+        //            operationType = OperationType.GZip;
+        //            break;
 
-                case "7z":
-                    operationType = OperationType.G7z;
-                    break;
-            }
-            return operationType;
-        }
+        //        case "7z":
+        //            operationType = OperationType.G7z;
+        //            break;
+        //    }
+        //    return operationType;
+        //}
 
         private void OnCompressProgress(object sender, BaseCompressProgressEventArgs e)
         { Debug.WriteLine($"CompressProgress - name:{ e.Name }, count:{ e.Count }, index:{ e.Index }, size:{ e.Size }."); }

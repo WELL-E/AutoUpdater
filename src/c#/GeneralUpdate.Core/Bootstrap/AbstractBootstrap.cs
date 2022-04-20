@@ -1,5 +1,6 @@
 ﻿using GeneralUpdate.Core.Download;
 using GeneralUpdate.Core.DTOs;
+using GeneralUpdate.Core.Events;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
 using GeneralUpdate.Core.Update;
@@ -147,6 +148,11 @@ namespace GeneralUpdate.Core.Bootstrap
         {
             this.strategyFactory = strategyFactory;
             return (TBootstrap)this;
+        }
+
+        private void InitEvents() 
+        {
+            GeneralEventManager.Instance.AddListener(Exception);
         }
 
         #endregion Strategy
