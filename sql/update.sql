@@ -6,4 +6,4 @@ CREATE TABLE `updateversioninfo` (
   `Version` varchar(20) NOT NULL DEFAULT 'last version number',
   `ClientType` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`MD5`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ciupdateversioninfo;

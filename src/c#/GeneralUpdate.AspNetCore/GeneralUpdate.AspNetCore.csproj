@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ApplicationIcon>GeneralUpdate.ico</ApplicationIcon>
+    <PackageIcon>GeneralUpdate.png</PackageIcon>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.1</Version>
+    <RepositoryUrl>https://github.com/WELL-E/AutoUpdater</RepositoryUrl>
+    <Copyright>Copyright ©  2022</Copyright>
+    <Description>Provide update information proofreading and download update package services.</Description>
+    <Authors>juster.zhu</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\GeneralUpdate.Core\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionDTO.cs" Link="DTOs\UpdateVersionDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Utils\SerializeUtil.cs" Link="Utils\SerializeUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="GeneralUpdate.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Utils\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+</Project>
