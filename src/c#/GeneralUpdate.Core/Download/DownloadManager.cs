@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Threading.Tasks;
+using static GeneralUpdate.Core.Events.CommonEvent;
 
 namespace GeneralUpdate.Core.Download
 {
@@ -59,26 +60,6 @@ namespace GeneralUpdate.Core.Download
 
         public ImmutableList<ITask<TVersion>> DownloadTasks { get => _downloadTasks ?? (_downloadTasksBuilder.ToImmutable()); private set => _downloadTasks = value; }
 
-        public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
-
-        public event MutiAllDownloadCompletedEventHandler MutiAllDownloadCompleted;
-
-        public delegate void MutiDownloadProgressChangedEventHandler(object csender, MutiDownloadProgressChangedEventArgs e);
-
-        public event MutiDownloadProgressChangedEventHandler MutiDownloadProgressChanged;
-
-        public delegate void MutiAsyncCompletedEventHandler(object sender, MutiDownloadCompletedEventArgs e);
-
-        public event MutiAsyncCompletedEventHandler MutiDownloadCompleted;
-
-        public delegate void MutiDownloadErrorEventHandler(object sender, MutiDownloadErrorEventArgs e);
-
-        public event MutiDownloadErrorEventHandler MutiDownloadError;
-
-        public delegate void MutiDownloadStatisticsEventHandler(object sender, MutiDownloadStatisticsEventArgs e);
-
-        public event MutiDownloadStatisticsEventHandler MutiDownloadStatistics;
-
         #endregion Public Properties
 
         #region Public Methods
@@ -100,50 +81,28 @@ namespace GeneralUpdate.Core.Download
                     downloadTasks.Add(downloadTask.Launch());
                 }
                 Task.WaitAll(downloadTasks.ToArray());
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
+                GeneralEventManager.Instance.Dispatch<MutiAllDownloadCompletedEventHandler>(this, new MutiAllDownloadCompletedEventArgs(true, _failedVersions));
             }
             catch (ObjectDisposedException ex)
             {
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                GeneralEventManager.Instance.Dispatch<MutiAllDownloadCompletedEventHandler>(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ObjectDisposedException'.", ex);
             }
             catch (AggregateException ex)
             {
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                GeneralEventManager.Instance.Dispatch<MutiAllDownloadCompletedEventHandler>(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AggregateException'.", ex);
             }
             catch (ArgumentNullException ex)
             {
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                GeneralEventManager.Instance.Dispatch<MutiAllDownloadCompletedEventHandler>(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new ArgumentNullException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'ArgumentNullException'.", ex);
             }
             catch (AmbiguousMatchException ex)
             {
-                MutiAllDownloadCompleted(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
+                GeneralEventManager.Instance.Dispatch<MutiAllDownloadCompletedEventHandler>(this, new MutiAllDownloadCompletedEventArgs(false, _failedVersions));
                 throw new AmbiguousMatchException("Method 'GetMethod' in 'Launch' executes abnormally ! exception is 'AmbiguousMatchException'.", ex);
             }
-        }
-
-        public void OnMutiDownloadStatistics(object sender, MutiDownloadStatisticsEventArgs e)
-        {
-            if (MutiDownloadStatistics != null) this.MutiDownloadStatistics(sender, e);
-        }
-
-        public void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
-        {
-            if (MutiDownloadProgressChanged != null) this.MutiDownloadProgressChanged(sender, e);
-        }
-
-        public void OnMutiAsyncCompleted(object sender, MutiDownloadCompletedEventArgs e)
-        {
-            if (MutiDownloadCompleted != null) this.MutiDownloadCompleted(sender, e);
-        }
-
-        public void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
-        {
-            if (MutiDownloadError != null) this.MutiDownloadError(sender, e);
-
-            _failedVersions.Add((e.Version, e.Exception.Message));
         }
 
         public override void Remove(ITask<TVersion> task)

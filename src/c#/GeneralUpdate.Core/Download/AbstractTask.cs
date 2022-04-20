@@ -1,5 +1,4 @@
 ﻿using GeneralUpdate.Core.Events;
-using GeneralUpdate.Core.Update;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;

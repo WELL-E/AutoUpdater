@@ -2,7 +2,6 @@
 using GeneralUpdate.Core.Events;
 using GeneralUpdate.Core.Models;
 using GeneralUpdate.Core.Strategys;
-using GeneralUpdate.Core.Update;
 using GeneralUpdate.Core.Utils;
 using System;
 using System.Diagnostics;
