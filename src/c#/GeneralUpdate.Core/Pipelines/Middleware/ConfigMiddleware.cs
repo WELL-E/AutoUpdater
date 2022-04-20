@@ -1,4 +1,5 @@
-﻿using GeneralUpdate.Core.Pipelines.Context;
+﻿using GeneralUpdate.Core.Events;
+using GeneralUpdate.Core.Pipelines.Context;
 using GeneralUpdate.Core.Update;
 using GeneralUpdate.Differential.Config;
 using System;
@@ -12,7 +13,7 @@ namespace GeneralUpdate.Core.Pipelines.Middleware
         {
             try
             {
-                context.OnProgressEventAction(this, ProgressType.Config, "Update configuration file ...");
+                context.OnProgressEventAction(this,  ProgressType.Config, "Update configuration file ...");
                 await ConfigFactory.Instance.Deploy();
                 var node = stack.Pop();
                 if (node != null) await node.Next.Invoke(context, stack);
