@@ -23,24 +23,33 @@ public class UpdateServiceImpl implements UpdateService {
 
     private String fileServerUrl;
 
+    @SneakyThrows
     @Override
-    public List<UpdateVersionDto> validate(Integer clientType, String clientVersion) {
-        String jsonResult = null;
-        try {
-            String serverLastVersion = "99.99.99.99";
-            Integer compareResult = compareVersion(clientVersion,serverLastVersion);
-            if (compareResult == 0){
-                //return new UpdateResponseDto(200,jsonResult,"No need to update.");
-            }else if(compareResult > 0){
-                //return new UpdateResponseDto(200,jsonResult,"No need to update.");
-            }else if(compareResult < 0){
-                //DOTO:select
-            }
-            return null;
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return null;
+    public List<Version> validate(Integer clientType, String clientVersion) {
+        List<Version> versions = versionMapper.queryLastVersion(clientType);
+        if(versions == null || versions.size() == 0)
+            throw new RuntimeException("Does not match the corresponding version information !");
+
+        Version version = versions.get(0);
+        Integer compareResult = compareVersion(clientVersion,version.getVersion());
+        if(compareResult < 0){
+            Version v = new Version();
+            v.setClientType(clientType);
+            v.setVersion(clientVersion);
+            Version result_v = versionMapper.selectOne(v);
+            return versionMapper.queryValidateInfo(result_v.getPubTime(),result_v.getClientType());
+        }else{
+            throw new RuntimeException("Already the latest version, no need to update !");
         }
+    }
+
+    @Override
+    public List<Version> versions(Integer clientType, String clientVersion) {
+        Version v = new Version();
+        v.setClientType(clientType);
+        v.setVersion(clientVersion);
+        Version result_v = versionMapper.selectOne(v);
+        return versionMapper.queryVersion(result_v.getPubTime(),result_v.getClientType());
     }
 
     @SneakyThrows
