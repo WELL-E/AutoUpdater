@@ -18,11 +18,11 @@ namespace GeneralUpdate.AspNetCore.Services
         /// <param name="isForce">Do you need to force an update.</param>
         /// <param name="getUrlsAction">Each version update (Query the latest version information in the database according to the client version number).</param>
         /// <returns></returns>
-        public async Task<string> UpdateValidateTaskAsync(int clientType, string clientVersion, string serverLastVersion,
+        public async Task<string> UpdateValidateTaskAsync(int clientType, string clientVersion, string serverLastVersion, string clientAppkey, string appSecretKey,
             bool isForce, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
         {
-            if (getUrlsAction == null) throw new ArgumentNullException(@"'getUrlsAction' cannot be null!");
-            ParameterVerification(clientType, clientVersion, serverLastVersion);
+            ParameterVerification(clientType, clientVersion, serverLastVersion, clientAppkey, appSecretKey, getUrlsAction);
+            if (!clientAppkey.Equals(appSecretKey)) throw new Exception("App key does not exist or is incorrect !");
             Version clientLastVersion;
             var respDTO = new UpdateValidateRespDTO();
             try
@@ -63,10 +63,10 @@ namespace GeneralUpdate.AspNetCore.Services
         /// </summary>
         /// <param name="getUrlsAction">Each version update (Query the latest version information in the database according to the client version number).</param>
         /// <returns></returns>
-        public async Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
+        public async Task<string> UpdateVersionsTaskAsync(int clientType, string clientVersion, string clientAppkey, string appSecretKey, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
         {
-            if (getUrlsAction == null) throw new ArgumentNullException(@"'getUrlsAction' cannot be null!");
-
+            ParameterVerification(clientType, clientVersion, "skip", clientAppkey, appSecretKey, getUrlsAction);
+            if (!clientAppkey.Equals(appSecretKey)) throw new Exception("App key does not exist or is incorrect !");
             var respDTO = new UpdateVersionsRespDTO();
             try
             {
@@ -82,11 +82,13 @@ namespace GeneralUpdate.AspNetCore.Services
             return JsonConvert.SerializeObject(respDTO);
         }
 
-        private void ParameterVerification(int clientType, string clientVersion, string serverLastVersion)
+        private void ParameterVerification(int clientType, string clientVersion, string serverLastVersion, string clientAppkey,string appSecretKey, Func<int, string, Task<List<UpdateVersionDTO>>> getUrlsAction)
         {
             if (clientType <= 0) throw new Exception(@"'clientType' cannot be less than or equal to 0 !");
             if (string.IsNullOrWhiteSpace(clientVersion)) throw new ArgumentNullException(@"'clientVersion' cannot be null !");
             if (string.IsNullOrWhiteSpace(serverLastVersion)) throw new ArgumentNullException(@"'serverLastVersion' cannot be null !");
+            if (getUrlsAction == null) throw new ArgumentNullException(@"'getUrlsAction' cannot be null!");
+            if (string.IsNullOrEmpty(clientAppkey) || string.IsNullOrEmpty(appSecretKey)) throw new NullReferenceException("The APP key does not exist !");
         }
     }
 }

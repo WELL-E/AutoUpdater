@@ -48,6 +48,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                             clientParameter.CompressEncoding = ConvertUtil.ToEncodingType(Packet.Encoding);
                             clientParameter.CompressFormat = Packet.Format;
                             clientParameter.DownloadTimeOut = Packet.DownloadTimeOut;
+                            clientParameter.AppSecretKey = Packet.AppSecretKey;
                             clientParameter.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
                             var clientParameterBase64 = SerializeUtil.Serialize(clientParameter);
                             if (!string.IsNullOrEmpty(Packet.UpdateLogUrl))

@@ -49,6 +49,7 @@ namespace GeneralUpdate.Core
             Packet.MainUpdateUrl = ClientParameter.MainUpdateUrl;
             Packet.MainValidateUrl = ClientParameter.MainValidateUrl;
             Packet.AppType = ClientParameter.AppType;
+            Packet.AppSecretKey = ClientParameter.AppSecretKey;
         }
 
         private void ValidateRemoteAddress(ClientParameter clientParameter)
@@ -70,6 +71,9 @@ namespace GeneralUpdate.Core
 
             if (clientParameter.UpdateVersions == null || clientParameter.UpdateVersions.Count == 0)
                 throw new NullReferenceException("Update versions not set.");
+
+            if (string.IsNullOrEmpty(clientParameter.AppSecretKey))
+                throw new NullReferenceException("You need to specify any unique string as the APP key !");
         }
     }
 }

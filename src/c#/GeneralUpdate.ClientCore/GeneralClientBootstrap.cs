@@ -51,7 +51,7 @@ namespace GeneralUpdate.ClientCore
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex);
+                throw ex;
             }
             return await Task.FromResult(this);
         }
@@ -63,7 +63,7 @@ namespace GeneralUpdate.ClientCore
         /// <param name="appName">The updater name does not need to contain an extension.</param>
         /// <returns></returns>
         /// <exception cref="Exception">Parameter initialization is abnormal.</exception>
-        public GeneralClientBootstrap Config(string url, string appName = "AutoUpdate.Core")
+        public GeneralClientBootstrap Config(string url,string appSecretKey, string appName = "AutoUpdate.Core")
         {
             if (string.IsNullOrEmpty(url)) throw new Exception("Url cannot be empty !");
             try
@@ -71,18 +71,19 @@ namespace GeneralUpdate.ClientCore
                 string basePath = Environment.CurrentDirectory;
                 Packet.InstallPath = basePath;
                 Packet.IsUpdate = true;
+                Packet.AppSecretKey = appSecretKey;
                 //update app.
                 Packet.AppName = appName;
                 string clienVersion = GetFileVersion(Path.Combine(basePath, Packet.AppName + ".exe"));
                 Packet.ClientVersion = clienVersion;
                 Packet.AppType = (int)AppType.UpdateApp;
-                Packet.ValidateUrl = $"{url}/validate/{ Packet.AppType }/{ clienVersion }";
-                Packet.UpdateUrl = $"{url}/versions/{ Packet.AppType }/{ clienVersion }";
+                Packet.ValidateUrl = $"{url}/validate/{ Packet.AppType }/{ clienVersion }/{ Packet.AppSecretKey }";
+                Packet.UpdateUrl = $"{url}/versions/{ Packet.AppType }/{ clienVersion }/{ Packet.AppSecretKey }";
                 //main app.
                 string mainAppName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule.FileName);
                 string mainVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                Packet.MainValidateUrl = $"{url}/validate/{ (int)AppType.ClientApp }/{ mainVersion }";
-                Packet.MainUpdateUrl = $"{url}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
+                Packet.MainValidateUrl = $"{url}/validate/{ (int)AppType.ClientApp }/{ mainVersion }/{Packet.AppSecretKey}";
+                Packet.MainUpdateUrl = $"{url}/versions/{ (int)AppType.ClientApp }/{ mainVersion }/{Packet.AppSecretKey}";
                 Packet.MainAppName = mainAppName;
                 return this;
             }
@@ -106,13 +107,14 @@ namespace GeneralUpdate.ClientCore
             Packet.InstallPath = clientParameter.InstallPath;
             Packet.UpdateLogUrl = clientParameter.UpdateLogUrl;
             Packet.IsUpdate = clientParameter.IsUpdate;
+            Packet.AppSecretKey = clientParameter.AppSecretKey;
             return this;
         }
 
         /// <summary>
         /// Let the user decide whether to update in the state of non-mandatory update.
         /// </summary>
-        /// <param name="func">Custom funcion ,C ustom actions to let users decide whether to update. true update false do not update .</param>
+        /// <param name="func">Custom funcion ,Custom actions to let users decide whether to update. true update false do not update .</param>
         /// <returns></returns>
         public GeneralClientBootstrap SetCustomOption(Func<bool> func)
         {
@@ -138,7 +140,7 @@ namespace GeneralUpdate.ClientCore
             }
             else if (!DataValidateUtil.IsURL(clientParameter.UpdateUrl))
             {
-                throw new Exception("Illegal url address.");
+                throw new NullReferenceException("Illegal url address.");
             }
 
             if (string.IsNullOrEmpty(clientParameter.ValidateUrl))
@@ -147,10 +149,11 @@ namespace GeneralUpdate.ClientCore
             }
             else if (!DataValidateUtil.IsURL(clientParameter.ValidateUrl))
             {
-                throw new Exception("Illegal url address.");
+                throw new NullReferenceException("Illegal url address.");
             }
 
             if (string.IsNullOrEmpty(clientParameter.AppName)) throw new NullReferenceException("Main app name not set.");
+            if (string.IsNullOrEmpty(clientParameter.AppSecretKey)) throw new NullReferenceException("You need to specify any unique string as the APP key !");
         }
 
         private string GetFileVersion(string filePath)

@@ -24,14 +24,18 @@ var app = builder.Build();
 //    await context.Clients.All.SendAsync("clientMethod","");
 //}
 
-app.MapGet("/versions/{clientType}/{clientVersion}", async (int clientType, string clientVersion, IUpdateService updateService) =>
+app.MapGet("/versions/{clientType}/{clientVersion}/{clientAppKey}", async (int clientType, string clientVersion, string clientAppKey, IUpdateService updateService) =>
 {
-    return await updateService.UpdateVersionsTaskAsync(clientType, clientVersion, UpdateVersions);
+    //TODO: Link database query appSecretKey.
+    var appSecretKey = "41A54379-C7D6-4920-8768-21A3468572E5";
+    return await updateService.UpdateVersionsTaskAsync(clientType, clientVersion, clientAppKey, appSecretKey, UpdateVersions);
 });
 
-app.MapGet("/validate/{clientType}/{clientVersion}", async (int clientType, string clientVersion, IUpdateService updateService) =>
+app.MapGet("/validate/{clientType}/{clientVersion}/{clientAppKey}", async (int clientType, string clientVersion,string clientAppKey, IUpdateService updateService) =>
 {
-    return await updateService.UpdateValidateTaskAsync(clientType, clientVersion, GetLastVersion(), true, GetValidateInfos);
+    //TODO: Link database query appSecretKey.
+    var appSecretKey = "41A54379-C7D6-4920-8768-21A3468572E5";
+    return await updateService.UpdateValidateTaskAsync(clientType, clientVersion, clientAppKey, appSecretKey, GetLastVersion(), true, GetValidateInfos);
 });
 app.Run();
 

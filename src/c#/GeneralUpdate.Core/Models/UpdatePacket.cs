@@ -73,5 +73,10 @@ namespace GeneralUpdate.Core.Models
         public Encoding Encoding { get; set; }
 
         public int DownloadTimeOut { get; set; }
+
+        /// <summary>
+        /// application key
+        /// </summary>
+        public string AppSecretKey { get; set; }
     }
 }

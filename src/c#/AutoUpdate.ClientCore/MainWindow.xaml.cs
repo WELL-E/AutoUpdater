@@ -75,6 +75,8 @@ namespace AutoUpdate.ClientCore
                 clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.AppType }/{ clientParameter.ClientVersion }";
                 //更新程序exe名称
                 clientParameter.AppName = "AutoUpdate.Core";
+                //指定应用密钥，用于区分客户端应用
+                clientParameter.AppSecretKey = "5B9003C3-438B-450B-B33D-AAEFAD3DDC49";
 
                 #endregion update app.
 

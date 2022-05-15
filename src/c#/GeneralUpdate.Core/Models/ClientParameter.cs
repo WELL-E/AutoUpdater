@@ -58,6 +58,11 @@ namespace GeneralUpdate.Core.Models
         public int DownloadTimeOut { get; set; }
 
         /// <summary>
+        /// application key
+        /// </summary>
+        public string AppSecretKey { get; set; }
+
+        /// <summary>
         /// One or more version update information.
         /// </summary>
         public List<UpdateVersion> UpdateVersions { get; set; }
