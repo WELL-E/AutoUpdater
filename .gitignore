@@ -184,3 +184,8 @@ FakesAssemblies/
 
 # SVN Repo
 .svn/
+src/c\#/.vs/GeneralUpdate/DesignTimeBuild/.dtbcache.v2
+src/c\#/.vs/GeneralUpdate/FileContentIndex/ff67c388-b930-4070-bddb-c39601e48c57.vsidx
+src/c\#/.vs/GeneralUpdate/FileContentIndex/read.lock
+src/c\#/.vs/ProjectEvaluation/generalupdate.metadata.v2
+src/c\#/.vs/ProjectEvaluation/generalupdate.projects.v2

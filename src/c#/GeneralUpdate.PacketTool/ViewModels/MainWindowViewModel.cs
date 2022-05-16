@@ -105,17 +105,7 @@ namespace GeneralUpdate.PacketTool.ViewModels
         /// parameter validation
         /// </summary>
         /// <returns></returns>
-        private bool ValidationParameters()
-        {
-            if (string.IsNullOrEmpty(SourcePath) || string.IsNullOrEmpty(TargetPath) || string.IsNullOrEmpty(PatchPath) ||
-                !Directory.Exists(SourcePath) || !Directory.Exists(TargetPath) || !Directory.Exists(PatchPath)) 
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        private bool ValidationParameters()=> (string.IsNullOrEmpty(SourcePath) || string.IsNullOrEmpty(TargetPath) || string.IsNullOrEmpty(PatchPath) ||
+                !Directory.Exists(SourcePath) || !Directory.Exists(TargetPath) || !Directory.Exists(PatchPath));
     }
 }
