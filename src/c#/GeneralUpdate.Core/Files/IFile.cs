@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeneralUpdate.Core.File
+namespace GeneralUpdate.Core.Files
 {
     public interface IFile
     {

@@ -11,7 +11,7 @@ namespace GeneralUpdate.Core.Pipelines
     {
         private IList<MiddlewareNode> nodes = new List<MiddlewareNode>();
         private MiddlewareStack _components;
-        private TContext _context;
+        private readonly TContext _context;
 
         public PipelineBuilder(TContext context)
         {

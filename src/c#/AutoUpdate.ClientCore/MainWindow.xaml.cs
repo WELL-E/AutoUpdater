@@ -108,7 +108,7 @@ namespace AutoUpdate.ClientCore
                 generalClientBootstrap.Exception += OnException;
                 //ClientStrategy该更新策略将完成1.自动升级组件自更新 2.启动更新组件 3.配置好ClientParameter无需再像之前的版本写args数组进程通讯了。
                 //generalClientBootstrap.Config(clientParameter).
-                generalClientBootstrap.Config(baseUrl).
+                generalClientBootstrap.Config(baseUrl,"appsecretkey").
                 Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.Encoding, Encoding.Default).
                 Option(UpdateOption.Format, "zip").

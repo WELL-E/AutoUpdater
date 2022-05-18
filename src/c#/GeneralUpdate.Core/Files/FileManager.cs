@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace GeneralUpdate.Core.File
+namespace GeneralUpdate.Core.Files
 {
     public class FileManager<T> : IEnumerable<T> where T : IComparable
     {

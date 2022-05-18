@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeneralUpdate.Core.File
+namespace GeneralUpdate.Core.Files
 {
     internal class FileNode<T> : BaseFileNode<T> where T : IComparable
     {

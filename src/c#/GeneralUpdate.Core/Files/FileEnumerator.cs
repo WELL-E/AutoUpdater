@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeneralUpdate.Core.File
+namespace GeneralUpdate.Core.Files
 {
     internal class FileEnumerator<T> : IEnumerator<T> where T : IComparable
     {
