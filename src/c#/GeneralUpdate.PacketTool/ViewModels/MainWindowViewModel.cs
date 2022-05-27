@@ -19,6 +19,9 @@ namespace GeneralUpdate.PacketTool.ViewModels
         private bool isPublish;
         private string url;
 
+        /// <summary>
+        /// Éú³ÉÃüÁî
+        /// </summary>
         public ReactiveCommand<Unit, Unit> BuildCommand { get; }
         public ReactiveCommand<object, Unit> SelectFolderCommand { get; }
         public string SourcePath { get => sourcePath; set => this.RaiseAndSetIfChanged(ref sourcePath, value); }
