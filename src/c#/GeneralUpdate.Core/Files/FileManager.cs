@@ -823,5 +823,11 @@ namespace GeneralUpdate.Core.Files
         public IEnumerator<T> GetEnumerator()=> new FileEnumerator<T>(this);
 
         public IEnumerator<T> GetEnumeratorDesc()=> new FileEnumerator<T>(this, false);
+
+        public IEnumerator<T> RecursiveScan(string rootPath) 
+        {
+
+            return null;
+        }
     }
 }

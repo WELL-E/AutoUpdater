@@ -12,6 +12,7 @@
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Models\" />
+    <Folder Include="Models\" />
     <None Remove=".gitignore" />
     <None Remove="imgs\GeneralUpdate.ico" />
   </ItemGroup>

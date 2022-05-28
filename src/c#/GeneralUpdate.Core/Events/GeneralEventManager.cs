@@ -22,10 +22,8 @@ namespace GeneralUpdate.Core.Events
                 {
                     lock (_lockObj)
                     {
-                        if (_instance == null)
-                        {
+                        if (_instance == null) 
                             _instance = new GeneralEventManager();
-                        }
                     }
                 }
                 return _instance;

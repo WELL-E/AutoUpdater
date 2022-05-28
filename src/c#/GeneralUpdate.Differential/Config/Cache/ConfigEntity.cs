@@ -5,7 +5,7 @@ namespace GeneralUpdate.Differential.Config.Cache
     public class ConfigEntity
     {
         /// <summary>
-        /// 文件名
+        /// file name
         /// </summary>
         public string Name { get; set; }
 

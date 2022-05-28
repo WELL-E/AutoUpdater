@@ -4,7 +4,9 @@ using GeneralUpdate.Differential.Common;
 using GeneralUpdate.Zip;
 using GeneralUpdate.Zip.Events;
 using GeneralUpdate.Zip.Factory;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,13 @@ namespace GeneralUpdate.Differential
         /// Differential file format .
         /// </summary>
         private const string PATCH_FORMAT = ".patch";
+        /// <summary>
+        /// Folder dependencies file.
+        /// </summary>
+        private const string DEPEND_FORMAT = ".gdep";
 
         private const string PATCHS = "patchs";
-
+        private List<FolderDepend> _depends;
         private static readonly object _lockObj = new object();
         private static DifferentialCore _instance;
 
@@ -80,10 +86,12 @@ namespace GeneralUpdate.Differential
 
                 //Take the left tree as the center to match the files that are not in the right tree .
                 var tupleResult = FileUtil.Compare(targetPath, appPath);
-
+                _depends = new List<FolderDepend>();
                 //Binary differencing of like terms .
                 foreach (var file in tupleResult.Item2)
                 {
+                    var depFullName = file.FullName.Replace(targetPath, "");
+                    _depends.Add(new FolderDepend(file.Name, depFullName));
                     var oldfile = Path.Combine(appPath, file.Name);
                     var newfile = file.FullName;
                     var extensionName = Path.GetExtension(file.FullName);
@@ -98,6 +106,8 @@ namespace GeneralUpdate.Differential
                         File.Copy(newfile, Path.Combine(patchPath, Path.GetFileName(newfile)), true);
                     }
                 }
+                string depJson = JsonConvert.SerializeObject(_depends);
+                File.WriteAllText(Path.Combine(patchPath, $"{ DateTime.Now.ToString("yyyyMMdd") }{DEPEND_FORMAT}"), depJson, encoding ?? Encoding.UTF8);
                 _compressProgressCallback = compressProgressCallback;
                 var factory = new GeneralZipFactory();
                 if (_compressProgressCallback != null) factory.CompressProgress += OnCompressProgress;
@@ -117,7 +127,7 @@ namespace GeneralUpdate.Differential
         /// <param name="patchPath"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task Drity(string appPath, string patchPath)
+        public async Task Drity(string appPath, string patchPath, Encoding encoding = null)
         {
             if (!Directory.Exists(appPath) || !Directory.Exists(patchPath)) return;
             try
@@ -127,19 +137,25 @@ namespace GeneralUpdate.Differential
 
                 var patchFiles = FileUtil.GetAllFiles(patchPath);
                 var oldFiles = FileUtil.GetAllFiles(appPath);
+                //get dep
+                var depFile = patchFiles.FirstOrDefault(f=> Path.GetExtension(f.Name).Equals(DEPEND_FORMAT));
+                var depJson = FileUtil.GetJsonFile(depFile.FullName, encoding ?? Encoding.UTF8);
+                var depObj = JsonConvert.DeserializeObject<List<FolderDepend>>(depJson);
                 foreach (var oldFile in oldFiles)
                 {
                     //Only the difference file (.patch) can be updated here.
                     var findFile = patchFiles.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f.Name).Equals(Path.GetFileNameWithoutExtension(oldFile.Name)));
-                    if (findFile != null)
+                    var depContent = depObj.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f.Name).Equals(Path.GetFileNameWithoutExtension(oldFile.Name)));
+                    if (findFile != null && depContent != null)
                     {
                         var extensionName = Path.GetExtension(findFile.FullName);
                         if (!extensionName.Equals(PATCH_FORMAT)) continue;
-                        await DrityPatch(oldFile.FullName, findFile.FullName);
+                        var tempFullName = appPath + depContent.FullName;
+                        await DrityPatch(tempFullName, findFile.FullName);
                     }
                 }
                 //Update does not include files or copies configuration files.
-                await DrityUnkonw(appPath, patchPath);
+                await DrityUnkonw(appPath, patchPath, depObj);
             }
             catch (Exception ex)
             {
@@ -173,7 +189,7 @@ namespace GeneralUpdate.Differential
         /// </summary>
         /// <param name="appPath">Client application directory .</param>
         /// <param name="patchPath"></param>
-        private Task DrityUnkonw(string appPath, string patchPath)
+        private Task DrityUnkonw(string appPath, string patchPath, List<FolderDepend> depObj)
         {
             try
             {
@@ -182,7 +198,11 @@ namespace GeneralUpdate.Differential
                 {
                     var extensionName = Path.GetExtension(file.FullName);
                     if (Filefilter.Diff.Contains(extensionName)) continue;
-                    File.Copy(file.FullName, Path.Combine(appPath, file.Name), true);
+                    var depContent = depObj.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f.Name).Equals(Path.GetFileNameWithoutExtension(file.Name)));
+                    var tempFullName = appPath + depContent.FullName;
+                    var tempDir = Path.GetDirectoryName(tempFullName);
+                    if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
+                    File.Copy(file.FullName, tempFullName , true);
                 }
                 if (Directory.Exists(patchPath)) Directory.Delete(patchPath, true);
                 return Task.CompletedTask;

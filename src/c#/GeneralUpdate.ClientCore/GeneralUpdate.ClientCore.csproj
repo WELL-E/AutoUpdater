@@ -124,7 +124,16 @@
     <Folder Include="Differential\Common\" />
     <Folder Include="Differential\Config\" />
     <Folder Include="Differential\GStream\" />
+    <Folder Include="Differential\Binary\" />
+    <Folder Include="Differential\Common\" />
+    <Folder Include="Differential\Config\" />
+    <Folder Include="Differential\GStream\" />
     <Folder Include="Download\" />
+    <Folder Include="Pipelines\Attributes\" />
+    <Folder Include="Pipelines\Context\" />
+    <Folder Include="Pipelines\Middleware\" />
+    <Folder Include="Pipelines\MiddlewareResolver\" />
+    <Folder Include="Pipelines\Pipeline\" />
     <Folder Include="Pipelines\Attributes\" />
     <Folder Include="Pipelines\Context\" />
     <Folder Include="Pipelines\Middleware\" />
@@ -155,6 +164,14 @@
     <Folder Include="ZipFactory\Factory\" />
     <Folder Include="ZipFactory\G7z\" />
     <Folder Include="ZipFactory\GZip\" />
+    <Folder Include="Bootstrap\" />
+    <Folder Include="CustomAwaiter\" />
+    <Folder Include="Download\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Models\" />
+    <Folder Include="Update\" />
+    <Folder Include="Utils\" />
+    <Folder Include="ZipFactory\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -124,6 +124,19 @@ namespace GeneralUpdate.Core.Utils
                 return null;
             }
         }
+
+        public static string GetJsonFile(string filepath,Encoding encoding)
+        {
+            string json = string.Empty;
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite, FileShare.ReadWrite))
+            {
+                using (StreamReader sr = new StreamReader(fs, encoding))
+                {
+                    json = sr.ReadToEnd().ToString();
+                }
+            }
+            return json;
+        }
     }
 
     /// <summary>

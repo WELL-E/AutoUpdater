@@ -9,6 +9,6 @@ namespace GeneralUpdate.Differential.Common
         /// <summary>
         /// File formats to avoid when doing differential updates.
         /// </summary>
-        public static readonly List<string> Diff = new List<string>() { ".patch", ".7z", ".zip", ".rar", ".tar", ".db", ".xml", ".ini", ".json", ".config" };
+        public static readonly List<string> Diff = new List<string>() { ".patch", ".7z", ".zip", ".rar", ".tar", ".db", ".xml", ".ini", ".json", ".config", ".gdep" };
     }
 }
