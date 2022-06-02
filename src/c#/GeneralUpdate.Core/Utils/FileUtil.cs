@@ -74,7 +74,7 @@ namespace GeneralUpdate.Core.Utils
         /// <param name="folder1">source path</param>
         /// <param name="folder2">target path</param>
         /// <returns>item1 :  The following files are in both folders, item2 : The following files are in list1 but not list2.</returns>
-        public static (IEnumerable<FileInfo>, IEnumerable<FileInfo>) Compare(string folder1, string folder2)
+        public static IEnumerable<FileInfo> Compare(string folder1, string folder2)
         {
             // Create two identical or different temporary folders
             // on a local drive and change these file paths.
@@ -103,7 +103,8 @@ namespace GeneralUpdate.Core.Utils
             // For this example we only check one way.
             //The following files are in list1 but not list2
             // (from file in list1 select file).Except(list2, fileCompare);
-            return (list1.Intersect(list2, fileCompare), (from file in list1 select file).Except(list2, fileCompare));
+            var result = (from file in list1 select file).Except(list2, fileCompare);
+            return (from file in list1 select file).Except(list2, fileCompare);
         }
 
         public static FileInfo[] GetAllFiles(string path)
