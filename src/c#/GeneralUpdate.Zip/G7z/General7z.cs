@@ -2,7 +2,9 @@
 using GeneralUpdate.Zip.Factory;
 using SharpCompress.Archives;
 using SharpCompress.Common;
+using SharpCompress.IO;
 using SharpCompress.Readers;
+using SharpCompress.Writers;
 using System;
 using System.IO;
 using System.Linq;
@@ -27,24 +29,24 @@ namespace GeneralUpdate.Zip.G7z
         {
             try
             {
-                //using (Stream stream = File.OpenWrite(SOURSE_PATH))
-                //{
-                //    WriterOptions writerOptions = new WriterOptions(CompressionType.Unknown)  { LeaveStreamOpen = true  };
-                //    writerOptions.ArchiveEncoding.Default = _encoding;
-                //    using (var writer = WriterFactory.Open(stream, ArchiveType.SevenZip, writerOptions))
-                //    {
-                //        writer.WriteAll(SOLUTION_BASE_PATH, "*", SearchOption.AllDirectories);
-                //    }
-                //}
-                //using (Stream stream = File.OpenRead(_destinationPath))
-                //{
-                //    ReaderOptions readerOptions = new ReaderOptions();
-                //    readerOptions.ArchiveEncoding.Default = _encoding;
-                //    using (var reader = ReaderFactory.Open(new NonDisposingStream(stream), readerOptions))
-                //    {
-                //        reader.WriteAllToDirectory(SOLUTION_BASE_PATH, new ExtractionOptions() { ExtractFullPath = true });
-                //    }
-                //}
+                using (Stream stream = File.OpenWrite(SOURSE_PATH))
+                {
+                    WriterOptions writerOptions = new WriterOptions(CompressionType.Unknown) { LeaveStreamOpen = true };
+                    writerOptions.ArchiveEncoding.Default = _encoding;
+                    using (var writer = WriterFactory.Open(stream, ArchiveType.SevenZip, writerOptions))
+                    {
+                        writer.WriteAll(SOLUTION_BASE_PATH, "*", SearchOption.AllDirectories);
+                    }
+                }
+                using (Stream stream = File.OpenRead(_destinationPath))
+                {
+                    ReaderOptions readerOptions = new ReaderOptions();
+                    readerOptions.ArchiveEncoding.Default = _encoding;
+                    using (var reader = ReaderFactory.Open(NonDisposingStream.Create(stream), readerOptions))
+                    {
+                        reader.WriteAllToDirectory(SOLUTION_BASE_PATH, new ExtractionOptions() { ExtractFullPath = true });
+                    }
+                }
                 return true;
             }
             catch (Exception ex)

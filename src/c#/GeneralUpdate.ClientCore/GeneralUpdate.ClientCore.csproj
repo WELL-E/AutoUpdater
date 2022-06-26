@@ -109,7 +109,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="SharpCompress" Version="0.30.1" />
+    <PackageReference Include="SharpCompress" Version="0.32.1" />
     <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
     <PackageReference Include="System.Net.Requests" Version="4.3.0" />
   </ItemGroup>
@@ -130,6 +130,16 @@
     <Folder Include="Differential\Config\" />
     <Folder Include="Differential\GStream\" />
     <Folder Include="Download\" />
+    <Folder Include="Bootstrap\" />
+    <Folder Include="CustomAwaiter\" />
+    <Folder Include="Differential\" />
+    <Folder Include="Download\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Models\" />
+    <Folder Include="ZipFactory\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Update\" />
+    <Folder Include="Pipelines\" />
     <Folder Include="Pipelines\Attributes\" />
     <Folder Include="Pipelines\Context\" />
     <Folder Include="Pipelines\Middleware\" />
