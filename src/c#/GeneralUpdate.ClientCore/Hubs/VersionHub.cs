@@ -40,10 +40,8 @@ namespace GeneralUpdate.ClientCore.Hubs
                 {
                     lock (_lock)
                     {
-                        if (_instance == null)
-                        {
+                        if (_instance == null) 
                             _instance = new VersionHub<TParameter>();
-                        }
                     }
                 }
                 return _instance;
