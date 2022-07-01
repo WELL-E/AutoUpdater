@@ -17,6 +17,8 @@ namespace GeneralUpdate.Core.Update
 
         public static UpdateOption<T> ValueOf<T>(string name) => (UpdateOption<T>)Pool.ValueOf<T>(name);
 
+        #region parameter configuration
+
         /// <summary>
         /// Update the file format of the package.
         /// </summary>
@@ -36,6 +38,18 @@ namespace GeneralUpdate.Core.Update
         /// Timeout period (unit: second). If this parameter is not specified, the default timeout period is 30 seconds.
         /// </summary>
         public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
+
+        /// <summary>
+        /// System platform.(windows , linux , mac, iOS, android,raspberry pie)
+        /// </summary>
+        public static readonly UpdateOption<string> Platform = ValueOf<string>("PLATFORM");
+
+        /// <summary>
+        /// Whether to enable configuration file update.
+        /// </summary>
+        public static readonly UpdateOption<bool> UpdateConfig = ValueOf<bool>("UPDATECONFIG");
+
+        #endregion
 
         internal UpdateOption(int id, string name)
           : base(id, name) {}

@@ -112,6 +112,8 @@ namespace AutoUpdate.ClientCore
                 Option(UpdateOption.DownloadTimeOut, 60).
                 Option(UpdateOption.Encoding, Encoding.Default).
                 Option(UpdateOption.Format, "zip").
+                //添加多平台配置
+                Option(UpdateOption.Platform, PlatformType.Windows).
                 //注入一个func让用户决定是否跳过本次更新，如果是强制更新则不生效
                 SetCustomOption(ShowCustomOption).
                 Strategy<ClientStrategy>();

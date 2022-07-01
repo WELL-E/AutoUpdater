@@ -44,6 +44,7 @@
     <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateVersionsRespDTO.cs" Link="DTOs\UpdateVersionsRespDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\ClientParameter.cs" Link="Models\ClientParameter.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\FileBase.cs" Link="Models\FileBase.cs" />
+    <Compile Include="..\GeneralUpdate.Core\Models\PlatformType.cs" Link="Models\PlatformType.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\UpdateConfig.cs" Link="Models\UpdateConfig.cs" />
     <Compile Include="..\GeneralUpdate.Core\Models\UpdatePacket.cs" Link="Models\UpdatePacket.cs" />
     <Compile Include="..\GeneralUpdate.Core\Pipelines\Attributes\DynamicallyAccessedMembersAttribute.cs" Link="Pipelines\Attributes\DynamicallyAccessedMembersAttribute.cs" />
