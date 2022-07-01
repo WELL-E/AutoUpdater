@@ -67,3 +67,4 @@ GeneralUpdate means that the general update is committed to becoming a full-plat
 | Mac                   | yes                     |
 | iOS                   | Not currently supported |
 | Android               | Not currently supported |
+| raspberry pie         | pending verification    |
