@@ -13,4 +13,4 @@ jobs:
       with:
         dotnet-version: '6.0.x'    
     - name: build
-      run: dotnet build ./src/GeneralUpdate.sln
+      run: dotnet build ./src/c#/GeneralUpdate.sln
