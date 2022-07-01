@@ -32,18 +32,21 @@ namespace GeneralUpdate.ClientCore
             try
             {
                 var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.ValidateUrl);
-                if (respDTO == null || respDTO.Code != 200) throw new Exception($"{ respDTO.Code },{ respDTO.Message }.");
-                if (respDTO.Code == 200)
+                if (respDTO == null) throw new ArgumentNullException("The verification request is abnormal, please check the network or parameter configuration!");
+                if (respDTO.Code != HttpStatus.OK) throw new Exception($"Request failed , Code :{ respDTO.Code }, Message:{ respDTO.Message } !");
+                if (respDTO.Code == HttpStatus.OK)
                 {
                     var body = respDTO.Body;
                     Packet.IsUpdate = body.IsForcibly;
+                    //Do you need to force an update.
                     if (body.IsForcibly)
                     {
                         await base.LaunchTaskAsync();
                     }
-                    else
+                    else if(body.IsUpdate)//Does it need to be updated.
                     {
                         bool isSkip = false;
+                        //User decides if update is required.
                         if (_customOption != null) isSkip = _customOption.Invoke();
                         if (isSkip) await base.LaunchTaskAsync();
                     }

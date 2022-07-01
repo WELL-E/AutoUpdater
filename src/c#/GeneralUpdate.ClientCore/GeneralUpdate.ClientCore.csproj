@@ -36,6 +36,7 @@
     <Compile Include="..\GeneralUpdate.Core\Download\ITaskManger.cs" Link="Download\ITaskManger.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\BaseRequestDTO.cs" Link="DTOs\BaseRequestDTO.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\BaseResponseDTO.cs" Link="DTOs\BaseResponseDTO.cs" />
+    <Compile Include="..\GeneralUpdate.Core\DTOs\HttpStatus.cs" Link="DTOs\HttpStatus.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\IRequest.cs" Link="DTOs\IRequest.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\IResponse.cs" Link="DTOs\IResponse.cs" />
     <Compile Include="..\GeneralUpdate.Core\DTOs\UpdateValidateRespDTO.cs" Link="DTOs\UpdateValidateRespDTO.cs" />

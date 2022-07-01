@@ -8,6 +8,8 @@ namespace GeneralUpdate.Core.DTOs
 
     public class UpdateValidateDTO
     {
+        public bool IsUpdate { get; set; }
+
         /// <summary>
         /// Is forcibly update.
         /// </summary>

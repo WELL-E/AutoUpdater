@@ -41,6 +41,7 @@ namespace GeneralUpdate.AspNetCore.Services
                     body.ClientType = clientType;
                     body.UpdateVersions = await getUrlsAction(clientType, clientVersion);
                     body.IsForcibly = isForce;
+                    body.IsUpdate = true;
                     respDTO.Code = ResponseStatus.Success;
                     respDTO.Message = RespMessage.RequestSucceeded;
                 }

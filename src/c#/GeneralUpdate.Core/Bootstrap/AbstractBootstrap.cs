@@ -80,7 +80,7 @@ namespace GeneralUpdate.Core.Bootstrap
                     new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
                 var url = Packet.AppType == 1 ? Packet.MainUpdateUrl : Packet.UpdateUrl;
                 var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(url);
-                if (updateResp.Code == 200)
+                if (updateResp.Code == HttpStatus.OK)
                 {
                     var body = updateResp.Body;
                     Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
