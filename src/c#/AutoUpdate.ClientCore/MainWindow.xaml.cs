@@ -121,6 +121,10 @@ namespace AutoUpdate.ClientCore
             });
         }
 
+        /// <summary>
+        /// 让用户决定是否跳过本次更新
+        /// </summary>
+        /// <returns></returns>
         private bool ShowCustomOption() 
         {
             var messageBoxResult = MessageBox.Show("检测到本地与服务器版本不一致，是否更新？","click",MessageBoxButton.YesNoCancel);

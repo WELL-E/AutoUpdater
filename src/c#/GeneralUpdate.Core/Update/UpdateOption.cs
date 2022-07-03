@@ -40,7 +40,7 @@ namespace GeneralUpdate.Core.Update
         public static readonly UpdateOption<int> DownloadTimeOut = ValueOf<int>("DOWNLOADTIMEOUT");
 
         /// <summary>
-        /// System platform.(windows , linux , mac, iOS, android,raspberry pie)
+        /// System platform.(windows , linux , mac, iOS, android,raspberry pie,tizen,blazor)
         /// </summary>
         public static readonly UpdateOption<string> Platform = ValueOf<string>("PLATFORM");
 

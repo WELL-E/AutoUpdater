@@ -26,7 +26,7 @@ namespace GeneralUpdate.Core.Strategys
 
         #region Public Methods
 
-        public override void Create(IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
+        public override void Create(string platformType, IFile file, Action<object, MutiDownloadProgressChangedEventArgs> progressEventAction,
     Action<object, ExceptionEventArgs> exceptionEventAction)
         {
             Packet = (UpdatePacket)file;

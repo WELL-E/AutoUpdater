@@ -80,6 +80,8 @@ namespace GeneralUpdate.Core.Bootstrap
                     new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, "Update checking..."));
                 var url = Packet.AppType == 1 ? Packet.MainUpdateUrl : Packet.UpdateUrl;
                 var updateResp = await HttpUtil.GetTaskAsync<UpdateVersionsRespDTO>(url);
+                if (updateResp == null) throw new NullReferenceException(nameof(updateResp));
+                if (updateResp.Code != HttpStatus.OK) throw new Exception($"Request failed , Code :{updateResp.Code}, Message:{updateResp.Message} !");
                 if (updateResp.Code == HttpStatus.OK)
                 {
                     var body = updateResp.Body;
@@ -123,7 +125,7 @@ namespace GeneralUpdate.Core.Bootstrap
             {
                 Validate();
                 strategy = this.strategyFactory();
-                strategy.Create(Packet, MutiDownloadProgressAction, ExceptionAction);
+                strategy.Create(null,Packet, MutiDownloadProgressAction, ExceptionAction);
             }
             return strategy;
         }

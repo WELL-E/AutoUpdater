@@ -100,6 +100,9 @@ namespace GeneralUpdate.Core.Models
         /// </summary>
         public string Version { get; set; }
 
+        /// <summary>
+        /// Remote service url address.
+        /// </summary>
         public string Url { get; set; }
     }
 }

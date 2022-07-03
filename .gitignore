@@ -230,3 +230,7 @@ src/c\#/.vs/GeneralUpdate/FileContentIndex/05de2949-9e3d-49c6-a77b-e80050abf9c5.
 src/c\#/.vs/GeneralUpdate/FileContentIndex/58649edc-5fb0-4cf4-9894-4c54dcf9ff48.vsidx
 src/c\#/.vs/GeneralUpdate/FileContentIndex/7f9f4839-4956-40d4-b05d-01d128ee194b.vsidx
 *.vsidx
+*.v2
+*.lock
+*.txt
+*.v3
