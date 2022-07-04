@@ -85,6 +85,8 @@ namespace GeneralUpdate.Core.Bootstrap
                 if (updateResp.Code == HttpStatus.OK)
                 {
                     var body = updateResp.Body;
+                    //If it is empty and the status code is OK, no update is required.
+                    if (body == null) return (TBootstrap)this;
                     Packet.UpdateVersions = ConvertUtil.ToUpdateVersions(body.UpdateVersions);
                     if (Packet.UpdateVersions != null && Packet.UpdateVersions.Count != 0) 
                         Packet.LastVersion = Packet.UpdateVersions[Packet.UpdateVersions.Count - 1].Version;
