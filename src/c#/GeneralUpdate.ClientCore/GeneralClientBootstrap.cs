@@ -37,6 +37,7 @@ namespace GeneralUpdate.ClientCore
                 if (respDTO.Code == HttpStatus.OK)
                 {
                     var body = respDTO.Body;
+                    if(body == null) return await Task.FromResult(this);
                     Packet.IsUpdate = body.IsForcibly;
                     //Do you need to force an update.
                     if (body.IsForcibly)
