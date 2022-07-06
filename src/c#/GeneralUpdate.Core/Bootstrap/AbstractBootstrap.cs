@@ -23,6 +23,7 @@ namespace GeneralUpdate.Core.Bootstrap
         private UpdatePacket _packet;
         private IStrategy strategy;
         private const string DefaultFormat = "zip";
+        private string _platformType;
 
         public delegate void MutiAllDownloadCompletedEventHandler(object sender, MutiAllDownloadCompletedEventArgs e);
 
@@ -96,6 +97,7 @@ namespace GeneralUpdate.Core.Bootstrap
                     MutiDownloadProgressChanged.Invoke(this,
                         new MutiDownloadProgressChangedEventArgs(null, ProgressType.Check, $"Check update failed :{ updateResp.Message }."));
                 }
+                //_platformType = GetOption(UpdateOption.Platform);
                 var pacektFormat = GetOption(UpdateOption.Format) ?? DefaultFormat;
                 Packet.Format = $".{pacektFormat}";
                 Packet.Encoding = GetOption(UpdateOption.Encoding) ?? Encoding.Default;
@@ -141,6 +143,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         public virtual TBootstrap Validate()
         {
+            //if (string.IsNullOrWhiteSpace(_platformType)) throw new ArgumentNullException(nameof(_platformType));
             if (this.strategyFactory == null) throw new InvalidOperationException("Strategy or strategy factory not set.");
             return (TBootstrap)this;
         }
