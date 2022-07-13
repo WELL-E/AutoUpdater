@@ -30,7 +30,7 @@ namespace GeneralUpdate.ClientCore.Strategys
                 Task.Run(async () =>
                 {
                     var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.MainValidateUrl);
-                    if (respDTO.Code == 200)
+                    if (respDTO.Code == HttpStatus.OK)
                     {
                         var body = respDTO.Body;
                         try

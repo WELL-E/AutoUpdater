@@ -65,19 +65,19 @@ namespace AutoUpdate.ClientCore
 
                 #region update app.
 
-                clientParameter.ClientVersion = "1.1.1.1";
+                clientParameter.ClientVersion = "9.1.3.0";//"1.1.1.1";
 
                 //客户端类型：1.主程序客户端 2.更新组件
                 clientParameter.AppType = (int)AppType.UpdateApp;
+                clientParameter.AppSecretKey = "41A54379-C7D6-4920-8768-21A3468572E5";
                 //更新组件请求验证更新的服务端地址
-                clientParameter.ValidateUrl = $"{baseUrl}/validate/{ clientParameter.AppType }/{ clientParameter.ClientVersion }";
+                clientParameter.ValidateUrl = $"{baseUrl}/validate/{ clientParameter.AppType }/{ clientParameter.ClientVersion }/{clientParameter.AppSecretKey}";
                 //更新组件更新包下载地址
-                clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.AppType }/{ clientParameter.ClientVersion }";
+                clientParameter.UpdateUrl = $"{baseUrl}/versions/{ clientParameter.AppType }/{ clientParameter.ClientVersion }/{clientParameter.AppSecretKey}";
                 //更新程序exe名称
                 clientParameter.AppName = "AutoUpdate.Core";
                 //指定应用密钥，用于区分客户端应用
-                clientParameter.AppSecretKey = "5B9003C3-438B-450B-B33D-AAEFAD3DDC49";
-
+                
                 #endregion update app.
 
                 #region main app.
@@ -87,9 +87,9 @@ namespace AutoUpdate.ClientCore
                 //主程序客户端exe名称
                 clientParameter.MainAppName = "AutoUpdate.ClientCore";
                 //主程序客户端请求验证更新的服务端地址
-                clientParameter.MainValidateUrl = $"{baseUrl}/validate/{ (int)AppType.ClientApp }/{ mainVersion }";
+                clientParameter.MainValidateUrl = $"{baseUrl}/validate/{ (int)AppType.ClientApp }/{ mainVersion }/{clientParameter.AppSecretKey}";
                 //主程序客户端更新包下载地址
-                clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ (int)AppType.ClientApp }/{ mainVersion }";
+                clientParameter.MainUpdateUrl = $"{baseUrl}/versions/{ (int)AppType.ClientApp }/{ mainVersion }/{clientParameter.AppSecretKey}";
 
                 #endregion main app.
 

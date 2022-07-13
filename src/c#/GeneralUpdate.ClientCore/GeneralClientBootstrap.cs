@@ -31,25 +31,33 @@ namespace GeneralUpdate.ClientCore
         {
             try
             {
+                //Verify whether 'upgrad' needs to be updated.
                 var respDTO = await HttpUtil.GetTaskAsync<UpdateValidateRespDTO>(Packet.ValidateUrl);
                 if (respDTO == null) throw new ArgumentNullException("The verification request is abnormal, please check the network or parameter configuration!");
                 if (respDTO.Code != HttpStatus.OK) throw new Exception($"Request failed , Code :{ respDTO.Code }, Message:{ respDTO.Message } !");
                 if (respDTO.Code == HttpStatus.OK)
                 {
                     var body = respDTO.Body;
-                    if(body == null) return await Task.FromResult(this);
-                    Packet.IsUpdate = body.IsForcibly;
-                    //Do you need to force an update.
-                    if (body.IsForcibly)
+                    if (body.IsForcibly || body.IsUpdate) Packet.IsUpdate = body.IsForcibly;
+
+                    if (Packet.IsUpdate)
                     {
-                        await base.LaunchTaskAsync();
+                        //Do you need to force an update.
+                        if (body.IsForcibly)
+                        {
+                            await base.LaunchTaskAsync();
+                        }
+                        else if (body.IsUpdate)//Does it need to be updated.
+                        {
+                            bool isSkip = false;
+                            //User decides if update is required.
+                            if (_customOption != null) isSkip = _customOption.Invoke();
+                            if (isSkip) await base.LaunchTaskAsync();
+                        }
                     }
-                    else if(body.IsUpdate)//Does it need to be updated.
+                    else 
                     {
-                        bool isSkip = false;
-                        //User decides if update is required.
-                        if (_customOption != null) isSkip = _customOption.Invoke();
-                        if (isSkip) await base.LaunchTaskAsync();
+                        base.Launch0();
                     }
                 }
             }

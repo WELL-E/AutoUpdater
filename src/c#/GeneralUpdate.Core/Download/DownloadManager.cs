@@ -142,7 +142,6 @@ namespace GeneralUpdate.Core.Download
         public void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
         {
             if (MutiDownloadError != null) this.MutiDownloadError(sender, e);
-
             _failedVersions.Add((e.Version, e.Exception.Message));
         }
 

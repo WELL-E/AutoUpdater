@@ -47,6 +47,7 @@ namespace GeneralUpdate.AspNetCore.Services
                 }
                 else
                 {
+                    respDTO.Body = new UpdateValidateDTO() { UpdateVersions = new List<UpdateVersionDTO>() , ClientType = clientType };
                     respDTO.Code = ResponseStatus.Success;
                     respDTO.Message = RespMessage.RequestNone;
                 }

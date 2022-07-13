@@ -121,6 +121,11 @@ namespace GeneralUpdate.Core.Bootstrap
             return (TBootstrap)this;
         }
 
+        public virtual void Launch0() 
+        {
+            ExcuteStrategy();
+        }
+
         #region Strategy
 
         protected IStrategy InitStrategy()
@@ -207,8 +212,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         protected void ExceptionAction(object sender, ExceptionEventArgs e)
         {
-            if (Exception != null)
-                Exception.Invoke(this, e);
+            if (Exception != null)  Exception.Invoke(this, e);
         }
 
         private void OnMutiDownloadProgressChanged(object sender, MutiDownloadProgressChangedEventArgs e)
@@ -225,8 +229,7 @@ namespace GeneralUpdate.Core.Bootstrap
 
         private void OnMutiDownloadError(object sender, MutiDownloadErrorEventArgs e)
         {
-            if (MutiDownloadError != null)
-                MutiDownloadError.Invoke(this, e);
+            if (MutiDownloadError != null) MutiDownloadError.Invoke(this, e);
         }
 
         private void OnMutiAllDownloadCompleted(object sender, MutiAllDownloadCompletedEventArgs e)
