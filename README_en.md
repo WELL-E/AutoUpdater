@@ -33,7 +33,7 @@ GeneralUpdate means that the general update is committed to becoming a full-plat
 
 ### Open source address ###
 
-- https://github.com/WELL-E/AutoUpdater
+- https://github.com/JusterZhu/GeneralUpdate
 - https://gitee.com/Juster-zhu/GeneralUpdate
 
 ### Support frame

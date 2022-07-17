@@ -36,7 +36,7 @@ GeneralUpdate寓意为通用更新力致于成为全平台更新组件，包含�
 
 ### 开源地址 ###
 
-- https://github.com/WELL-E/AutoUpdater
+- https://github.com/JusterZhu/GeneralUpdate
 - https://gitee.com/Juster-zhu/GeneralUpdate
 
 ### 支持框架
