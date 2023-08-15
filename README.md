@@ -9,6 +9,8 @@
 
 ### 组件介绍 ###
 
+当前仓库不再更新，新的仓库地址在：https://github.com/JusterZhu/GeneralUpdate
+
 GeneralUpdate寓意为通用更新力致于成为全平台更新组件，包含常见个人、企业项目所需特性。并提供GeneralUpdate.PacketTool更新包打包工具。
 
 | 功能                           | 是否支持 | 备注                                                         |
